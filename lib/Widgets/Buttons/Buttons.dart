@@ -1,0 +1,170 @@
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_cheez/Events/Events.dart';
+import 'package:flutter_cheez/Resources/Constants.dart';
+import 'package:flutter_cheez/Resources/Resources.dart';
+import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
+
+class CustomButton extends StatelessWidget implements PreferredSizeWidget{
+  final double width;
+  final double height;
+  final Function onClick;
+
+  Widget child;
+  Decoration decoration;
+
+  CustomButton({Key key, this.width, this.height, this.onClick,this.child,this.decoration}) : super(key: key);
+  CustomButton.coloredNoBorderLeft({Key key,Color color, this.width, this.height, this.onClick,this.child,}){
+    decoration = BoxDecoration(
+
+      borderRadius: BorderRadius.horizontal(right:Radius.circular(ParametersConstants.largeImageBorderRadius)) ,
+      color: color,
+    );
+  }
+  CustomButton.coloredCustomCircularRadius({Key key, Color color, double topLeft = 0, double topRight = 0, double bottomLeft = 0, double bottomRight = 0, this.width, this.height, this.onClick,this.child}){
+    decoration = BoxDecoration(
+
+      borderRadius: BorderRadius.only(
+          topLeft:Radius.circular(topLeft),
+          topRight:Radius.circular(topRight),
+          bottomLeft:Radius.circular(bottomLeft),
+          bottomRight:Radius.circular(bottomRight),
+      ) ,
+      color: color,
+    );
+  }
+  CustomButton.colored({Key key,Color color, this.width, this.height, this.onClick,this.child,}){
+    CustomButton.coloredCustomCircularRadius(
+        topLeft:ParametersConstants.largeImageBorderRadius,
+        topRight:ParametersConstants.largeImageBorderRadius,
+        bottomLeft:ParametersConstants.largeImageBorderRadius,
+        bottomRight:ParametersConstants.largeImageBorderRadius);
+  }
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return  Container(
+        width: width,
+        height: height,
+        decoration: decoration,
+        child: FlatButton (
+          onPressed: ()=>onClick(),
+          child: child,
+        ));
+  }
+
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => Size(width,height);
+
+
+
+}
+class CartButton extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() =>_CartButton();
+}
+class _CartButton extends State<CartButton> {
+  int counterCount = 0;
+  var subscription;
+  @override
+  void initState() {
+
+    super.initState();
+    counterCount = Resources().cart.getUniqueGoodsInCart();
+    subscription = eventBus.on<UpdateCart>().listen(
+            (event){
+                var tmpCount = event.cart.getUniqueGoodsInCart();
+                if( counterCount != tmpCount){
+                  counterCount = tmpCount;
+                  setState(()=>{});
+                }
+              }
+            );
+  }
+  @override
+  void dispose(){
+    super.dispose();
+    subscription.cancel();
+    subscription = null;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return  Stack(
+        children: <Widget>[
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CartButtonRoute( builder: (context) => CartPage()),
+                );
+              },
+              child: Icon(Icons.shopping_cart),
+            ),
+            Positioned(
+              top: 1.0,
+              right: 2.0,
+
+              child: new Container(
+                  width: 20.0,
+                  height: 20.0,
+                  decoration: new BoxDecoration(
+                    color: Colors.black,
+                    shape: BoxShape.circle,
+                  ),
+                child: Center(
+                    child:Text(
+                     "${counterCount}",
+                    //Resources().cart
+                    style: new TextStyle(
+                      color: ColorConstants.goodsBack,
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.w500
+                    ),
+                  )
+                )
+              )
+            ),
+      ],
+    );
+  }
+
+}
+class CartButtonRoute<T> extends MaterialPageRoute<T> {
+  CartButtonRoute({ WidgetBuilder builder, RouteSettings settings })
+      : super(builder: builder, settings: settings);
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 200);
+
+  @override
+  Widget buildTransitions(BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+
+    var offsetAnimation;
+    {
+      var begin = Offset(0.6, 0.7);
+      var end = Offset(0, 0);
+      var tween = Tween(begin: begin, end: end);
+        offsetAnimation = animation.drive(tween);
+    }
+
+    var scaleAnimation;
+    {
+      double begin = 0;
+      double end = 1;
+      var tween = Tween(begin: begin, end: end);
+      scaleAnimation = animation.drive(tween);
+    }
+
+    if (settings.isInitialRoute)
+      return child;
+
+    return new SlideTransition(position: offsetAnimation, child:  new ScaleTransition(scale: scaleAnimation,child:new FadeTransition(opacity: animation, child: child)) );
+  }
+}
