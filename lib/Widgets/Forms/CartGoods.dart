@@ -25,7 +25,7 @@ class CartGoods extends StatefulWidget {
 class _CartGoodsState extends State<CartGoods> with TickerProviderStateMixin{
   Goods goods;
   double horizontalPosition = 0;
-
+  double maxHorisontalPosition = -100;
   void initState() {
     super.initState();
     goods = Goods(data:widget.data);
@@ -45,28 +45,46 @@ class _CartGoodsState extends State<CartGoods> with TickerProviderStateMixin{
               padding: EdgeInsets.fromLTRB(0,3,3,0),*/
               alignment: Alignment.centerRight,
               child:
-              MaterialButton (
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15,3,3,3),
 
-                  height:  context.size.height,
-                  onPressed: ()=>setState(() => Resources().cart.removeAll(widget.data.id)),
-                  child: const Icon(Icons.minimize),
-                  color:ColorConstants.mainAppColor
+                child: MaterialButton (
+                    height: 155,
+                    onPressed: ()=>setState(() => Resources().cart.removeAll(widget.data.id)),
+                    child: const Icon(Icons.minimize),
+                    color:ColorConstants.red
+                ),
               )
           ),
-           GestureDetector(
-              onHorizontalDragUpdate: (d) {
-                if(d.primaryDelta >= 1.0 || d.primaryDelta <= - 1.0)
-                {
-                  //print(d.primaryDelta);
-                  setState(() {
-                    horizontalPosition+= d.primaryDelta;
-                    horizontalPosition = horizontalPosition.clamp(-100.0, 0.0);
-                  });
-                }
-              }, child:new Transform.translate(
-                  offset: new Offset(horizontalPosition, 0.0),
-                  child:  goods,
-          )
-           )]);
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 50),
+            right:horizontalPosition,
+
+               child: GestureDetector(
+                 onHorizontalDragEnd: (d){
+
+                     setState(() {
+                       if (horizontalPosition > 0.5 * maxHorisontalPosition)
+                         horizontalPosition = 0;
+                       else
+                         horizontalPosition = maxHorisontalPosition;
+                     });
+
+                  },
+                  onHorizontalDragUpdate: (d) {
+                    if(d.primaryDelta >= 1.0 || d.primaryDelta <= - 1.0)
+                    {
+                      //print(d.primaryDelta);
+                      setState(() {
+                        horizontalPosition+= d.primaryDelta;
+                        horizontalPosition = horizontalPosition.clamp(maxHorisontalPosition, 0.0);
+                      });
+                    }
+                  },
+
+                 child:  goods,
+            ),
+             ),
+           ]);
   }
 }

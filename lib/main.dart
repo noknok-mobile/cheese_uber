@@ -7,7 +7,7 @@ import 'Events/Events.dart';
 import 'Resources/Constants.dart';
 import 'Widgets/Pages/GoodsPage.dart';
 import 'Widgets/Pages/HomePage.dart';
-import 'Widgets/Pages/SplashScrean.dart';
+import 'Widgets/Pages/SplashScreen.dart';
 
 void main() => runApp(MyApp());
 

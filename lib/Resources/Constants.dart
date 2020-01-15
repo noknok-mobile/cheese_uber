@@ -55,3 +55,11 @@ class ParametersConstants{
     offset: Offset(0.0, 1),
     );
 }
+class AssetsConstants{
+
+
+  static  AssetImage get logo => AssetImage("lib/assets/images/logo.png");
+
+  static  AssetImage get splashBackground => AssetImage("lib/assets/backgrounds/splash_screen.png");
+}
+
