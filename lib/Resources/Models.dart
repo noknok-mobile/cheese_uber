@@ -108,15 +108,15 @@ class Cart implements IDataJsonModel,IDataBaseModel
   CustomWeakEvent<Cart> cartChanged = CustomWeakEvent<Cart>();
 
   final Map<int, int> cart = new Map<int, int>();
-  final SharedValue<int> bonusPoints = SharedValue();
+  final int _bonusPoints = 500;
 
-  get cartPrice {
+  double get cartPrice {
     double price = 0;
-    cart.forEach((k,v) => price += Resources().getGodById(k).price + v);
+    cart.forEach((k,v) => price += Resources().getGodById(k).price * v);
     return price;
   }
-  get resultPrice => cartPrice - bonusPoints.value;
-
+  double get resultPrice => cartPrice - bonusPoints.toDouble().clamp(0, cartPrice);
+  double get bonusPoints => _bonusPoints.toDouble();
   int add(int id,int count){
    //cartChanged.invoke(this);
 
@@ -127,7 +127,9 @@ class Cart implements IDataJsonModel,IDataBaseModel
     cart.values.map((v)=>num+=v);
     return num;
   }
+
   int getUniqueGoodsInCart(){
+    print ("getUniqueGoodsInCart");
     return cart.keys.length;
   }
   int getCount(int id){
@@ -144,21 +146,21 @@ class Cart implements IDataJsonModel,IDataBaseModel
       removeAll(id);
     }
 
-    eventBus.fire(UpdateCart(cart:this));
+    eventBus.fire(CartUpdated(cart:this));
 
     return  getCount(id);
   }
   clear(){
     cart.clear();
     //cartChanged.invoke(this);
-    eventBus.fire(UpdateCart);
+    eventBus.fire(CartUpdated(cart:this));
   }
   removeAll(int id)
   {
     if(cart[id] != null){
       cart.remove(id);
      // cartChanged.invoke(this);
-      eventBus.fire(UpdateCart);
+      eventBus.fire(CartUpdated(cart:this));
     }
   }
   int remove(int id,int count)

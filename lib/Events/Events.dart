@@ -4,14 +4,35 @@ import 'package:flutter_cheez/Resources/Models.dart';
 
 EventBus eventBus = EventBus();
 
-class UpdateCart
+class CartUpdated
 {
-  UpdateCart({this.cart});
+  CartUpdated({this.cart});
   final Cart cart;
 }
-class UpdatePrice{
-  double price;
+class GoodInCartUpdated
+{
+  GoodInCartUpdated({ this.id,this.count = 0});
+  final int id;
+  final int count;
 }
+
+class GoodInCartAdd{
+  final int id;
+  final int count;
+  GoodInCartAdd({ this.id,this.count = 1});
+}
+class GoodInCartRemove{
+  int id;
+  int count = 1;
+  GoodInCartRemove({ this.id,this.count = 1});
+}
+class GoodInCartSet{
+  int id;
+  int count;
+  GoodInCartSet({ this.id,this.count = 1});
+}
+
+
 class AllUpToDate{
 
 }

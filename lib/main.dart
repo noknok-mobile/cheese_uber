@@ -46,14 +46,8 @@ class _RootPageState extends State<MyApp>{
 
       setState(() {
         loaded = true;
-      });
-      /*
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-            (Route<dynamic> route) => false,
 
-      );*/
+      });
     });
     Resources().loadAllData();
   }

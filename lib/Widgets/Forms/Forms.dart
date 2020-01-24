@@ -14,7 +14,24 @@ class Label extends StatelessWidget{
 
 
 }
+class CustomText extends StatelessWidget {
+  final TextStyle style;
+  final String content;
+  const CustomText(this.content,{Key key, this.style}) : super(key: key);
 
+  const CustomText.white12px(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w400)}) : super(key: key);
+  const CustomText.black14px(this.content,{Key key, this.style = const TextStyle(fontSize: 14,color:ColorConstants.black,fontWeight: FontWeight.w400)}) : super(key: key);
+  const CustomText.black18px(this.content,{Key key, this.style = const TextStyle(fontSize: 18,color:ColorConstants.black,fontWeight: FontWeight.w400)}) : super(key: key);
+  const CustomText.red24px(this.content,{Key key,this.style = const TextStyle(fontSize: 24,color:ColorConstants.red,fontWeight: FontWeight.w800)}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(content,style:style,);
+  }
+
+
+
+}
 
 
 class CachedImage extends StatelessWidget implements PreferredSizeWidget{
@@ -26,16 +43,16 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
 
   CachedImage({Key key, this.url, this.child, this.width, this.height, this.radius}) : super(key: key);
 
-  CachedImage.imageForCart(double sizeMultipler, {Key key, this.url,this.child,}){
+  CachedImage.imageForCart(double sizeMultipler, {Key key, this.url,this.child,this.height}){
 
     width =  ParametersConstants.smallImageWidth*sizeMultipler;
     height = ParametersConstants.smallImageHeight*sizeMultipler;
-    radius = ParametersConstants.smallImageBorderRadius*sizeMultipler;
+    radius = ParametersConstants.smallImageBorderRadius;
   }
-  CachedImage.imageForShopList(double sizeMultipler, {Key key, this.url,this.child}){
-    width =  ParametersConstants.mediumImageWidth*sizeMultipler;
-    height = ParametersConstants.mediumImageHeight*sizeMultipler;
-    radius = ParametersConstants.mediumImageBorderRadius*sizeMultipler;
+  CachedImage.imageForShopList({Key key, this.url,this.child,this.height}){
+    width =  height;
+    height = height;
+    radius = ParametersConstants.mediumImageBorderRadius;
   }
   CachedImage.imageForCategory({Key key, this.url,this.child}){
     width =  ParametersConstants.largeImageWidth;

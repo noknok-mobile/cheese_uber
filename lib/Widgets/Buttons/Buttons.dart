@@ -1,9 +1,12 @@
 
+import 'dart:wasm';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
+import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
 
 class CustomButton extends StatelessWidget implements PreferredSizeWidget{
@@ -11,7 +14,7 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
   final double height;
   final Function onClick;
 
-  Widget child;
+  final Widget child;
   Decoration decoration;
 
   CustomButton({Key key, this.width, this.height, this.onClick,this.child,this.decoration}) : super(key: key);
@@ -23,6 +26,7 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
     );
   }
   CustomButton.coloredCustomCircularRadius({Key key, Color color, double topLeft = 0, double topRight = 0, double bottomLeft = 0, double bottomRight = 0, this.width, this.height, this.onClick,this.child}){
+
     decoration = BoxDecoration(
 
       borderRadius: BorderRadius.only(
@@ -34,12 +38,32 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
       color: color,
     );
   }
-  CustomButton.colored({Key key,Color color, this.width, this.height, this.onClick,this.child,}){
-    CustomButton.coloredCustomCircularRadius(
-        topLeft:ParametersConstants.largeImageBorderRadius,
-        topRight:ParametersConstants.largeImageBorderRadius,
-        bottomLeft:ParametersConstants.largeImageBorderRadius,
-        bottomRight:ParametersConstants.largeImageBorderRadius);
+  CustomButton.coloredCustomRadius({Key key,Color color,double radius, this.width, this.height, this.onClick,this.child,}){
+
+    decoration = BoxDecoration(
+
+      borderRadius: BorderRadius.only(
+        topLeft:Radius.circular(radius),
+        topRight:Radius.circular(radius),
+        bottomLeft:Radius.circular(radius),
+        bottomRight:Radius.circular(radius),
+      ) ,
+      color: color,
+    );
+  }
+   CustomButton.colored({Key key,Color color, this.width, this.height, this.onClick,this.child,}){
+
+     decoration = BoxDecoration(
+
+       borderRadius: BorderRadius.only(
+         topLeft:Radius.circular(ParametersConstants.smallImageBorderRadius),
+         topRight:Radius.circular(ParametersConstants.smallImageBorderRadius),
+         bottomLeft:Radius.circular(ParametersConstants.smallImageBorderRadius),
+         bottomRight:Radius.circular(ParametersConstants.smallImageBorderRadius),
+       ) ,
+       color: color,
+     );
+
   }
 
 
@@ -75,7 +99,9 @@ class _CartButton extends State<CartButton> {
   void initState() {
 
     super.initState();
+    /*
     counterCount = Resources().cart.getUniqueGoodsInCart();
+
     subscription = eventBus.on<UpdateCart>().listen(
             (event){
                 var tmpCount = event.cart.getUniqueGoodsInCart();
@@ -84,16 +110,20 @@ class _CartButton extends State<CartButton> {
                   setState(()=>{});
                 }
               }
-            );
+            );*/
   }
   @override
   void dispose(){
     super.dispose();
+    /*
     subscription.cancel();
-    subscription = null;
+    subscription = null;*/
   }
   @override
   Widget build(BuildContext context) {
+
+
+
     return  Stack(
         children: <Widget>[
             FloatingActionButton(
@@ -117,15 +147,17 @@ class _CartButton extends State<CartButton> {
                     shape: BoxShape.circle,
                   ),
                 child: Center(
-                    child:Text(
-                     "${counterCount}",
-                    //Resources().cart
-                    style: new TextStyle(
-                      color: ColorConstants.goodsBack,
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.w500
-                    ),
-                  )
+                    child:AutoUpdatingWidget<CartUpdated>(
+                      child:(context)=> Text(
+                       "${Resources().cart.getUniqueGoodsInCart()}",
+                      //Resources().cart
+                      style: new TextStyle(
+                        color: ColorConstants.goodsBack,
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.w500
+                      ),
+                  ),
+                    )
                 )
               )
             ),

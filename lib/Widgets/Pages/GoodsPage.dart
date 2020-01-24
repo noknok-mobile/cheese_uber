@@ -4,6 +4,7 @@ import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
+import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Forms/Goods.dart';
 import 'package:flutter_cheez/Widgets/Forms/GoodsTabBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
@@ -19,14 +20,12 @@ class GoodsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Tab> tabsTitles = List<Tab>();
     List<Widget> tabsContent = List<Widget>();
-    print("build GoodsPage $categoryId");
     data.forEach(
             (f)=>{
                 tabsTitles.add(Tab(child:Text( f.title))),
 
                 tabsContent.add(
                 Center(
-
                   child: FutureBuilder(
                       future: Resources().getGoodsInCategory(f.id),
                       builder: (context,AsyncSnapshot<List<GoodsData>> projectSnap) {
@@ -37,6 +36,7 @@ class GoodsPage extends StatelessWidget {
                         if (projectSnap.connectionState != ConnectionState.done) {
                           return CircularProgressIndicator();
                         }
+
                         return ListView.builder(
 
                           shrinkWrap: true,
@@ -50,7 +50,10 @@ class GoodsPage extends StatelessWidget {
                                 height: index == 0 ? ParametersConstants.paddingInFerstListElemetn:0
 
                                 ),
-                                Goods(data: projectSnap.data[index]),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 3,0, 3),
+                                  child: Goods(data: projectSnap.data[index],height: 155,),
+                                ),
                                 SizedBox(
                                     height: projectSnap.data.length-1 == index  ? 80:0 ),
                               ],
@@ -69,6 +72,7 @@ class GoodsPage extends StatelessWidget {
         length: data.length,
         initialIndex:data.indexOf(data.firstWhere((t)=>t.id == categoryId)),
         child:  Scaffold(
+            drawer: Drawer(child: LeftMenu()),
             appBar: NextPageAppBar(
               height: ParametersConstants.appBarHeight,
               title: title,

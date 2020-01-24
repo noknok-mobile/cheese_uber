@@ -5,18 +5,30 @@ import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/CountButtonGroup.dart';
+import 'package:flutter_cheez/Widgets/Forms/PriceTextField.dart';
 import 'Forms.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-class Goods extends StatelessWidget {
-  Goods({Key key, this.data,}) : super(key: key);
+class Goods extends StatelessWidget implements PreferredSizeWidget{
+  Goods({Key key, this.data, this.height}) : super(key: key);
+  final double height;
   final GoodsData data;
 
   @override
+  // TODO: implement preferredSize
+  Size get preferredSize => Size.fromHeight(height);
+
+  @override
   Widget build(BuildContext context) {
+    var query = MediaQuery.of(context);
+    bool showInfo = height>150;
+    bool oneLine = query.size.width > 320;
+    double padding = 12 * (oneLine ? 1.0 : 0.5 );
+
     return FlatButton(
       child: Container(
-          margin: EdgeInsets.fromLTRB(0, 3,0, 3),
-          padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
+        height: height ,
+
+          padding: EdgeInsets.fromLTRB(padding, padding , padding , padding ),
           decoration: BoxDecoration(
             color: ColorConstants.mainAppColor,
             borderRadius:
@@ -29,11 +41,11 @@ class Goods extends StatelessWidget {
           ),
           child: LayoutBuilder(
             builder: (context, snapshot) {
-              if(snapshot.maxWidth < 320){
-                return _buildTooLine(context);
+              if(oneLine){
+                return _buildOneLine(context,showInfo: showInfo);
               } else {
 
-                return _buildOneLine(context);
+                return _buildTooLine(context,showInfo: showInfo);
               }
             }
           )
@@ -44,7 +56,7 @@ class Goods extends StatelessWidget {
       }
     );
   }
-  Widget _buildTooLine(BuildContext context){
+  Widget _buildTooLine(BuildContext context,{bool showInfo = true,double padding = 6}){
     var query = MediaQuery.of(context);
     return Column(
       children: <Widget>[
@@ -53,12 +65,12 @@ class Goods extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
 
-              Center(child: CachedImage.imageForShopList(query.size.width/query.size.height, url: data.imageUrl)),
+              Center(child: CachedImage.imageForShopList(url: data.imageUrl,height: (preferredSize.height*query.size.width/query.size.height - padding*2))),
 
               Flexible(
                   flex: 1,
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                    margin: EdgeInsets.fromLTRB(padding, 0, 0, 0),
                     //width: c_width,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +83,7 @@ class Goods extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                           ),
-                          Padding(
+                          showInfo ?   Padding(
                             padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                             child: Text(
                               data.info,
@@ -81,14 +93,14 @@ class Goods extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                             ),
-                          ),
+                          ) : Container(),
 
                         ]),
                   ))
             ]),
 
         Padding(
-            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+            padding: EdgeInsets.fromLTRB(0, padding, 0, 0),
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Row(
@@ -100,7 +112,7 @@ class Goods extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle,
 
                         children: <TextSpan>[
-                          TextSpan(text: "${data.units == "шт" ?"1 "+data.units :"100 "+data.units}",
+                          TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"100 "+data.units}",
                               style: Theme.of(context)
                                   .textTheme
                                   .body2
@@ -110,8 +122,8 @@ class Goods extends StatelessWidget {
                     ),
                     Spacer(),
                     CountButtonGroup(
-                      getText: (){return "${data.units == "шт" ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}.";},
-                      setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units == "шт" ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
+                      getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}.";},
+                      setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
                       getCount: (){ return Resources().cart.getCount(data.id);},
                     )
                   ]),
@@ -119,18 +131,19 @@ class Goods extends StatelessWidget {
       ],
     );
   }
-  Widget _buildOneLine(BuildContext context){
+  Widget _buildOneLine(BuildContext context,{bool showInfo = true,double padding = 12}){
+    var query = MediaQuery.of(context);
     return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
 
-          Center(child: CachedImage.imageForShopList(1, url: data.imageUrl)),
+          Center(child: CachedImage.imageForShopList(url: data.imageUrl,height:preferredSize.height - padding*2)),
 
           Flexible(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                margin: EdgeInsets.fromLTRB(padding, 0, 0, 0),
                 //width: c_width,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,17 +156,19 @@ class Goods extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
-                        child: Text(
-                          data.info,
-                          style: Theme.of(context).textTheme.body2,
-                          maxLines: 2,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
+
+                    showInfo ? Padding(
+                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
+                       child: Text(
+
+                         data.info,
+                         style: Theme.of(context).textTheme.body2,
+                         maxLines: 2,
+                         softWrap: true,
+                         overflow: TextOverflow.ellipsis,
+                         textAlign: TextAlign.left,
+                       ),
+                     ) : Container(),
                       Padding(
                           padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                           child: Container(
@@ -187,4 +202,5 @@ class Goods extends StatelessWidget {
               ))
         ]);
   }
+
 }

@@ -46,7 +46,7 @@ class _CountButtonGroupState extends State<CountButtonGroup> with TickerProvider
         curve: Curves.easeIn,));
 
     _borderAnimation = Tween<double>(
-      begin: ParametersConstants.largeImageBorderRadius,
+      begin: ParametersConstants.smallImageBorderRadius,
       end: 0,
     ).animate(CurvedAnimation(
       parent: _animationController,
@@ -106,8 +106,8 @@ class _CountButtonGroupState extends State<CountButtonGroup> with TickerProvider
 
                 opacity: _opacityAnimation.value ,
                 child: CustomButton.coloredCustomCircularRadius(
-                  topLeft: ParametersConstants.largeImageBorderRadius,
-                  bottomLeft: ParametersConstants.largeImageBorderRadius,
+                  topLeft: ParametersConstants.smallImageBorderRadius,
+                  bottomLeft: ParametersConstants.smallImageBorderRadius,
                   width: 36,
                   height: 36,
                   color: ColorConstants.gray,
@@ -154,8 +154,8 @@ class _CountButtonGroupState extends State<CountButtonGroup> with TickerProvider
             CustomButton.coloredCustomCircularRadius(
               topLeft: _borderAnimation.value,
               bottomLeft: _borderAnimation.value,
-              topRight: ParametersConstants.largeImageBorderRadius,
-              bottomRight: ParametersConstants.largeImageBorderRadius,
+              topRight: ParametersConstants.smallImageBorderRadius,
+              bottomRight: ParametersConstants.smallImageBorderRadius,
               width: 36,
               height: 36,
               color: ColorConstants.red,

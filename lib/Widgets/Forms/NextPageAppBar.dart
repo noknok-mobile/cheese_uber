@@ -6,9 +6,10 @@ class NextPageAppBar  extends  StatelessWidget implements PreferredSizeWidget{
   final double height;
   final String title;
   final PreferredSizeWidget bottom;
+  final bool needToBeReloaded;
   const NextPageAppBar({
     Key key,
-    @required this.height, this.title, this.bottom,
+    @required this.height, this.title, this.bottom,this.needToBeReloaded
   }) : super(key: key);
 
   @override
@@ -49,20 +50,17 @@ class NextPageAppBar  extends  StatelessWidget implements PreferredSizeWidget{
                         .textTheme
                         .headline,
                     )
-
-                 // ) ,
-
                 ),
 
             ]),
           ),
         ),
         ),
-        bottom,
+        bottom != null?bottom:SizedBox(),
       ],
     ));
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(height+bottom.preferredSize.height);
+  Size get preferredSize => Size.fromHeight(height+ (bottom == null?0:bottom.preferredSize.height));
 }

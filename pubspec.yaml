@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
 
@@ -45,6 +45,8 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
+    - lib/assets/backgrounds/empty_history.png
+    - lib/assets/backgrounds/empty_cart.png
     - lib/assets/backgrounds/splash_screen.png
     - lib/assets/images/logo.png
   # The following line ensures that the Material Icons font is
