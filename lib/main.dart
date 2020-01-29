@@ -82,12 +82,12 @@ class _RootPageState extends State<MyApp>{
         textTheme: TextTheme(
         headline:    TextStyle(fontSize: 24,color:ColorConstants.black,fontWeight: FontWeight.w500,),
     subhead:    TextStyle(fontSize: 32,color:ColorConstants.darkGray,fontWeight: FontWeight.w500),
-    subtitle:    TextStyle(fontSize: 18,color:ColorConstants.darckBlack,fontWeight: FontWeight.w700),
+    subtitle:    TextStyle(fontSize: 18,color:ColorConstants.darckBlack,fontWeight: FontWeight.w800),
     title:       TextStyle(fontSize: 20,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w500),
     button: TextStyle(fontSize: 24,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w500),
 
     //       TextStyle(fontSize: 20,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w500),
-    body1:        TextStyle(fontSize: 16,color:ColorConstants.black,fontWeight: FontWeight.w500),
+    body1:        TextStyle(fontSize: 16,color:ColorConstants.black,fontWeight: FontWeight.w800),
     body2:        TextStyle(fontSize: 12,color:ColorConstants.darkGray,fontWeight: FontWeight.w500),
     )
     ),

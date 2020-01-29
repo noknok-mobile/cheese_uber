@@ -6,6 +6,7 @@ import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
+import 'package:flutter_cheez/Widgets/Forms/AddBonuses.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartBottomAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartGoods.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
@@ -86,7 +87,10 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin{
                       children: <Widget>[
                         SizedBox(
                             height: index == 0 ? ParametersConstants.paddingInFerstListElemetn:0 ),
-                        CartGoods( data: Resources().getGodById( projectSnap.data.keys.toList()[index]))
+                        CartGoods( data: Resources().getGodById( projectSnap.data.keys.toList()[index])),
+                        index == projectSnap.data.length-1 ? AddBonuses(): Container(),
+
+
                       ],
                     );
                   },

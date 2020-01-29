@@ -108,7 +108,7 @@ class Cart implements IDataJsonModel,IDataBaseModel
   CustomWeakEvent<Cart> cartChanged = CustomWeakEvent<Cart>();
 
   final Map<int, int> cart = new Map<int, int>();
-  final int _bonusPoints = 500;
+  final int _bonusPoints = 0;
 
   double get cartPrice {
     double price = 0;
@@ -202,6 +202,6 @@ class CategoryData{
   CategoryData({this.id,this.imageUrl,this.title});
 }
 class UserProfile {
-  int bonusPoints = 50;
+  int bonusPoints = 0;
 }
 

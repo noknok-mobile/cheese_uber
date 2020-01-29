@@ -21,7 +21,8 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
     bool showInfo = height>150;
-    bool oneLine = query.size.width > 320;
+    bool oneLine = query.size.width > 380;
+    print(query.size.width);
     double padding = 12 * (oneLine ? 1.0 : 0.5 );
 
     return FlatButton(
@@ -50,9 +51,8 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
             }
           )
       ),
-      onPressed:(){ Navigator.of(context).push(MaterialPageRoute(builder: (context){
-        return null;
-      }));
+      onPressed:(){
+
       }
     );
   }
@@ -99,35 +99,37 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                   ))
             ]),
 
-        Padding(
-            padding: EdgeInsets.fromLTRB(0, padding, 0, 0),
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    RichText(
-                      text: TextSpan(
-                        text: "${data.price.toInt().toString()} р \n",
-                        style: Theme.of(context).textTheme.subtitle,
+        Flexible(
+          child: Padding(
+              padding: EdgeInsets.fromLTRB(0, padding, 0, 0),
+              child: Container(
+                alignment: Alignment.center,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                          text: "${data.price.toInt().toString()} р \n",
+                          style: Theme.of(context).textTheme.subtitle,
 
-                        children: <TextSpan>[
-                          TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"100 "+data.units}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .body2
-                          ),
-                        ],
+                          children: <TextSpan>[
+                            TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"100 "+data.units}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body2
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Spacer(),
-                    CountButtonGroup(
-                      getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}.";},
-                      setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
-                      getCount: (){ return Resources().cart.getCount(data.id);},
-                    )
-                  ]),
-            ))
+                      Spacer(),
+                      CountButtonGroup(
+                        getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}";},
+                        setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
+                        getCount: (){ return Resources().cart.getCount(data.id);},
+                      )
+                    ]),
+              )),
+        )
       ],
     );
   }
@@ -182,7 +184,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                                       style: Theme.of(context).textTheme.subtitle,
 
                                       children: <TextSpan>[
-                                        TextSpan(text: "${data.units == "шт" ?"1 "+data.units :"100 "+data.units}",
+                                        TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"100 "+data.units}",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .body2
@@ -192,8 +194,8 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                                   ),
                                   Spacer(),
                                   CountButtonGroup(
-                                    getText: (){return "${data.units == "шт" ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}.";},
-                                    setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units == "шт" ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
+                                    getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}";},
+                                    setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
                                     getCount: (){ return Resources().cart.getCount(data.id);},
                                   )
                                 ]),

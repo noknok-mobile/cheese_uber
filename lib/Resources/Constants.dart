@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 class TextConstants{
   static String get cartHeader => "Корзина";
-  static String get cartEmpty => "Ваша корзина пуста :(";
+  static String get cartEmpty => "Ваша корзинакорзина пуста :(";
   static String get categoryHeader => "Каталог";
   static String get goodsHeader => "Список товаров";
   static String get legtMenuHeader => "Мир сыров!";
@@ -9,10 +9,12 @@ class TextConstants{
   static String get cartPrice => "Сумма заказа";
   static String get cartResultPrice => "Итого:";
   static String get cartBonus => "Оплачено бонусами";
+  static String get cartNoBonuses => "У вас еще нет бонусов";
   static String get cartUseBonus => "Использовать бонусы";
   static String get cartPlaceOrder => "ОФОРМИТЬ ЗАКАЗ";
 
   static String get units => "шт.";
+  static String get wUnits => "гр.";
   static String get pricePostfix => "р.";
 }
 class ColorConstants{
@@ -58,7 +60,15 @@ class ParametersConstants{
   static EdgeInsets get goodsContainersMargin =>  EdgeInsets.fromLTRB(20,10,20,10);
   //static EdgeInsets get goodsContainersPadding =>  EdgeInsets.fromLTRB(0,,0,0);
 
-
+static Decoration get BoxShadowDecoration => BoxDecoration(
+  color: ColorConstants.mainAppColor,
+  borderRadius:
+  BorderRadius.circular(ParametersConstants.largeImageBorderRadius),
+  border: Border.all(color: ColorConstants.goodsBorder.withOpacity(0.1)),
+  boxShadow: [
+  ParametersConstants.shadowDecoration,
+  ],
+  );
   static BoxShadow get shadowDecoration =>BoxShadow(
     blurRadius: 30,
     color: ColorConstants.goodsBackShadow,

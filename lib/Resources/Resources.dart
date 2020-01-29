@@ -2,6 +2,7 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
+import 'package:flutter_cheez/Resources/Constants.dart';
 import "package:sqflite/sqflite.dart";
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -55,6 +56,10 @@ class Resources {
   }
   final Cart _cart = Cart();
   Cart get cart => _cart;
+  final UserProfile _userProfile = UserProfile();
+  UserProfile get userProfile => UserProfile();
+
+
   final ListOfGoodsData _allGoods = ListOfGoodsData();
 
   final List<CategoryData> categories = List<CategoryData>();
@@ -69,7 +74,7 @@ class Resources {
           info: "вкусный сыр это не то и того не туда. Каждый сыр хочет знать где сидит пармезаныч",
           categories: {i%5},
           price: i*100.0 + i%2*50.0,
-          units: i%4 == 0?"гр":"шт"
+          units: i%4 == 0?TextConstants.wUnits:TextConstants.units
       ));
     }
     for(int i=0;i<5;i++) {
