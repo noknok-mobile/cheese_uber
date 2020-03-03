@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
+import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 
 class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
@@ -9,7 +10,7 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool needToBeReloaded;
   const NextPageAppBar(
       {Key key,
-      @required this.height,
+      @required this.height ,
       this.title,
       this.bottom,
       this.needToBeReloaded})
@@ -40,9 +41,9 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                         flex: 1,
                         fit: FlexFit.tight,
                         child: //Expanded(
-                            Text(
+                            CustomText.black24px(
                           title,
-                          style: Theme.of(context).textTheme.headline,
+
                         )),
                   ]),
                 ),

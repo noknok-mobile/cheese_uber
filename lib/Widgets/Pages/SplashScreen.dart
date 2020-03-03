@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
+    var query = MediaQuery.of(context);
     // TODO: implement build
     return Container(
 
@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
             // colorFilter: ColorFilter.mode(Colors.blue, BlendMode.colorBurn)
           ),
         ),
-        child: Center(child: Logo()));
+        child: Center(child: Logo(height: query.size.width,)));
   }
 }
 

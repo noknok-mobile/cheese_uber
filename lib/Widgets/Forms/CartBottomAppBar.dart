@@ -35,12 +35,12 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: Row(
                   children: <Widget>[
-                    CustomText.black14px(TextConstants.cartPrice),
+                    CustomText.black14px(TextConstants.cartResultPrice),
                     Expanded(
 
                       child: Container(),
                     ),
-                    AutoUpdatingWidget<CartUpdated>(child:(context)=> CustomText.black14px("${Resources().cart.cartPrice.toString()} ${TextConstants.pricePostfix}"))
+                    AutoUpdatingWidget<CartUpdated>(child:(context,e)=> CustomText.black14px("${Resources().cart.cartPrice.toString()} ${TextConstants.pricePostfix}"))
                   ],
                 ),
               ),
@@ -56,7 +56,7 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                     Expanded(
                       child: Container(),
                     ),
-                    AutoUpdatingWidget<CartUpdated>(child:(context)=> CustomText.black14px("${Resources().cart.bonusPoints.toString()} ${TextConstants.pricePostfix}"))
+                    AutoUpdatingWidget<CartUpdated>(child:(context,e)=> CustomText.black14px("${Resources().cart.bonusPoints.toString()} ${TextConstants.pricePostfix}"))
                   ],
                 ),
               ),
@@ -77,7 +77,7 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                       children: <Widget>[
                         CustomText.black14px("${TextConstants.cartResultPrice}"),
 
-                        AutoUpdatingWidget<CartUpdated>(child:(context)=> CustomText.red24px("${ Resources().cart.resultPrice.toString()} ${TextConstants.pricePostfix}")),
+                        AutoUpdatingWidget<CartUpdated>(child:(context,e)=> CustomText.red24px("${ Resources().cart.resultPrice.toString()} ${TextConstants.pricePostfix}")),
                       ],
                     ),
                     Expanded(

@@ -31,8 +31,14 @@ class GoodInCartSet{
   int count;
   GoodInCartSet({ this.id,this.count = 1});
 }
-
-
+class CitySelected{
+  final String city;
+  CitySelected(this.city);
+}
+class ShopSelected{
+  final String shopId;
+  ShopSelected(this.shopId);
+}
 class AllUpToDate{
 
 }

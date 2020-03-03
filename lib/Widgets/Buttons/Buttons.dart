@@ -13,20 +13,21 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
   final double width;
   final double height;
   final Function onClick;
-
+  final bool expanded ;
   final Widget child;
   Decoration decoration;
 
-  CustomButton({Key key, this.width, this.height, this.onClick,this.child,this.decoration}) : super(key: key);
-  CustomButton.coloredNoBorderLeft({Key key,Color color, this.width, this.height, this.onClick,this.child,}){
+  CustomButton({Key key, this.width, this.height, this.onClick,this.child,this.decoration,this.expanded = false}) : super(key: key);
+  CustomButton.coloredNoBorderLeft({Key key,Color color, this.width, this.height, this.onClick,this.child,this.expanded = false}){
+   // this.expanded = expanded;
     decoration = BoxDecoration(
 
       borderRadius: BorderRadius.horizontal(right:Radius.circular(ParametersConstants.largeImageBorderRadius)) ,
       color: color,
     );
   }
-  CustomButton.coloredCustomCircularRadius({Key key, Color color, double topLeft = 0, double topRight = 0, double bottomLeft = 0, double bottomRight = 0, this.width, this.height, this.onClick,this.child}){
-
+  CustomButton.coloredCustomCircularRadius({Key key, Color color, double topLeft = 0, double topRight = 0, double bottomLeft = 0, double bottomRight = 0, this.width, this.height, this.onClick,this.child,this.expanded = false}){
+   // this.expanded = expanded;
     decoration = BoxDecoration(
 
       borderRadius: BorderRadius.only(
@@ -38,8 +39,8 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
       color: color,
     );
   }
-  CustomButton.coloredCustomRadius({Key key,Color color,double radius, this.width, this.height, this.onClick,this.child,}){
-
+  CustomButton.coloredCustomRadius({Key key,Color color,double radius, this.width, this.height, this.onClick,this.child,this.expanded = false}){
+  //  this.expanded = expanded;
     decoration = BoxDecoration(
 
       borderRadius: BorderRadius.only(
@@ -51,8 +52,8 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
       color: color,
     );
   }
-   CustomButton.colored({Key key,Color color, this.width, this.height, this.onClick,this.child,}){
-
+   CustomButton.colored({Key key,Color color, this.width, this.height, this.onClick,this.child,this.expanded = false}){
+    // this.expanded = expanded;
      decoration = BoxDecoration(
 
        borderRadius: BorderRadius.only(
@@ -71,7 +72,18 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return expanded?
+      SizedBox(
+          width: double.maxFinite, // set width to maxFinite
+          child: Container(
+          decoration: decoration,
+          child: FlatButton (
+
+            onPressed: ()=>onClick(),
+            child: child,
+          ),
+        ))
+      :Container(
         width: width,
         height: height,
         decoration: decoration,
@@ -148,7 +160,7 @@ class _CartButton extends State<CartButton> {
                   ),
                 child: Center(
                     child:AutoUpdatingWidget<CartUpdated>(
-                      child:(context)=> Text(
+                      child:(context,data)=> Text(
                        "${Resources().cart.getUniqueGoodsInCart()}",
                       //Resources().cart
                       style: new TextStyle(

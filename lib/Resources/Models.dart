@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+
 import 'package:flutter_cheez/Events/CustomEvent.dart';
 import 'package:flutter_cheez/Events/Events.dart';
-import 'package:flutter_cheez/Utils/SharedValue.dart';
-
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'Resources.dart';
 
 
@@ -201,7 +201,27 @@ class CategoryData{
   final String title;
   CategoryData({this.id,this.imageUrl,this.title});
 }
+class UserAddress {
+
+  final String city = "Краснодар";
+  final String street = "Улица";
+}
+class ShopInfo {
+  final String shopId;
+  final String city;
+  final String address;
+  final Point mapPoint;
+
+  ShopInfo({this.shopId = "1",this.city = "Краснодар",this.address= "Ул. Красная, 23",this.mapPoint= const Point(latitude:0.0,longitude:0.0)});
+}
 class UserProfile {
   int bonusPoints = 0;
+  String username = "Иван Иванов";
+  String selectedShop = "";
+
+  final List<String> userAddress = List<String>();
+
+  UserProfile({this.bonusPoints = 0,this.selectedShop = "",this.username= "Иван Иванов",});
+
 }
 

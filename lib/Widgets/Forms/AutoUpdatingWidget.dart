@@ -1,9 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 
-class AutoUpdatingWidget<T> extends StatefulWidget{
+class AutoUpdatingWidget<T extends Object> extends StatefulWidget{
 
 
   final Function child;
@@ -15,10 +14,11 @@ class AutoUpdatingWidget<T> extends StatefulWidget{
 }
 class _AutoUpdatingWidgetState<T> extends State<AutoUpdatingWidget>{
   StreamSubscription<T>  subscription;
+  T data;
   @override
   void initState() {
     super.initState();
-    subscription = eventBus.on<T>().listen((event)=>{ setState(()=>{})});
+    subscription = eventBus.on<T>().listen((event)=>{data = event, setState(()=>{})});
 
   }
 
@@ -31,7 +31,7 @@ class _AutoUpdatingWidgetState<T> extends State<AutoUpdatingWidget>{
   }
   @override
   Widget build(BuildContext context) {
-    return widget.child(context);
+    return widget.child(context,data);
   }
 
 

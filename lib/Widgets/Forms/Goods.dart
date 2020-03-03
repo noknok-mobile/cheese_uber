@@ -1,11 +1,14 @@
 
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
+import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/CountButtonGroup.dart';
+import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Forms/PriceTextField.dart';
+import 'package:flutter_cheez/Widgets/Pages/DetailGoods.dart';
 import 'Forms.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 class Goods extends StatelessWidget implements PreferredSizeWidget{
@@ -52,7 +55,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
           )
       ),
       onPressed:(){
-
+        Navigator.of(context).push(new MaterialPageRoute(builder:(context){ return  DetailGoods(goodsData: data,);}));
       }
     );
   }
@@ -122,10 +125,12 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                         ),
                       ),
                       Spacer(),
-                      CountButtonGroup(
-                        getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}";},
-                        setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
-                        getCount: (){ return Resources().cart.getCount(data.id);},
+                      AutoUpdatingWidget<CartUpdated>(
+                        child:(context)=> CountButtonGroup(
+                          getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}";},
+                          setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
+                          getCount: (){ return Resources().cart.getCount(data.id);},
+                        ),
                       )
                     ]),
               )),
@@ -193,10 +198,13 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                                     ),
                                   ),
                                   Spacer(),
-                                  CountButtonGroup(
-                                    getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}";},
-                                    setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
-                                    getCount: (){ return Resources().cart.getCount(data.id);},
+                                  AutoUpdatingWidget<CartUpdated>(
+
+                                    child:(context,e)=> CountButtonGroup(
+                                      getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}";},
+                                      setCount: (int count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
+                                      getCount: (){ return Resources().cart.getCount(data.id);},
+                                    ),
                                   )
                                 ]),
                           ))
