@@ -51,7 +51,7 @@ class _SelectShopState extends State<SelectShop> {
                     longitude: x.mapPoint.longitude,
                     latitude: x.mapPoint.latitude),
                 opacity: 1,
-                iconName: 'lib/assets/icons/map_pointer.png',
+                iconName: 'lib/assets/icons/map_pointer_shop.png',
 
                 onTap: (double latitude, double longitude) =>
                     Resources().selectShop(x.shopId),
