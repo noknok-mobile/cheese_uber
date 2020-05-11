@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Widgets/Forms/Logo.dart';
 
-import 'HomePage.dart';
-
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

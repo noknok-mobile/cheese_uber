@@ -131,11 +131,8 @@ class Resources {
   Future <ShopInfo> getNearestShop()async{
     var shops = getAllShops;
     await Future.delayed(const Duration(milliseconds: 1), (){});
-/*
-    shops.sort((a,b){
-       math.Point myPoint = math.Point(geolocation.latitude,geolocation.longitude);
-       return myPoint.distanceTo(math.Point(a.mapPoint.latitude,a.mapPoint.longitude)).floor() - myPoint.distanceTo(math.Point(b.mapPoint.latitude,b.mapPoint.longitude)).floor();});*/
-    return  geolocation.getNearestShop(shops);   shops.first;
+
+    return  geolocation.getNearestShop(shops);
   }
 
   Future <List<GoodsData>>getGoodsInCategory(int categoryId)async{

@@ -7,8 +7,6 @@ import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Buttons/CustomCheckBox.dart';
 import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
-
 import 'SelectShop.dart';
 
 class ChangeCity extends StatefulWidget {

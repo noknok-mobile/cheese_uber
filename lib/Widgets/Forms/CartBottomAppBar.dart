@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
@@ -83,7 +84,13 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                     Expanded(
                       child: Container(),
                     ),
-                    CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartPlaceOrder),onClick: ()=>{},)
+                    CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartPlaceOrder),onClick: ()=>{
+
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute( builder: (context) => SelectShop(selectedCity: sectedCity,)),)}),
+
+                    },)
 
                   ],
                 ),

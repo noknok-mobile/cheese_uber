@@ -1,4 +1,3 @@
-
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cheez/Events/Events.dart';
@@ -7,10 +6,9 @@ import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/CountButtonGroup.dart';
 import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
-import 'package:flutter_cheez/Widgets/Forms/PriceTextField.dart';
 import 'package:flutter_cheez/Widgets/Pages/DetailGoods.dart';
 import 'Forms.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
 class Goods extends StatelessWidget implements PreferredSizeWidget{
   Goods({Key key, this.data, this.height}) : super(key: key);
   final double height;

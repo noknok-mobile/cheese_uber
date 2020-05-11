@@ -1,16 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
-import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Forms/AddBonuses.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartBottomAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartGoods.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'package:flutter_cheez/Widgets/Forms/Goods.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 
 class CartPage extends StatefulWidget {

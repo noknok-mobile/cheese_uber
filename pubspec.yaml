@@ -27,7 +27,7 @@ dependencies:
   cached_network_image: ^2.0.0
   sprintf: ^4.0.2
   webview_flutter: ^0.3.19+8
-  flutter_svg: ^0.17.1
+  flutter_svg: ^0.17.2
   cupertino_icons: ^0.1.3
   event_bus: ^1.1.1
   yandex_mapkit: ^0.3.6

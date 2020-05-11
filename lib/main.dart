@@ -1,12 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
-
 import 'Events/Events.dart';
 import 'Resources/Constants.dart';
-import 'Widgets/Pages/GoodsPage.dart';
 import 'Widgets/Pages/HomePage.dart';
 import 'Widgets/Pages/SplashScreen.dart';
 

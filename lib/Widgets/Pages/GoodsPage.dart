@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
@@ -6,9 +5,7 @@ import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Forms/Goods.dart';
-import 'package:flutter_cheez/Widgets/Forms/GoodsTabBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class GoodsPage extends StatelessWidget {
   GoodsPage({Key key, this.categoryId,this.data}): super(key: key);
