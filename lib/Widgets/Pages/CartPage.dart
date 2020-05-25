@@ -10,6 +10,8 @@ import 'package:flutter_cheez/Widgets/Forms/CartGoods.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 
+import 'NewOrderPage.dart';
+
 class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
 
@@ -55,7 +57,7 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin{
         body:Center(child: FutureBuilder(
 
           future: Resources().getCart(),
-          builder: (context,AsyncSnapshot<Map<int,int>> projectSnap) {
+          builder: (context,AsyncSnapshot<Map<int,double>> projectSnap) {
             if(projectSnap.hasError){
               print('project snapshot data is: ${projectSnap.data}');
               return Container();
@@ -99,7 +101,16 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin{
 
                     child: BottomAppBar(
                         shape: const CircularNotchedRectangle(),
-                        child: CartBottomAppBar(height:widget.bottomMenuHeight,)
+                        child: CartBottomAppBar(height:widget.bottomMenuHeight,onBottomButtonClick: ()=>{
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                            return NewOrderPage();
+                            })
+                        )
+
+
+                        },)
                     ),
                   ),
                 ),

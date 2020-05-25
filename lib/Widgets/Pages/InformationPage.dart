@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
+import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';
@@ -13,6 +14,7 @@ class InformationPage extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
       backgroundColor: ColorConstants.background,
+      drawer: Drawer(child: LeftMenu()),
       appBar: NextPageAppBar(
           height: ParametersConstants.appBarHeight,
           title: TextConstants.infoHeader),
@@ -30,10 +32,10 @@ class InformationPage extends StatelessWidget {
                     FlatButton(
                       child: Row(
                         children: <Widget>[
-                          CustomText.black16px(
-                              TextConstants.informationHeader[index].item1),
-                          Expanded(child: Container(),),
-                          IconConstants.arrow_front,
+                         Expanded(flex:7, child: CustomText.black16px(
+                              TextConstants.informationHeader[index].item1,maxLines:1),),
+                          Expanded(flex:1,child: Container(alignment: Alignment.centerRight, child: IconConstants.arrowFront,),),
+
                         ],
                       ),
                       onPressed: () => { Navigator.push(
@@ -42,7 +44,7 @@ class InformationPage extends StatelessWidget {
                     ),
                     Container(
                       height: 1,
-                      color: ColorConstants.gray,
+                      color: ColorConstants.background,
                     ),
                   ],
                 ))

@@ -15,7 +15,8 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
   final Function onClick;
   final bool expanded ;
   final Widget child;
-  Decoration decoration;
+  bool enable  = true;
+  BoxDecoration decoration;
 
   CustomButton({Key key, this.width, this.height, this.onClick,this.child,this.decoration,this.expanded = false}) : super(key: key);
   CustomButton.coloredNoBorderLeft({Key key,Color color, this.width, this.height, this.onClick,this.child,this.expanded = false}){
@@ -52,7 +53,7 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
       color: color,
     );
   }
-   CustomButton.colored({Key key,Color color, this.width, this.height, this.onClick,this.child,this.expanded = false}){
+   CustomButton.colored({Key key,Color color,this.enable = true, this.width, this.height, this.onClick,this.child,this.expanded = false}){
     // this.expanded = expanded;
      decoration = BoxDecoration(
 
@@ -64,31 +65,33 @@ class CustomButton extends StatelessWidget implements PreferredSizeWidget{
        ) ,
        color: color,
      );
-
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
+
+    BoxDecoration decorationA =enable?decoration:decoration.copyWith(color:Colors.grey);
+
+
     return expanded?
       SizedBox(
           width: double.maxFinite, // set width to maxFinite
           child: Container(
-          decoration: decoration,
+          decoration: decorationA,
           child: FlatButton (
-
-            onPressed: ()=>onClick(),
+            padding: EdgeInsets.all(0),
+            onPressed: ()=>enable?onClick():null,
             child: child,
           ),
         ))
       :Container(
         width: width,
         height: height,
-        decoration: decoration,
+        decoration: decorationA,
         child: FlatButton (
-          onPressed: ()=>onClick(),
+
+          padding: EdgeInsets.all(0),
+          onPressed: ()=>enable?onClick():null,
           child: child,
         ));
   }

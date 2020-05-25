@@ -11,10 +11,10 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.0.5+6
+version: 0.0.7+8
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
 
@@ -30,15 +30,20 @@ dependencies:
   flutter_svg: ^0.17.2
   cupertino_icons: ^0.1.3
   event_bus: ^1.1.1
-  yandex_mapkit: ^0.3.6
+  yandex_mapkit: ^0.3.7
   location: ^2.5.3
   tuple: ^1.0.3
-
+  intl: ^0.16.1
+  geocoder: ^0.2.1
+  autocomplete_textfield: ^1.7.3
+  http: ^0.12.0
+  flutter_masked_text: ^0.8.0
+  shared_preferences: ^0.5.7+2
+  flutter_launcher_icons: ^0.7.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -51,6 +56,7 @@ flutter:
     - lib/assets/backgrounds/splash_screen.png
     - lib/assets/backgrounds/drawer.png
     - lib/assets/images/logo.png
+    - lib/assets/images/animated_logo.gif
     - lib/assets/icons/cheese.svg
     - lib/assets/icons/round-information-button.svg
     - lib/assets/icons/shopping-bag.svg
@@ -58,6 +64,21 @@ flutter:
     - lib/assets/icons/check_box.png
     - lib/assets/icons/map_pointer_shop.png
     - lib/assets/icons/map_pointer_home.png
+    - lib/assets/icons/order_call.svg
+    - lib/assets/icons/order_delivery.svg
+    - lib/assets/icons/order_done.svg
+    - lib/assets/icons/order_pay.svg
+    - lib/assets/icons/info_pay.svg
+    - lib/assets/icons/info_user.svg
+    - lib/assets/icons/info_time.svg
+    - lib/assets/icons/info_adres.svg
+    - lib/assets/icons/info_delivery.svg
+    - lib/assets/icons/toggle_off.svg
+    - lib/assets/icons/toggle_on.svg
+    - lib/assets/icons/address.png
+    - lib/assets/icons/arrow_right.svg
+    - lib/assets/icons/arrow_left.svg
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

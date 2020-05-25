@@ -4,6 +4,7 @@ import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
+import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/Goods.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 
@@ -11,26 +12,43 @@ class GoodsPage extends StatelessWidget {
   GoodsPage({Key key, this.categoryId,this.data}): super(key: key);
 
   final int categoryId;
+
   final List<CategoryData> data;
   final String title = TextConstants.goodsHeader;
+
+  int initialTab=0;
   @override
   Widget build(BuildContext context) {
     List<Tab> tabsTitles = List<Tab>();
     List<Widget> tabsContent = List<Widget>();
-    data.forEach(
-            (f)=>{
-                tabsTitles.add(Tab(child:Text( f.title))),
 
-                tabsContent.add(
+    var newTitle = Resources().getCategoryById(data.first.parentId);
+
+    data.forEach(
+            (f)=>
+            {
+              if(Resources()
+                  .getCategoryWithParent(f.id)
+                  .length == 0){
+                if(f.id == categoryId)
+                  initialTab = tabsTitles.length,
+                tabsTitles.add(Tab(child: Container(
+                    padding: const EdgeInsets.only(top: 25),
+                    child: CustomText.black12px(f.title)))),
+
+              tabsContent.add(
                 Center(
                   child: FutureBuilder(
                       future: Resources().getGoodsInCategory(f.id),
-                      builder: (context,AsyncSnapshot<List<GoodsData>> projectSnap) {
+                      builder: (context,
+                          AsyncSnapshot<List<GoodsData>> projectSnap) {
                         if (projectSnap.hasError) {
-                          print('project snapshot data is: ${projectSnap.data}');
+                          print(
+                              'project snapshot data is: ${projectSnap.data}');
                           return Container();
                         }
-                        if (projectSnap.connectionState != ConnectionState.done) {
+                        if (projectSnap.connectionState !=
+                            ConnectionState.done) {
                           return CircularProgressIndicator();
                         }
 
@@ -44,35 +62,42 @@ class GoodsPage extends StatelessWidget {
                               children: <Widget>[
 
                                 SizedBox(
-                                height: index == 0 ? ParametersConstants.paddingInFerstListElemetn:0
+                                    height: index == 0 ? ParametersConstants
+                                        .paddingInFerstListElemetn : 0
 
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 3,0, 3),
-                                  child: Goods(data: projectSnap.data[index],height: 155,),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0, 3, 0, 3),
+                                  child: Goods(data: projectSnap.data[index],
+                                    height: 155,),
                                 ),
                                 SizedBox(
-                                    height: projectSnap.data.length-1 == index  ? 80:0 ),
+                                    height: projectSnap.data.length - 1 == index
+                                        ? 80
+                                        : 0),
                               ],
                             );
                           },
                         );
                       }
                   ),
-            //child: Text('Hello World!'),
-            ),),
-
+                  //child: Text('Hello World!'),
+                ),),
+            }
 
     });
 
+
     return DefaultTabController(
-        length: data.length,
-        initialIndex:data.indexOf(data.firstWhere((t)=>t.id == categoryId)),
+
+        length: tabsTitles.length,
+        initialIndex:initialTab,
         child:  Scaffold(
             drawer: Drawer(child: LeftMenu()),
             appBar: NextPageAppBar(
               height: ParametersConstants.appBarHeight,
-              title: title,
+              title:   newTitle!=null?newTitle.title : title,
               bottom:  TabBar(
                 labelColor: ColorConstants.darkGray,
                 unselectedLabelColor: ColorConstants.gray,

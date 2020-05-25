@@ -5,6 +5,7 @@ import 'package:flutter_cheez/Resources/Constants.dart';
 class HomePageAppBar extends  StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;
+
   const HomePageAppBar({
     Key key,
     @required this.height,this.title

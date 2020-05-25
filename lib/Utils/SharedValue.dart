@@ -8,8 +8,11 @@ class SharedValue<T>{
     return _value;
   }
   set value(T val){
+    _value = val;
+    onChange.invoke(val);
+  }
+  SharedValue({T value}){
     _value = value;
-    onChange.invoke(value);
   }
   final CustomWeakEvent<T> onChange = CustomWeakEvent<T>();
 }

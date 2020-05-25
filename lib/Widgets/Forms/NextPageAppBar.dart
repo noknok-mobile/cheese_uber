@@ -7,21 +7,19 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;
   final PreferredSizeWidget bottom;
-  final bool needToBeReloaded;
+
   const NextPageAppBar(
-      {Key key,
-      @required this.height ,
-      this.title,
+      {Key key, this.height =  65,
+      this.title = "",
       this.bottom,
-      this.needToBeReloaded})
+      })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(color: ColorConstants.mainAppColor,
-            //borderRadius: BorderRadius.circular(ParametersConstants.largeImageBorderRadius),
-            // border: Border.all(color: ColorConstants.goodsBorder),
+
             boxShadow: [ParametersConstants.shadowDecoration]),
         child: Column(
           children: [
@@ -31,12 +29,13 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Container(
                   height: height,
                   child: Row(children: [
-                    IconButton(
-                      icon: IconConstants.arrow_back,
+                    title != "" ? IconButton(
+                      icon: IconConstants.arrowBack,
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                    ),
+                    ):Container(),
+                    Container(width: 10,),
                     Flexible(
                         flex: 1,
                         fit: FlexFit.tight,

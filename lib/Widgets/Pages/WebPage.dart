@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-import 'package:flutter_cheez/Resources/Constants.dart';import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';class WebPage extends StatelessWidget{
+import 'package:flutter_cheez/Resources/Constants.dart';import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
+import 'package:webview_flutter/webview_flutter.dart';class WebPage extends StatelessWidget{
   final String url;
   final String title;
   const WebPage({Key key,@required this.url, this.title}) : super(key: key);
@@ -10,6 +11,7 @@ import 'package:flutter_cheez/Resources/Constants.dart';import 'package:flutter_
 
   @override
   Widget build(BuildContext context) {
+    print("href "+url);
     // TODO: implement build
     return Scaffold(
       appBar: NextPageAppBar(height:ParametersConstants.appBarHeight,title: title,),
@@ -19,7 +21,7 @@ import 'package:flutter_cheez/Resources/Constants.dart';import 'package:flutter_
           // border: Border.all(color: ColorConstants.goodsBorder),
           boxShadow: [
             ParametersConstants.shadowDecoration
-          ]), child: WebPage(url: url)),);
+          ]), child: WebView(initialUrl: url,javascriptMode:JavascriptMode.unrestricted ,)),);
   }
 
 

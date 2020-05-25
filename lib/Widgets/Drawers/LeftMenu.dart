@@ -4,12 +4,19 @@ import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/Logo.dart';
+import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/ChangeCity.dart';
 import 'package:flutter_cheez/Widgets/Pages/InformationPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/OrdersPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
+import 'package:flutter_cheez/Widgets/Pages/UserInfo.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LeftMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double height =MediaQuery.of(context).size.height/3;
     final TextStyle textStyle = Theme.of(context).textTheme.display1;
     return Container(
       color: ColorConstants.mainAppColor,
@@ -20,15 +27,13 @@ class LeftMenu extends StatelessWidget {
         // padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
-            height:300,
+            height: height,
             padding:  const EdgeInsets.all( 0),
-            child: DrawerHeader(
-
-              padding: const EdgeInsets.all( 0),
+            child: SafeArea(
               child:  Stack(
                 children: <Widget>[
                   Container(
-                      height:100,
+                      height:height/2,
                       decoration: BoxDecoration(
                           image: DecorationImage(
                           fit: BoxFit.fitWidth,
@@ -36,12 +41,9 @@ class LeftMenu extends StatelessWidget {
                             image:AssetsConstants.drawerBackground,
                           ))
                     ),
-                  Logo(height: 200,),
+                  Logo(height: height/1.5,),
                 ],
               ),
-              decoration: BoxDecoration(
-                  // color: Colors.blue,
-                  ),
             ),
           ),
           Container(
@@ -53,9 +55,11 @@ class LeftMenu extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
             child: GestureDetector(
-                child: CustomText.red14pxUnderline(TextConstants.showProfile),
+                child:  CustomText.red14pxUnderline(TextConstants.showProfile),
                 onTap: () => {
-                      //  Navigator.of(context).pop(PageRoute());
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute( builder: (context) => UserInfo()))
                     }),
           ),
           Divider(
@@ -65,10 +69,11 @@ class LeftMenu extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
             leading: AssetsConstants.iconCheese,
-            title: CustomText.black20px(TextConstants.categoryHeader),
+            title: Align(alignment: Alignment(-1.3, 0), child:CustomText.black20px(TextConstants.categoryHeader)),
             onTap: () {
-              // Update the state of the app.
-              // ...
+              Navigator.push(
+                  context,
+                  MaterialPageRoute( builder: (context) => CategoryPage()));
             },
           ),
           Divider(
@@ -78,10 +83,11 @@ class LeftMenu extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
             leading: AssetsConstants.iconShoppingBasket,
-            title: CustomText.black20px(TextConstants.cartHeader),
+            title: Align(alignment: Alignment(-1.3, 0), child: CustomText.black20px(TextConstants.cartHeader)),
             onTap: () {
-              // Update the state of the app.
-              // ...
+              Navigator.push(
+                  context,
+                  MaterialPageRoute( builder: (context) => CartPage()));
             },
           ),
           Divider(
@@ -91,10 +97,11 @@ class LeftMenu extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
             leading: AssetsConstants.iconShoppingBag,
-            title: CustomText.black20px(TextConstants.orderHeader),
+            title: Align(alignment: Alignment(-1.3, 0), child: CustomText.black20px(TextConstants.orderHeader)),
             onTap: () {
-              // Update the state of the app.
-              // ...
+              Navigator.push(
+              context,
+              MaterialPageRoute( builder: (context) => OrdersPage()));
             },
           ),
           Divider(
@@ -104,7 +111,7 @@ class LeftMenu extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
             leading: AssetsConstants.iconRoundInfoBtn,
-            title: CustomText.black20px(TextConstants.infoHeader),
+            title: Align(alignment: Alignment(-1.3, 0), child: CustomText.black20px(TextConstants.infoHeader)),
             onTap: () {
               Navigator.push(
                   context,
@@ -121,25 +128,48 @@ class LeftMenu extends StatelessWidget {
             child: Container(),
           ),
           Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+
               alignment: Alignment.bottomLeft,
-              child: Row(
-                children: <Widget>[
-                  CustomText.black16px(TextConstants.cityTitle),
-                  CustomText.red14pxUnderline(
-                      Resources().getShopWithId(Resources().userProfile.selectedShop).city),
-                ],
+              child: GestureDetector(
+                onTap: ()=>Navigator.push(
+                    context,
+                    MaterialPageRoute( builder: (context) => ChangeCity())),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CustomText.black16px(TextConstants.cityTitle),
+                    CustomText.red14pxUnderline(
+
+                        Resources().getCityWithId(Resources().getShopWithId(Resources().userProfile.selectedShop).city).name,
+                      align: TextAlign.left,
+                    ),
+                  ],
+                ),
               )),
           Container(
-              padding: const EdgeInsets.all(20),
+
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               alignment: Alignment.bottomLeft,
-              child: Row(
-                children: <Widget>[
-                  CustomText.black16px(TextConstants.shopTitle),
-                  CustomText.red14pxUnderline(
-                      Resources().getShopWithId(Resources().userProfile.selectedShop).address),
-                ],
+              child: GestureDetector(
+                onTap: ()=>Navigator.push(
+                    context,
+                    MaterialPageRoute( builder: (context) => SelectShop(selectedCity: Resources().userProfile.selectedCity,))),
+                child: Flex(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  direction: Axis.horizontal,
+                  children: <Widget>[
+                    CustomText.black16px(TextConstants.shopTitle),
+
+                    Flexible(
+                      child: CustomText.red14pxUnderline(
+                          Resources().getShopWithId(Resources().userProfile.selectedShop).address),
+                    ),
+                  ],
+                ),
               )),
+          Container(height: 25,)
+         // Expanded(child: Container(),),
         ],
       ),
     );

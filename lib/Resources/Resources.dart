@@ -1,9 +1,12 @@
 
-import 'package:event_bus/event_bus.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Utils/Geolocation.dart';
+import 'package:flutter_cheez/Utils/NetworkUtil.dart';
+import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import "package:sqflite/sqflite.dart";
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -52,6 +55,7 @@ class DBProvider {
 }
 class Resources {
   static final Resources _instance = Resources._internal();
+  String networkToken = "";
   factory Resources() {
     return _instance;
   }
@@ -59,48 +63,24 @@ class Resources {
 
   final Cart _cart = Cart();
   Cart get cart => _cart;
-  final UserProfile _userProfile = UserProfile();
+  UserProfile _userProfile = UserProfile();
   UserProfile get userProfile => _userProfile;
 
 
   final ListOfGoodsData _allGoods = ListOfGoodsData();
-
+  List<OrderData> orders = List<OrderData>();
   final List<CategoryData> categories = List<CategoryData>();
 
   final List<ShopInfo> _allShops =List<ShopInfo>();
 
   List<ShopInfo> get getAllShops =>_allShops;
-
-  List<String> get getAllCity{
-    return getAllShops.map((x)=>x.city).toSet().toList();
+  final List<CityInfo> _allCity = List<CityInfo>();
+  List<CityInfo> get getAllCity{
+    return _allCity;
   }
 
   Resources._internal() {
-    for(int i=0;i<50;i++) {
-      _allGoods.add(GoodsData(
-          id: i,
-          imageUrl: "https://yandex.ru/images/_crpd/Q1D5n2B99/ce0015_uy/72m6rPQz_7LlbwH6bW5KMM2w6e8WlIcti2VBqik_8GH4V9QeY9xV3MJcbQp5s_tmqqxrTz_FaDAemhQBRpPCo_pssoSJC-_u9HJI8iyrKjHdyJS3P9HHWLoUDJpUY-AgwDKBQo_VVZ3zHTxL0b_zftQ",
-          name: "Это сыр №$i он очень вкусный . сырный сыр лучше не сырного сыра",
-          info: "- белки до 25;\n- жиры до 60;\n- углеводы до 3,5.\n \nЯвляется высоко калорийным продуктом калорийностью, и в зависимости от содержания жира и белка составляет от 250 до 400 ккал на 100 грамм сыра.",
-          categories: {i%5},
-          price: i*100.0 + i%2*50.0,
-          units: i%4 == 0?TextConstants.wUnits:TextConstants.units
-      ));
-    }
-    ShopInfo shop = ShopInfo();
-    getAllShops.add(shop);
-    shop = ShopInfo(shopId: "2",city: "Адлер",mapPoint: Point(latitude:30,longitude:-58));
-    getAllShops.add(shop);
-    shop = ShopInfo(shopId: "3",city: "Краснодар",address: "Горького 123",mapPoint:Point(latitude:45.035470, longitude:38.975313));
-    getAllShops.add(shop);
-    shop = ShopInfo(shopId: "4",city: "Краснодар",address: "ул Горького 233",mapPoint:Point(latitude:45.03548,longitude:38.976));
-    getAllShops.add(shop);
-    shop = ShopInfo(shopId: "5",city: "Сочи");
-    getAllShops.add(shop);
 
-    for(int i=0;i<5;i++) {
-      categories.add(CategoryData(id: i,imageUrl:"https://avatars.mds.yandex.net/get-pdb/25978/37a535b5-ccb6-4a91-9d9e-b32690652b7c/s1200",title: "Вкусные сыры очень не плохи $i" ));
-    }
   }
 
 
@@ -108,42 +88,188 @@ class Resources {
   void loadAllData() async{
     print("start load");
     try{
-      await geolocation.init();
+      geolocation.init();
+
     } catch(e){
 
 
     }
+    final SharedPreferences prefs = await _prefs;
 
+    var city =  prefs.getInt("city");
+    var shop =  prefs.getInt("shop");
 
-
-  //  await LocationPermissions().checkServiceStatus();
-    await Future.delayed(const Duration(milliseconds: 5000), (){});
+    categories.addAll(await getCategoryData());
+    _allGoods.addAll(await getProductData());
+    _allShops.addAll(await getShopData());
+    _allCity.addAll(await getCityData());
+    if(city != null && shop != null) {
+      _userProfile.selectedCity = Resources().getCityWithId(city);
+      _userProfile.selectedShop = shop;
+    }
     eventBus.fire(AllUpToDate());
-    print("end load");
   }
 
-  ShopInfo getShopWithId(String id){
+
+  //#region Network
+  Future <String>editUserData()async{
+    var data = await NetworkUtil().post("editProfile",body:userProfile.toJson());
+    print("editUserData "+data);
+    return data;
+  }
+  Future <String>editAddrese(UserAddress address)async{
+    print("editAddrese 1 "+address.toJson().toString());
+    if(!userProfile.userAddress.contains(address)){
+      userProfile.userAddress.add(address);
+    }
+    if(address.userID == 0){
+      address.userID = userProfile.id;
+
+    }
+    var data = await NetworkUtil().post("editAddrese",headers: {"Token":networkToken},body:jsonEncode(address.toJson())) ;
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    address.id = int.tryParse(data["ID"]);
+    return data.toString();
+  }
+  Future <String>sendBasketData(Cart cart)async{
+    var data = await NetworkUtil().post("basket",headers: {"Token":networkToken},body:jsonEncode(cart.toJson())) ;
+
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    return "OK";
+  }
+  Future <String>getPayment(int orderId)async{
+    var data = await NetworkUtil().post("payment",headers: {"Token":networkToken},body:jsonEncode({"order":"$orderId"})) ;
+
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    return data["href"].first;
+  }
+  Future <String>sendOrderData(Cart cart, UserAddress address,int delivery_id,int payment_id,int usedbonucePoints )async{
+    print("sendOrderData");
+    var cartJson = cart.toJson();
+    var addressJson = address.toJson();
+    cartJson["address"] = addressJson;
+    cartJson["delivery"] = delivery_id;
+    cartJson["payment"] = payment_id;
+    cartJson["usedBonuce"] = usedbonucePoints;
+    cartJson["Region"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).priceId;
+    var data = await NetworkUtil().post("order",headers: {"Token":networkToken},body: jsonEncode(cartJson)) ;
+
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    return "OK";
+  }
+  Future <String>getOrdersData()async{
+    var data = await NetworkUtil().post("getorders",headers: {"Token":networkToken}) ;
+    orders  = List<OrderData>.from((data["orders"] != null?(data["orders"] as List):List<OrderData>()).map((x) =>OrderData.fromJson(x)));
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    return "OK";
+  }
+  Future <List<CategoryData>>getCategoryData()async{
+    return List<CategoryData>.from(((await NetworkUtil().post("category")) as List).map((x) =>CategoryData.fromJson(x)));
+  }
+  Future <List<GoodsData>>getProductData()async{
+    return List<GoodsData>.from(((await NetworkUtil().post("product")) as List).map((x) =>GoodsData.fromJson(x)));
+  }
+  Future <List<ShopInfo>>getShopData()async{
+    return List<ShopInfo>.from(((await NetworkUtil().post("storage")) as List).map((x) =>ShopInfo.fromJson(x)));
+  }
+  Future <List<CityInfo>>getCityData()async{
+    return List<CityInfo>.from(((await NetworkUtil().post("sity")) as List).map((x) =>CityInfo.fromJson(x)));
+  }
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Future <String> login()async{
+    final SharedPreferences prefs = await _prefs;
+    var email = prefs.getString("email");
+    var pass = prefs.getString("pass");
+    if(email == null || pass == null){
+
+      return "NO";
+    }
+    return  await loginWithData(email, pass);
+  }
+  Future <String> registerWithData(String login,String passHash,String name, String phone)async{
+    var data = await NetworkUtil().post("register",body:jsonEncode({"phone":phone,"login":login,"email":login,"pass":passHash,"platform":"android","name":name,}));
+    networkToken = data['token'];
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    await getProfile(networkToken);
+    return "OK";
+  }
+  Future <String> getProfile(String token)async{
+    print('getProfile');
+    var data = await NetworkUtil().post("profile",headers: {"Token":token}) as Map;
+    _userProfile =  UserProfile.fromJson(data);
+
+    final SharedPreferences prefs = await _prefs;
+
+    var city =  prefs.getInt("city");
+    var shop=  prefs.getInt("shop");
+    if(city != null && shop != null) {
+      _userProfile.selectedCity = Resources().getCityWithId(city);
+
+      _userProfile.selectedShop = shop;
+    }
+    print(data.toString());
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    return "OK";
+  }
+  Future <String> loginWithData(String login,String passHash)async{
+    print('loginWithData');
+    var data = await NetworkUtil().post("signin",body:jsonEncode({"login":login,"pass":passHash,"platform":"android"})) as Map;
+    networkToken = data['token'];
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+    await getProfile(networkToken);
+
+    return "OK";
+  }
+  Future <List<OrderData>>getFinishedOrders()async{
+    await  getOrdersData();
+    return orders.where((x)=>x.status == "F").toList();
+  }
+  Future <List<OrderData>>getActiveOrders()async{
+    await getOrdersData();
+    return orders.where((x)=>x.status != "F").toList();
+  }
+  Future <List<GoodsData>>getGoodsInCategory(int categoryId)async{
+    await Future.delayed(const Duration(milliseconds: 1), (){});
+    return _allGoods.getList().where((x)=>(x.categories==categoryId || categoryId == -1) && x.getPrice().price!=0).toList();
+  }
+  Future <bool> checkMail(String mail)async{
+    await NetworkUtil().post("checkmail");
+    return false;
+  }
+  //#endregion
+
+  //#region AppFunction
+  ShopInfo getShopWithId(int id){
     return getAllShops.firstWhere((x)=>x.shopId == id);
   }
   GoodsData getGodById(int id){
     return _allGoods.get(id);
   }
+  CityInfo getCityWithId(int id){
+    print("id "+id.toString());
+    return _allCity.firstWhere((x)=>x.id == id);
+  }
   Future <ShopInfo> getNearestShop()async{
-    var shops = getAllShops;
     await Future.delayed(const Duration(milliseconds: 1), (){});
-
+    var shops = getAllShops;
+    print("shops "+shops.length.toString()+" " +geolocation.getNearestShop(shops).mapPoint.toString());
     return  geolocation.getNearestShop(shops);
   }
 
-  Future <List<GoodsData>>getGoodsInCategory(int categoryId)async{
-    await Future.delayed(const Duration(milliseconds: 1), (){});
-    return _allGoods.getList().where((x)=>x.categories.contains(categoryId) || categoryId == -1).toList();
-  }
+
   Future <List<GoodsData>>getGoods()async{
     await Future.delayed(const Duration(milliseconds: 1), (){});
     return _allGoods.getList();
   }
-  Future <Map<int,int>>getCart()async{
+  Future <Map<int,double>>getCart()async{
     await Future.delayed(const Duration(milliseconds: 1), (){});
     return _cart.cart;
   }
@@ -151,26 +277,39 @@ class Resources {
     await Future.delayed(const Duration(milliseconds: 1), (){});
     return categories;
   }
-  Future <CategoryData>getCategoryById(int id)async{
-    await Future.delayed(const Duration(milliseconds: 1), (){});
-    return categories.firstWhere((x)=>x.id == id);
+  List<CategoryData>getCategoryWithParent(int parentId){
+
+    return categories.where((x)=>x.parentId == parentId).toList();
+  }
+  CategoryData getCategoryById(int id){
+
+    return categories.firstWhere((x)=>x.id == id, orElse: () => null);
   }
 
-  Future <String> selectShop(String shopId)async{
+  Future <int> selectShop(int shopId)async{
     await Future.delayed(const Duration(milliseconds: 1), (){});
     userProfile.selectedShop = shopId;
     eventBus.fire(ShopSelected(shopId));
+    final SharedPreferences prefs = await _prefs;
+    prefs.setInt("shop", shopId);
     return shopId;
   }
-  Future <String> selectCity(String city)async{
-    await Future.delayed(const Duration(milliseconds: 1), (){});
+  Future<int> selectCity(int city) async{
+
+    var newCity = getAllShops.where((x)=>x.city == city);
+
+    userProfile.selectedCity = getCityWithId(newCity.first.city);
+    userProfile.selectedShop = getAllShops.firstWhere((x)=>x.city == city).shopId;
+    print("userProfile new shop " +  userProfile.selectedShop.toString());
     if(geolocation.locationData == null || city != geolocation.getNearestShop(getAllShops).city){
-      geolocation.setCenterPoint(getAllShops.where((x)=>x.city == city));
+      geolocation.setCenterPoint(newCity);
     }
-    eventBus.fire(CitySelected(city));
+    final SharedPreferences prefs = await _prefs;
+    prefs.setInt("city", city);
+    eventBus.fire(CitySelected(userProfile.selectedCity));
     return city;
   }
-
+//#endregion
 }
 
 

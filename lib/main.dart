@@ -40,10 +40,9 @@ class _RootPageState extends State<MyApp>{
     super.initState();
 
     eventBus.on<AllUpToDate>().listen((event) {
-
       setState(() {
         loaded = true;
-
+        print("AllUpToDate");
       });
     });
     Resources().loadAllData();
@@ -101,8 +100,6 @@ class _RootPageState extends State<MyApp>{
             opacity: loaded?1:0,
             duration: const Duration(milliseconds: 1000),
             child:  AbsorbPointer(absorbing: loaded?false:true,child: HomePage()),
-
-
         ),
 
       ],

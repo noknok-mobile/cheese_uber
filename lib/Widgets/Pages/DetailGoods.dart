@@ -15,43 +15,45 @@ class DetailGoods extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
+    print("detailImageUrl "+goodsData.detailImageUrl);
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Align(
               alignment: Alignment.topCenter,
-              child: FutureBuilder(
-                future: Resources().getCategoryById(
-                    goodsData.categories.firstWhere((x) => x != null)),
-                builder: (BuildContext buildContext, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    return CachedImage.imageForCategory(
-                      url: snapshot.data.imageUrl,
-                    );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
-              )),
+              child:
+                     CachedImage.imageForCategory(
+                      url: Resources().getCategoryById(
+          goodsData.categories).imageUrl,
+                       child: Container(decoration: BoxDecoration(  gradient: LinearGradient(
+                           begin: FractionalOffset.topCenter,
+                           end: FractionalOffset.bottomCenter,
+                           colors: [
+                             Colors.black.withOpacity(0.0),
+                             Colors.black.withOpacity(0.6),
+                           ],
+                           stops: [
+                             0.0,
+                             1.0
+                           ]),),),
+                    )),
+
+
           SafeArea(
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+                  padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
                   child: Row(children: <Widget>[
                     //SizedBox(width: 20,height: 0,),
-                    Transform.rotate(
-                      angle: math.pi / 2,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.chevron_right,
-                          color: ColorConstants.mainAppColor,
-                          size: 30,
-                        ),
+
+                       IconButton(
+                         padding: EdgeInsets.all(0),
+                        icon: IconConstants.arrowDown,
                         onPressed: () => {Navigator.of(context).pop()},
                       ),
-                    ),
-                    //SizedBox(width: 30,height: 0,),
+
+                    SizedBox(width: 30,height: 0,),
                     CustomText.white24px(TextConstants.detailsHeader),
                   ]),
                 ),
@@ -61,6 +63,7 @@ class DetailGoods extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
+
                       color: ColorConstants.mainAppColor,
                       borderRadius: BorderRadius.circular(
                           ParametersConstants.largeImageBorderRadius),
@@ -82,7 +85,7 @@ class DetailGoods extends StatelessWidget {
                                   const EdgeInsets.fromLTRB(0, 0, 20, 20.0),
                               child: Center(
                                   child: CachedImage.imageForShopList(
-                                url: goodsData.imageUrl,
+                                url: goodsData.detailImageUrl,
                                 height: 110,
                               )),
                             ),
@@ -104,8 +107,12 @@ class DetailGoods extends StatelessWidget {
                             )
                           ],
                         ),
+                        Container(
+                          height: 13,
+
+                        ),
                         Expanded(
-                          child: CustomText.black16px(goodsData.info),
+                          child: CustomText.black16px(goodsData.detailText,align: TextAlign.left,),
                         ),
 
                       ],

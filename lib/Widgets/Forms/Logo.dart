@@ -22,10 +22,11 @@ class Logo extends StatelessWidget implements PreferredSizeWidget {
                 color: ColorConstants.red,
                 border: Border(
                     top: BorderSide(width: 1.5),
-                    bottom: BorderSide(width: 1.5))),
+                    bottom: BorderSide(width: 1.5))
+            ),
           ),
         ),
-        Center(child: Image(image: AssetsConstants.logo,height: height,)),
+        Center(child: Image(image:AssetsConstants.logo,height: height,)),
       ],
     );
   }

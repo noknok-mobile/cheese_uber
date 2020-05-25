@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
             // colorFilter: ColorFilter.mode(Colors.blue, BlendMode.colorBurn)
           ),
         ),
-        child: Center(child: Logo(height: query.size.width,)));
+    );
   }
 }
 

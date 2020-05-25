@@ -51,20 +51,18 @@ class _DetailGoodsBottomAppBarBottomAppBar extends State<DetailGoodsBottomAppBar
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     CustomText.black14px("${TextConstants.cartResultPrice}"),
-
-                    AutoUpdatingWidget<CartUpdated>(child:(context,e)=> CustomText.red24px("${ Resources().cart.getCount(widget.goodItem.id) * widget.goodItem.price } ${TextConstants.pricePostfix}")),
+                    AutoUpdatingWidget<CartUpdated>(child:(context,e)=> CustomText.red24px("${ Resources().cart.getCount(widget.goodItem.id) * (widget.goodItem.getPrice().price+0.4).round() } ${TextConstants.pricePostfix}")),
                   ],
                 ),
                 Flexible(
                   child:Container(),
-
                 ),
                 Align(
-
                   alignment:Alignment.topCenter,
                   child: CountButtonGroup(
-                    getText: (){return "${widget.goodItem.units.contains(TextConstants.units) ? Resources().cart.getCount(widget.goodItem.id): Resources().cart.getCount(widget.goodItem.id)*100} ${widget.goodItem.units}";},
-                    setCount: (int count)=>{  Resources().cart.setCount(widget.goodItem.id,widget.goodItem.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
+                    step: widget.goodItem.units == "шт"?1:0.25,
+                    getText: (){return "${widget.goodItem.units == "шт"?Resources().cart.getCount(widget.goodItem.id).toInt():Resources().cart.getCount(widget.goodItem.id).toStringAsFixed(2)} ${widget.goodItem.units}";},
+                   setCount: (double count)=>{  Resources().cart.setCount(widget.goodItem.id,count)},
                     getCount: (){ return Resources().cart.getCount(widget.goodItem.id);},
                   )
                 ),

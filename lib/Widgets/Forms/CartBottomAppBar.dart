@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
@@ -9,8 +8,8 @@ import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 
 class CartBottomAppBar extends StatefulWidget implements PreferredSizeWidget {
   double height;
-
-  CartBottomAppBar({@required this.height}):super();
+  final Function onBottomButtonClick;
+  CartBottomAppBar({@required this.height, this.onBottomButtonClick}):super();
 
   @override
   State<StatefulWidget> createState() => _CartBottomAppBar();
@@ -64,7 +63,6 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
             ),
             Flexible(
               child:Container(),
-
             ),
             Align(
               alignment:Alignment.bottomCenter,
@@ -85,11 +83,7 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                       child: Container(),
                     ),
                     CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartPlaceOrder),onClick: ()=>{
-
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute( builder: (context) => SelectShop(selectedCity: sectedCity,)),)}),
-
+                        widget.onBottomButtonClick()
                     },)
 
                   ],

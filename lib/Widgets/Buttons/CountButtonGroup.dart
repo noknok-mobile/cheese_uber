@@ -9,8 +9,8 @@ class CountButtonGroup extends StatefulWidget implements PreferredSizeWidget{
   final Function getText;
   final Function getCount;
   final Function setCount;
-
-  const CountButtonGroup({Key key, this.getText, this.setCount,this.getCount}) : super(key: key);
+  final double step;
+  const CountButtonGroup({Key key,this.step = 1, this.getText, this.setCount,this.getCount}) : super(key: key);
 
   @override
   State<StatefulWidget> createState()=>_CountButtonGroupState();
@@ -111,7 +111,7 @@ class _CountButtonGroupState extends State<CountButtonGroup> with TickerProvider
                   width: 36,
                   height: 36,
                   color: ColorConstants.gray,
-                  onClick: () => setState(()=>{widget.setCount(widget.getCount()-1),_updateAnimation()}),
+                  onClick: () => setState(()=>{widget.setCount(widget.getCount()-widget.step),_updateAnimation()}),
                       child: Text("-",
                           textAlign: TextAlign.center,
 
@@ -159,7 +159,7 @@ class _CountButtonGroupState extends State<CountButtonGroup> with TickerProvider
               width: 36,
               height: 36,
               color: ColorConstants.red,
-              onClick: () => setState(()=>{widget.setCount(widget.getCount()+1),_updateAnimation()}),
+              onClick: () => setState(()=>{widget.setCount(widget.getCount()+widget.step),_updateAnimation()}),
               child: Text("+",
                   textAlign: TextAlign.center,
                   style: Theme.of(context)

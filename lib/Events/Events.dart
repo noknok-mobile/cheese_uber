@@ -1,6 +1,7 @@
 
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
+import 'package:flutter_cheez/Resources/Resources.dart';
 
 EventBus eventBus = EventBus();
 
@@ -9,6 +10,7 @@ class CartUpdated
   CartUpdated({this.cart});
   final Cart cart;
 }
+
 class GoodInCartUpdated
 {
   GoodInCartUpdated({ this.id,this.count = 0});
@@ -32,11 +34,11 @@ class GoodInCartSet{
   GoodInCartSet({ this.id,this.count = 1});
 }
 class CitySelected{
-  final String city;
+  final CityInfo city;
   CitySelected(this.city);
 }
 class ShopSelected{
-  final String shopId;
+  final int shopId;
   ShopSelected(this.shopId);
 }
 class AllUpToDate{

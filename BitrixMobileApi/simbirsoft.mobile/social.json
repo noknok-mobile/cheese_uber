@@ -1,0 +1,27 @@
+{
+  "vkontakte": {
+    "id": "vkontakte_appid",
+    "secret": "vkontakte_appsecret",
+    "default_id": "6325387",
+    "default_secret": "FHUWOC9Rh7ir9NZANZAb"
+  },
+  "facebook": {
+      "id": "facebook_appid",
+      "secret": "facebook_appsecret",
+      "default_id": "1472487949530701",
+      "default_secret": "6f83b1254c14a6764de7cd2c7b75645c"
+  },
+  "googleplus": {
+    "id": "google_appid",
+    "secret": "google_appsecret",
+    "default_id": "794761481622-h1ca5rk6v45iue3q324dlkrl6p9c789t.apps.googleusercontent.com",
+    "default_secret": "zErgELhSLsBbrtilM13qZcD1"
+  },
+  "odnoklassniki": {
+    "id": "ok_appid",
+    "secret": "ok_appsecret",
+    "default_id": "1261080064",
+    "public_key": "CBAPILCMEBABABABA",
+    "default_secret": "3D86CCBBAAEEA6713D5038BE"
+  }
+}

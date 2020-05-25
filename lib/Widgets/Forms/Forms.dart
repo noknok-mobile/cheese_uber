@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
+import 'package:flutter_cheez/Utils/NetworkUtil.dart';
 
 class Label extends StatelessWidget{
   @override
@@ -22,7 +23,7 @@ class PriceText extends StatelessWidget {
   Widget build(BuildContext context) {
     return  RichText(
       text: TextSpan(
-        text: "${goodsData.price.toInt().toString()} р \n",
+        text: "${(goodsData.getPrice().price + 0.4).round().toString()} р \n",
         style: Theme.of(context).textTheme.subtitle,
 
         children: <TextSpan>[
@@ -39,28 +40,34 @@ class PriceText extends StatelessWidget {
 }
 class CustomText extends StatelessWidget {
   final TextStyle style;
+  final TextAlign align;
   final String content;
-
-  const CustomText(this.content,{Key key, this.style}) : super(key: key);
-  const CustomText.white12px(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w400)}) : super(key: key);
-  const CustomText.black14px(this.content,{Key key, this.style = const TextStyle(fontSize: 14,color:ColorConstants.black,fontWeight: FontWeight.w400)}) : super(key: key);
-  const CustomText.black16px(this.content,{Key key, this.style = const TextStyle(fontSize: 16,color:ColorConstants.black,fontWeight: FontWeight.w400)}) : super(key: key);
-  const CustomText.black18px(this.content,{Key key, this.style = const TextStyle(fontSize: 18,color:ColorConstants.black,fontWeight: FontWeight.w400)}) : super(key: key);
-  const CustomText.black20px(this.content,{Key key, this.style = const TextStyle(fontSize: 20,color:ColorConstants.black,fontWeight: FontWeight.w400)}) : super(key: key);
-  const CustomText.black24px(this.content,{Key key, this.style = const TextStyle(fontSize: 24,color:ColorConstants.black,fontWeight: FontWeight.w500)}) : super(key: key);
-  const CustomText.black18pxBold(this.content,{Key key, this.style = const TextStyle(fontSize: 18,color:ColorConstants.black,fontWeight: FontWeight.w800)}) : super(key: key);
-  const CustomText.red14pxUnderline(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.red,fontWeight: FontWeight.w500,decoration:  TextDecoration.underline)}) : super(key: key);
-  const CustomText.red24px(this.content,{Key key,this.style = const TextStyle(fontSize: 24,color:ColorConstants.red,fontWeight: FontWeight.w800)}) : super(key: key);
-
-  const CustomText.white24px(this.content,{Key key,this.style = const TextStyle(fontSize: 24,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w500)}) : super(key: key);
+  final int maxLines ;
+  const CustomText(this.content,{Key key, this.style,this.align = TextAlign.left, this.maxLines = 1}) : super(key: key);
+  const CustomText.white12px(this.content,{Key key,this.style = const TextStyle(fontSize: 12,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines = 10}) : super(key: key);
+  const CustomText.gray12px(this.content,{Key key,this.style = const TextStyle(fontSize: 12,color:ColorConstants.gray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.gray14px(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.gray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.gray16px(this.content,{Key key,this.style = const TextStyle(fontSize: 16,color:ColorConstants.gray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black12px(this.content,{Key key, this.style = const TextStyle(fontSize: 12,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black14px(this.content,{Key key, this.style = const TextStyle(fontSize: 14,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black16px(this.content,{Key key, this.style = const TextStyle(fontSize: 16,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black18px(this.content,{Key key, this.style = const TextStyle(fontSize: 18,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black20px(this.content,{Key key, this.style = const TextStyle(fontSize: 20,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black24px(this.content,{Key key, this.style = const TextStyle(fontSize: 24,color:ColorConstants.black,fontWeight: FontWeight.w500),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black18pxBold(this.content,{Key key, this.style = const TextStyle(fontSize: 18,color:ColorConstants.black,fontWeight: FontWeight.w800),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black20pxBold(this.content,{Key key, this.style = const TextStyle(fontSize: 20,color:ColorConstants.black,fontWeight: FontWeight.w800),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.red14pxUnderline(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.red,fontWeight: FontWeight.w400,decoration:  TextDecoration.underline),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.red24px(this.content,{Key key,this.style = const TextStyle(fontSize: 24,color:ColorConstants.red,fontWeight: FontWeight.w800),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.red14px(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.red,fontWeight: FontWeight.w800),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.white24px(this.content,{Key key,this.style = const TextStyle(fontSize: 24,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(content,style:style,
       softWrap: true,
-      maxLines: 10,
+      maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.left,);
+      textAlign: align,);
   }
 }
 
@@ -95,7 +102,7 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return CachedNetworkImage(
-      imageUrl:url,
+      imageUrl: url.isEmpty?NetworkUtil.defauilPicture:url,
       imageBuilder: (context, imageProvider) => Container(
 
           width: width,
@@ -103,10 +110,11 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
           decoration: BoxDecoration(
 
             borderRadius: BorderRadius.circular(radius),
-            color:ColorConstants.gray,
+            color:ColorConstants.mainAppColor,
             image: DecorationImage(
               image: imageProvider,
               fit: BoxFit.cover,
+
               // colorFilter: ColorFilter.mode(Colors.blue, BlendMode.colorBurn)
             ),
 
@@ -115,7 +123,21 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
           child:child
       ),
       placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(Icons.error),
+      errorWidget: (context, url, error) => Container(
+
+          width: width,
+          height: height,
+
+          decoration: BoxDecoration(
+
+            borderRadius: BorderRadius.circular(radius),
+            color:ColorConstants.mainAppColor,
+
+
+
+          ),
+          child:child
+      ),
     );
   }
 

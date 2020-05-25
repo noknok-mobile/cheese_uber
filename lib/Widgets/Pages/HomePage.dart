@@ -1,15 +1,46 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
+import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/ChangeCity.dart';
+import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
 
 class HomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    if(Resources().userProfile.selectedShop.isEmpty){
-      return ChangeCity();
-    } else{
-      return CategoryPage();
-    }
+    return      FutureBuilder(
+
+      future: Resources().login(),
+      builder: (context,AsyncSnapshot<String> projectSnap) {
+      if (projectSnap.hasError) {
+        print('project snapshot data is: ${projectSnap.data}');
+        return Container();
+      }
+      if (projectSnap.connectionState != ConnectionState.done) {
+        return CircularProgressIndicator();
+      }
+      if(projectSnap.data !="OK"){
+
+        return  LoginPage();//
+      } else{
+        if(Resources().userProfile.selectedShop!=0)
+          return CategoryPage();
+        else
+          return ChangeCity();
+      }
+      return AutoUpdatingWidget<AllUpToDate>(child: (context,data){
+
+
+
+          return Container();
+
+
+      },);
+
+    });
+
+
   }
 }
