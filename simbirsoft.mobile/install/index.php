@@ -36,8 +36,6 @@ class simbirsoft_mobile extends CModule {
      * Устанавливаем модуль
      */
     public function DoInstall() {
-		\Bitrix\Main\RegisterModuleDependences("sale", "OnSaleStatusOrder", $this->MODULE_ID, 'Simbirsoft\Mobile\Controller\OrderStatusHandler', 'OnSaleStatusOrderChange');}
-
         \Bitrix\Main\ModuleManager::registerModule($this->MODULE_ID);
         $this->InstallFiles();
         $this->createTables();
@@ -47,12 +45,9 @@ class simbirsoft_mobile extends CModule {
      * Удаляем модуль
      */
     public function DoUninstall() {
-		
         $this->UnInstallFiles();
         $this->dropTables();
-		\Bitrix\Main\UnRegisterModuleDependences("sale", "OnSaleStatusOrder", $this->MODULE_ID, 'Simbirsoft\Mobile\Controller\OrderStatusHandler', 'OnSaleStatusOrderChange');}
         \Bitrix\Main\ModuleManager::unRegisterModule($this->MODULE_ID);
-		
     }
 
     /**
