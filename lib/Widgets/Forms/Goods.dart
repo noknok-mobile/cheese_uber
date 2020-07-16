@@ -24,7 +24,6 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
     bool showInfo = height>150;
     bool oneLine = query.size.width > 380;
     double padding = 12 * (oneLine ? 1.0 : 0.5 );
-
     return FlatButton(
       child: Container(
         height: height ,
@@ -83,7 +82,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                           ),
-                          Expanded(child: Container(),),
+                        //  Expanded(child: Container(),),
                           showInfo ?   Padding(
                             padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                             child: Text(

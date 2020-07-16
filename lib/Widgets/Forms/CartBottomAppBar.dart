@@ -8,8 +8,9 @@ import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 
 class CartBottomAppBar extends StatefulWidget implements PreferredSizeWidget {
   double height;
+  bool isEnable = true;
   final Function onBottomButtonClick;
-  CartBottomAppBar({@required this.height, this.onBottomButtonClick}):super();
+  CartBottomAppBar({@required this.height, this.onBottomButtonClick,this.isEnable = true}):super();
 
   @override
   State<StatefulWidget> createState() => _CartBottomAppBar();
@@ -82,8 +83,13 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                     Expanded(
                       child: Container(),
                     ),
-                    CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartPlaceOrder),onClick: ()=>{
-                        widget.onBottomButtonClick()
+                    CustomButton.colored(color:ColorConstants.red, enable: widget.isEnable, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartPlaceOrder),onClick: ()=>{
+                        setState((){
+                          widget.onBottomButtonClick();
+                          widget.isEnable = false;
+
+                        })
+
                     },)
 
                   ],

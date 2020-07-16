@@ -17,7 +17,7 @@ class InputFieldPhone extends StatefulWidget {
   final SharedValue<String> value;
   final bool decorated;
   final double height;
-  final _mobileFormatter = new MaskedTextController(mask: '+7 (000) 00 00 000');
+  final _mobileFormatter = new MaskedTextController(mask: '+7 (000) 000 00 00');
 
   InputFieldPhone({Key key,this.value,this.label ="Телефон",this.height = 45,this.decorated = true,this.prefix = ""}) : super(key: key){
 

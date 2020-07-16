@@ -209,9 +209,9 @@ class CartButtonRoute<T> extends MaterialPageRoute<T> {
       scaleAnimation = animation.drive(tween);
     }
 
-    if (settings.isInitialRoute)
-      return child;
-
+//    if (settings.isInitialRoute)
+//      return child;
+//
     return new SlideTransition(position: offsetAnimation, child:  new ScaleTransition(scale: scaleAnimation,child:new FadeTransition(opacity: animation, child: child)) );
   }
 }

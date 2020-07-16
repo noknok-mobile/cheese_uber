@@ -58,6 +58,7 @@ class GoodsPage extends StatelessWidget {
                           // physics: BouncingScrollPhysics(),
                           itemCount: projectSnap.data.length,
                           itemBuilder: (context, index) {
+
                             return Column(
                               children: <Widget>[
 

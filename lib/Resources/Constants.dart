@@ -53,10 +53,10 @@ class TextConstants{
   static String get orderNumber => "Заказ №";
   static String get orderCall => "обрабатывается";
   static String get orderDone => "выполнен";
-  static String get orderDelivery => "доставляется";
+  static String get orderDelivery => "доставляеться";
   static String get orderPay => "ожидается оплата";
   static String get orderMakePay => "Оплатить";
-  static String get orderSberbankPay => "Страница оплаты сбербанк";
+  static String get orderSberbankPay => "Страница оплаты";
   static String get pay => "ожидается оплата";
   static String get payMethodCash => "Наличными";
   static String get payMethodOnline => "Онлайн";
@@ -87,10 +87,10 @@ class TextConstants{
 
   static List<Tuple2<String,String>> get informationHeader => [
     Tuple2<String,String>("О магазине","https://xn--90aij3acc4e.xn--p1ai/company/"),
-    Tuple2<String,String>("Оплата","https://xn--90aij3acc4e.xn--p1ai/help/payment/"),
-    Tuple2<String,String>("Доставка","https://xn--90aij3acc4e.xn--p1ai/help/delivery/"),
+    Tuple2<String,String>("Оплата и доставка","https://xn--90aij3acc4e.xn--p1ai/payment/"),
+   // Tuple2<String,String>("Доставка","https://xn--90aij3acc4e.xn--p1ai/help/delivery/"),
     Tuple2<String,String>("Персональные данные","https://xn--90aij3acc4e.xn--p1ai/include/licenses_detail.php"),
-    Tuple2<String,String>("Правила обмена и возврата товара 111111111111111","https://xn--90aij3acc4e.xn--p1ai/help/warranty/"),
+   // Tuple2<String,String>("Правила обмена и возврата товара","https://xn--90aij3acc4e.xn--p1ai/help/warranty/"),
     Tuple2<String,String>("Контакты","https://xn--90aij3acc4e.xn--p1ai/contacts/stores/"),
 
   ];
@@ -104,7 +104,7 @@ class ColorConstants{
 
   static const Color red = Color(0xFFD93740);
   static const Color darkRed = Color(0xFF902719);
-  static const Color background = Color(0xFFEFF3FE);
+  static const Color background = Color(0xFFDADFEB);
   static const Color gray = background;//Color(0xFFDFDFDF);
     //  .fromRGBO(161 ,0.633,0.633,1));
   static const Color goodsBack = Color.fromRGBO(242, 240, 240, 1);
@@ -131,6 +131,11 @@ class IconConstants{
       angle: -90 * 3.14 / 180,
       child: SvgPicture.asset(
         'lib/assets/icons/arrow_left.svg',color: ColorConstants.mainAppColor,
+      ));
+  static Widget get arrowDownBlack =>Transform.rotate(
+      angle: -90 * 3.14 / 180,
+      child: SvgPicture.asset(
+        'lib/assets/icons/arrow_left.svg',color: ColorConstants.black,
       ));
   static Widget get menu => Icon(Icons.menu,color: ColorConstants.black,);
 

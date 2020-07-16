@@ -82,11 +82,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
                           widget.userAddress, widget.deliveryMethod.value, 9,Resources().cart.bonusPoints.toInt());
                       Resources().cart.clear();
                       Resources().editAddrese(widget.userAddress);
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute( builder: (context) => OrdersPage()));
-                    }
-                  })),
+                          MaterialPageRoute( builder: (context) => OrdersPage()),
+                          ModalRoute.withName('/'),
+                           // (Route<dynamic> route){print("route.settings. "+route.runtimeType.toString()); return route.settings.name == "CategoryPage"; }
+                      );
+
+                    }})),
           //resizeToAvoidBottomPadding: false,
           backgroundColor: ColorConstants.background,
           appBar: NextPageAppBar(

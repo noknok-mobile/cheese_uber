@@ -13,13 +13,23 @@ import 'package:intl/intl.dart';
 
 import 'InformationRow.dart';
 
-class Order extends StatelessWidget implements PreferredSizeWidget {
+class Order extends StatefulWidget implements PreferredSizeWidget {
   final OrderData data;
 
-  const Order({Key key, this.data}) : super(key: key);
+  Order({Key key, this.data}) : super(key: key);
 
   Widget _getDetailInfo(OrderData _data) {}
 
+
+
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => null;
+
+  @override
+  State<StatefulWidget> createState() =>_stateOrder();
+}
+class _stateOrder extends State<Order>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -28,7 +38,7 @@ class Order extends StatelessWidget implements PreferredSizeWidget {
       decoration: BoxDecoration(
         color: ColorConstants.mainAppColor,
         borderRadius:
-            BorderRadius.circular(ParametersConstants.largeImageBorderRadius),
+        BorderRadius.circular(ParametersConstants.largeImageBorderRadius),
       ),
       child: FlatButton(
         padding: const EdgeInsets.all(0),
@@ -51,26 +61,26 @@ class Order extends StatelessWidget implements PreferredSizeWidget {
                             alignment: Alignment.centerRight,
                             padding: const EdgeInsets.only(right: 10),
                             onPressed: () => {Navigator.pop(context)},
-                            icon: IconConstants.arrowDown,
+                            icon: IconConstants.arrowDownBlack,
                           ),
                           Expanded(
                               child: CustomText.black24px(
-                                  "${TextConstants.orderNumber} ${data.id.toString()}")),
+                                  "${TextConstants.orderNumber} ${widget.data.id.toString()}")),
                           Container(
                             width: 130,
                             height: 25,
                             decoration: BoxDecoration(
-                              color: _getColor(data.status),
+                              color: _getColor(widget.data.status),
                               borderRadius: BorderRadius.all(Radius.circular(
                                   ParametersConstants.largeImageBorderRadius)),
                             ),
                             alignment: Alignment.center,
-                            child: _getText(data.status),
+                            child: _getText(widget.data.status),
                           )
                         ],
                       ),
                       Container(
-                        height:240,
+                        height:210,
                         child: ListView(
                           shrinkWrap: true,
 
@@ -79,56 +89,56 @@ class Order extends StatelessWidget implements PreferredSizeWidget {
                             ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: data.cart.cart.keys.length,
+                                itemCount: widget.data.cart.cart.keys.length,
 
                                 itemBuilder: (context, index) {
                                   return FlatButton(
                                     onPressed: ()=>{
-                                      Navigator.of(context).push(new MaterialPageRoute(builder:(context){ return  DetailGoods(goodsData: Resources().getGodById(data.cart.cart.keys.elementAt(index)),);}))
+                                      Navigator.of(context).push(new MaterialPageRoute(builder:(context){ return  DetailGoods(goodsData: Resources().getGodById(widget.data.cart.cart.keys.elementAt(index)),);}))
 
                                     },
-                                     padding: const EdgeInsets.only(bottom: 20),
-                                     child: Row(
-                                       children: <Widget>[
-                                         Expanded(
-                                           flex: 4,
-                                           child: Padding(
-                                             padding: const EdgeInsets.only(right:8.0),
-                                             child: CustomText.black16px(
-                                                 "${Resources().getGodById(data.cart.cart.keys.elementAt(index)).name}",maxLines: 2,),
-                                           ),
-                                         ),
-                                         Expanded(
-                                           flex: 2,
-                                           child: Align(
-                                             alignment: Alignment.centerLeft,
-                                             child: CustomText.black16px(
-                                                 "${data.cart.cart[data.cart.cart.keys.elementAt(index)]} x "
-                                                 "${data.cart.savedCartPrice.values.elementAt(index)}${TextConstants.pricePostfix}"),
-                                           ),
-                                         ),
-                                         Expanded(
-                                             flex: 2,
-                                           child: Align(
-                                             alignment: Alignment.centerRight,
-                                             child: CustomText.black16px(
-                                                 "${data.cart.savedCartPrice.values.elementAt(index) * data.cart.cart[data.cart.cart.keys.elementAt(index)]}${TextConstants.pricePostfix}",
-                                                 maxLines: 1),
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   );
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 4,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(right:8.0),
+                                            child: CustomText.black16px(
+                                              "${Resources().getGodById(widget.data.cart.cart.keys.elementAt(index)).name}",maxLines: 2,),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: CustomText.black16px(
+                                                "${widget.data.cart.cart[widget.data.cart.cart.keys.elementAt(index)]} x "
+                                                    "${widget.data.cart.savedCartPrice.values.elementAt(index)}${TextConstants.pricePostfix}"),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: CustomText.black16px(
+                                                "${widget.data.cart.savedCartPrice.values.elementAt(index) * widget.data.cart.cart[widget.data.cart.cart.keys.elementAt(index)]}${TextConstants.pricePostfix}",
+                                                maxLines: 1),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }),
-                            InformationRow(icon: AssetsConstants.iconInfoPay,label: TextConstants.payMethod,text: data.payType == PayType.cash?TextConstants.payMethodCash:TextConstants.payMethodOnline,),
+                            InformationRow(icon: AssetsConstants.iconInfoPay,label: TextConstants.payMethod,text: widget.data.payType == PayType.cash?TextConstants.payMethodCash:TextConstants.payMethodOnline,),
                             Container(height: 10,),
-                            InformationRow(icon: AssetsConstants.iconInfoDelivery,label: TextConstants.delivery,text: data.deliveryType == DeliveryType.courier?TextConstants.deliveryMethodCourier:TextConstants.deliveryMethodPickup,),
+                            InformationRow(icon: AssetsConstants.iconInfoDelivery,label: TextConstants.delivery,text: widget.data.deliveryType == DeliveryType.courier?TextConstants.deliveryMethodCourier:TextConstants.deliveryMethodPickup,),
                             Container(height: 10,),
-                            InformationRow(icon: AssetsConstants.iconInfoTime,label: TextConstants.deliveryTime,text: "${DateFormat.d().format(data.orderTime)}.${DateFormat.M().format(data.orderTime)}.${DateFormat.y().format(data.orderTime)}  ${DateFormat.Hm().format(data.orderTime)}",),
+                            InformationRow(icon: AssetsConstants.iconInfoTime,label: TextConstants.deliveryTime,text: "${DateFormat.d().format(widget.data.orderTime)}.${DateFormat.M().format(widget.data.orderTime)}.${DateFormat.y().format(widget.data.orderTime)}  ${DateFormat.Hm().format(widget.data.orderTime)}",),
                             Container(height: 10,),
-                            InformationRow(icon: AssetsConstants.iconInfoUser,label: TextConstants.contactName,text: data.userAddress.username,),
+                            InformationRow(icon: AssetsConstants.iconInfoUser,label: TextConstants.contactName,text: widget.data.userAddress.username,),
                             Container(height: 10,),
-                            InformationRow(icon: AssetsConstants.iconInfoAdres,label: TextConstants.adres,text:data.userAddress.addres ,),
+                            InformationRow(icon: AssetsConstants.iconInfoAdres,label: TextConstants.adres,text:widget.data.userAddress.addres ,),
                             Container(height: 20,),
                           ],
                         ),
@@ -137,8 +147,29 @@ class Order extends StatelessWidget implements PreferredSizeWidget {
                       Row(
                         children: <Widget>[
 
-                          Expanded(child: PriceRow(text: data.cart.cartPrice,)),
-                          data.status == "ON"?_payOrder(context):_duplicateOrder(context)
+                          Expanded(child: PriceRow(text: widget.data.cart.cartPrice,)),
+                          widget.data.status == "ON"?
+                          CustomButton.colored(color:ColorConstants.red,enable: !used, width: 190,height: 45,child:CustomText.white12px(TextConstants.orderMakePay),onClick: ()async{
+
+                            if(used){
+                              return;
+
+                            }
+                            used = true;
+                            setState(() {
+
+                            });
+
+                            String href =  await Resources().getPayment(widget.data.id);
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute( builder: (context) => WebPage(title:TextConstants.orderSberbankPay ,url:href)));
+                            used = false;
+                            setState(() {
+
+                            });
+                          },):_duplicateOrder(context)
                         ],
                       ),
                     ],
@@ -156,45 +187,37 @@ class Order extends StatelessWidget implements PreferredSizeWidget {
                 children: <Widget>[
                   Expanded(
                       child: CustomText.black16px(
-                          "${TextConstants.orderNumber} ${data.id.toString()}")),
+                          "${TextConstants.orderNumber} ${widget.data.id.toString()}")),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 5.0),
                     child: CustomText.black18pxBold(
-                        "${data.cart.cartPrice.toString()} ${TextConstants.pricePostfix}"),
+                        "${widget.data.cart.cartPrice.toString()} ${TextConstants.pricePostfix}"),
                   ),
                   CustomText.gray12px(
-                      "${DateFormat.d().format(data.orderTime)}.${DateFormat.M().format(data.orderTime)}.${DateFormat.y().format(data.orderTime)}  ${DateFormat.Hm().format(data.orderTime)}"),
+                      "${DateFormat.d().format(widget.data.orderTime)}.${DateFormat.M().format(widget.data.orderTime)}.${DateFormat.y().format(widget.data.orderTime)}  ${DateFormat.Hm().format(widget.data.orderTime)}"),
                 ],
               ),
             ),
             Flexible(
               child: Container(),
             ),
-            _getWidget(data.status),
+            _getWidget(widget.data.status),
           ],
         ),
       ),
     );
   }
   Widget _duplicateOrder(BuildContext context){
-   return CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartDiplicateOrder),onClick: ()=>{
-          Resources().cart.setCart(data.cart.cart),
-           Navigator.push( context,CartButtonRoute( builder: (context) => CartPage()),)
-   });
+    return CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartDiplicateOrder),onClick: ()=>{
+      Resources().cart.setCart(widget.data.cart.cart),
+      Navigator.push( context,CartButtonRoute( builder: (context) => CartPage()),)
+    });
 
 
 
   }
-  Widget _payOrder(BuildContext context){
-    return CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.orderMakePay),onClick: ()async{
-      String href =  await Resources().getPayment(data.id);
+  bool used = false;
 
-          Navigator.push(
-          context,
-          MaterialPageRoute( builder: (context) => WebPage(title:TextConstants.orderSberbankPay ,url:href)));
-
-    },);
-  }
 
   Widget _getText(String orderStatus,
       {TextAlign align = TextAlign.center}) {
@@ -281,7 +304,7 @@ class Order extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => null;
+
+
+
 }

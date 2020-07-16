@@ -20,8 +20,8 @@ class LeftMenu extends StatelessWidget {
     final TextStyle textStyle = Theme.of(context).textTheme.display1;
     return Container(
       color: ColorConstants.mainAppColor,
-      child: Flex(
-        direction: Axis.vertical,
+      child: Column(
+       // direction: Axis.vertical,
         // Important: Remove any padding from the ListView.
 
         // padding: EdgeInsets.zero,
@@ -62,9 +62,9 @@ class LeftMenu extends StatelessWidget {
                         MaterialPageRoute( builder: (context) => UserInfo()))
                     }),
           ),
-          Divider(
+          Container(
             height: 1,
-            color: ColorConstants.darkGray,
+            color: ColorConstants.background,
           ),
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
@@ -76,9 +76,9 @@ class LeftMenu extends StatelessWidget {
                   MaterialPageRoute( builder: (context) => CategoryPage()));
             },
           ),
-          Divider(
+          Container(
             height: 1,
-            color: ColorConstants.darkGray,
+            color: ColorConstants.background,
           ),
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
@@ -90,9 +90,9 @@ class LeftMenu extends StatelessWidget {
                   MaterialPageRoute( builder: (context) => CartPage()));
             },
           ),
-          Divider(
+          Container(
             height: 1,
-            color: ColorConstants.darkGray,
+            color: ColorConstants.background,
           ),
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
@@ -104,9 +104,9 @@ class LeftMenu extends StatelessWidget {
               MaterialPageRoute( builder: (context) => OrdersPage()));
             },
           ),
-          Divider(
+          Container(
             height: 1,
-            color: ColorConstants.darkGray,
+            color: ColorConstants.background,
           ),
           ListTile(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
@@ -120,9 +120,9 @@ class LeftMenu extends StatelessWidget {
               // ...
             },
           ),
-          Divider(
+          Container(
             height: 1,
-            color: ColorConstants.darkGray,
+            color: ColorConstants.background,
           ),
           Expanded(
             child: Container(),

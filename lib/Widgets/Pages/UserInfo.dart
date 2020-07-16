@@ -129,27 +129,19 @@ class _UserInfoState extends State<UserInfo> {
               /*  Padding(
                   padding: const EdgeInsets.all(8),
                   child: CustomText.black16px(Resources().userProfile?.email),
-                ),*/
+                ),
                 Container(
 
                   height: 1,
                   color: ColorConstants.gray,
                 ),
-              /*  Padding(
+               Padding(
                   padding: const EdgeInsets.all(0),
                   child:InputFieldPassword(label: TextConstants.changePassword, value: pass,decorated: false),
                 ),*/
-                Container(
 
-                  height: 1,
-                  color: ColorConstants.gray,
-                ),
-                Container(
-                  height: 1,
-                  color: ColorConstants.gray,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
+                  Padding(
+                  padding: const EdgeInsets.all(16),
                   child: CustomText.black20pxBold(TextConstants.youAdresHeader),
                 ),
                 Container(

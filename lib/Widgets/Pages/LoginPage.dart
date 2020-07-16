@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 16,),
                 InputFieldPassword(value:pass),
                 SizedBox(height: 16,),
-                CustomButton.colored(enable: !widget.inProgress, height:45,width: 9999, color: ColorConstants.red,child: CustomText.white12px("Зарегистрироватся"),onClick: (){
+                CustomButton.colored(enable: !widget.inProgress, height:45,width: 9999, color: ColorConstants.red,child: CustomText.white12px("Зарегистрироваться"),onClick: (){
                   widget.inProgress = true;
                   if (_registerFormKey.currentState.validate()) {
                     _registerFormKey.currentState.save();
