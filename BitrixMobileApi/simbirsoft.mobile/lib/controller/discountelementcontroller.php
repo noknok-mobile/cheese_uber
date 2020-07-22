@@ -395,13 +395,15 @@ class DiscountElementController implements Routable {
             }
             $arSelect = array(/*'ID', 'NAME', 'PREVIEW_TEXT', 'DETAIL_TEXT', 'PREVIEW_PICTURE','DETAIL_PICTURE','PROPERTY'*/);
 
-            $cache_id = md5(serialize(['ib_getlistDiscount2', $arSelect, $arFilter, $arOrder]));
-            $cache_dir = "/ss_getlist";
+            $cache_id = md5(serialize(['ib_getlistDiscount', $arSelect, $arFilter, $arOrder]));
+            $cache_dir = "/ss_getdiscountlist";
             $arResult = [];
             $obCache = new \CPHPCache;
             if ($obCache->InitCache(1, $cache_id, $cache_dir)) {
                 $arResult = $obCache->GetVars();
-            } elseif ($obCache->StartDataCache()) {
+            } elseif ($obCache->StartDataCache())
+
+            {
                 global $CACHE_MANAGER;
                 $res = \CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
                 $CACHE_MANAGER->StartTagCache($cache_dir);
