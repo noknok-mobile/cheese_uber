@@ -11,7 +11,7 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.0.7+8
+version: 0.0.9+10
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -40,8 +40,14 @@ dependencies:
   flutter_masked_text: ^0.8.0
   shared_preferences: ^0.5.7+2
   flutter_launcher_icons: ^0.7.5
+  html: ^0.14.0+3
+  dotted_border: ^1.0.5
+  firebase_messaging: ^5.1.1
+  firebase_auth: ^0.15.2
+  google_sign_in: ^4.1.0
 
 dev_dependencies:
+
   flutter_test:
     sdk: flutter
 
@@ -55,6 +61,7 @@ flutter:
     - lib/assets/backgrounds/empty_cart.png
     - lib/assets/backgrounds/splash_screen.png
     - lib/assets/backgrounds/drawer.png
+    - lib/assets/backgrounds/discount.svg
     - lib/assets/images/logo.png
     - lib/assets/images/animated_logo.gif
     - lib/assets/icons/cheese.svg
@@ -78,6 +85,8 @@ flutter:
     - lib/assets/icons/address.png
     - lib/assets/icons/arrow_right.svg
     - lib/assets/icons/arrow_left.svg
+    - lib/assets/icons/show_pass.svg
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -16,7 +16,7 @@ class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
 
   final String title = TextConstants.cartHeader;
-  final double bottomMenuHeight = 140;
+  final double bottomMenuHeight = 165;
   @override
   _CartPageState createState() => _CartPageState();
 
@@ -30,7 +30,8 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin{
     super.initState();
 
     showGoodsInCart = Resources().cart.getUniqueGoodsInCart() != 0;
-
+    if(Resources().cart.getUniqueGoodsInCart() > 0)
+      Resources().sendBasketData(Resources().cart);
     subsctiprion = eventBus.on<CartUpdated>().listen((CartUpdated data){
 
      if(data.cart.getUniqueGoodsInCart() == 0)

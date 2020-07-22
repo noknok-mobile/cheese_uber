@@ -101,14 +101,17 @@ class _InputFieldPhoneState extends State<InputFieldPhone> {
           filled: true,
           errorStyle: TextStyle(height: 0),
           fillColor: ColorConstants.mainAppColor,
-          focusedBorder:widget.decorated? OutlineInputBorder(
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
               borderSide: BorderSide(
-                color: ColorConstants.darckBlack,
-              )):InputBorder.none,
-          border:widget.decorated?OutlineInputBorder(
-              borderSide: BorderSide(color: ColorConstants.darckBlack)):InputBorder.none,
-          enabledBorder: widget.decorated?OutlineInputBorder(
-              borderSide: BorderSide(color: ColorConstants.darckBlack)):InputBorder.none,
+                color: widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,
+              )) ,
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
+          enabledBorder:  OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
 
           contentPadding: EdgeInsets.only(left: 10,bottom: 20),
           hintText: widget.label,

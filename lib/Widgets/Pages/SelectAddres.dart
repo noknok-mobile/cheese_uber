@@ -92,7 +92,7 @@ class _SelectAddresState extends State<SelectAddres> {
                       expanded: true,
                       color: ColorConstants.red,
                       height: 40,
-                      child: CustomText.white12px(TextConstants.btnNext),
+                      child: CustomText.white12px(TextConstants.btnNext.toUpperCase()),
                       onClick: () => {
                         Navigator.of(context).pop()
                       })),

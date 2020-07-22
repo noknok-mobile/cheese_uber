@@ -25,13 +25,41 @@ class BasketController implements Routable {
 
             if ($arUser = $userFields->fetch()) {
                 $out->id = $USER->GetID();
+				
+				     
                 //return json_encode("OK");
                 foreach($postJson["cart"] as $key=>$value) {
-                    $product = array(
-                        'PRODUCT_ID' => $key,
-                        'QUANTITY' => $value,
-                    );
-
+						$res = \CPrice::GetList(
+								array(),
+								array(
+									"PRODUCT_ID" =>  $key,
+									"CATALOG_GROUP_ID" => $postJson["Region"]
+								)
+							);
+						 $PRODUCT_PRICE_ID = 1;
+						 $product = array(
+								'PRODUCT_ID' => $key,
+								'QUANTITY' => $value,
+								 "IGNORE_CALLBACK_FUNC"  => "Y",
+							
+							);
+						 while ($res1 = $res->fetch()) {
+							 $PRODUCT_PRICE_ID = $res1["ID"];
+							  $product = array(
+									//'PRICE' => $prices['PRICES'][$postJson["Region"]],
+									'PRODUCT_ID' => $key,
+									'QUANTITY' => $value,
+									//"CATALOG_GROUP_ID" => postJson["Region"],
+									'PRODUCT_PRICE_ID' =>$PRODUCT_PRICE_ID,
+									//'CUSTOM_PRICE' => 'Y',
+									"PRICE" => $res1["PRICE"],
+									 "IGNORE_CALLBACK_FUNC"  => "Y",
+								
+								);
+						 }
+						$out->Region = $PRODUCT_PRICE_ID;
+                   
+					
                     $basketResult = \Bitrix\Catalog\Product\Basket::addProduct($product);
 
                     $out->status = $basketResult->isSuccess();

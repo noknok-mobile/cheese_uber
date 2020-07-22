@@ -1,9 +1,12 @@
+
+
 import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Utils/NetworkUtil.dart';
+import 'package:html/parser.dart';
 
 class Label extends StatelessWidget{
   @override
@@ -28,7 +31,7 @@ class PriceText extends StatelessWidget {
 
         children: <TextSpan>[
 
-          TextSpan(text: "${goodsData.units.contains(TextConstants.units) ?"1 "+goodsData.units :"100 "+goodsData.units}",
+          TextSpan(text: "${goodsData.units.contains(TextConstants.units) ?"1 "+goodsData.units :"1 "+goodsData.units}",
               style: Theme.of(context)
                   .textTheme
                   .body2
@@ -45,10 +48,14 @@ class CustomText extends StatelessWidget {
   final int maxLines ;
   const CustomText(this.content,{Key key, this.style,this.align = TextAlign.left, this.maxLines = 1}) : super(key: key);
   const CustomText.white12px(this.content,{Key key,this.style = const TextStyle(fontSize: 12,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines = 10}) : super(key: key);
+  const CustomText.white14px(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w500,),this.align = TextAlign.left, this.maxLines = 10}) : super(key: key);
   const CustomText.gray12px(this.content,{Key key,this.style = const TextStyle(fontSize: 12,color:ColorConstants.gray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
   const CustomText.gray14px(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.gray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
   const CustomText.gray16px(this.content,{Key key,this.style = const TextStyle(fontSize: 16,color:ColorConstants.gray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.darkGray16px(this.content,{Key key,this.style = const TextStyle(fontSize: 16,color:ColorConstants.darkGray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.darkGray14px(this.content,{Key key,this.style = const TextStyle(fontSize: 14,color:ColorConstants.darkGray,fontWeight: FontWeight.w400,),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
   const CustomText.black12px(this.content,{Key key, this.style = const TextStyle(fontSize: 12,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
+  const CustomText.black12pxUnderline(this.content,{Key key, this.style = const TextStyle(fontSize: 12,color:ColorConstants.black,fontWeight: FontWeight.w400,decoration:  TextDecoration.underline),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
   const CustomText.black14px(this.content,{Key key, this.style = const TextStyle(fontSize: 14,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
   const CustomText.black16px(this.content,{Key key, this.style = const TextStyle(fontSize: 16,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
   const CustomText.black18px(this.content,{Key key, this.style = const TextStyle(fontSize: 18,color:ColorConstants.black,fontWeight: FontWeight.w400),this.align = TextAlign.left, this.maxLines= 10}) : super(key: key);
@@ -63,7 +70,7 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(content,style:style,
+    return Text(parse(content).documentElement.text,style:style,
       softWrap: true,
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
@@ -79,7 +86,7 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
   double height;
   double radius;
 
-  CachedImage({Key key, this.url, this.child, this.width, this.height, this.radius}) : super(key: key);
+  CachedImage({Key key, this.url, this.child, this.width, this.height, this.radius = 7}) : super(key: key);
 
   CachedImage.imageForCart(double sizeMultipler, {Key key, this.url,this.child,this.height}): super(key: key){
 
@@ -87,6 +94,7 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
     height = ParametersConstants.smallImageHeight*sizeMultipler;
     radius = ParametersConstants.smallImageBorderRadius;
   }
+
   CachedImage.imageForShopList({Key key, this.url,this.child,this.height}): super(key: key){
     width =  height;
     height = height;
@@ -108,9 +116,9 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
           width: width,
           height: height,
           decoration: BoxDecoration(
-
+            color: Color.fromARGB(0, 0, 0, 0),
             borderRadius: BorderRadius.circular(radius),
-            color:ColorConstants.mainAppColor,
+            //color:ColorConstants.mainAppColor,
             image: DecorationImage(
               image: imageProvider,
               fit: BoxFit.cover,
@@ -122,7 +130,7 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
           ),
           child:child
       ),
-      placeholder: (context, url) => CircularProgressIndicator(),
+      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
       errorWidget: (context, url, error) => Container(
 
           width: width,

@@ -24,6 +24,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
     bool showInfo = height>150;
     bool oneLine = query.size.width > 380;
     double padding = 12 * (oneLine ? 1.0 : 0.5 );
+
     return FlatButton(
       child: Container(
         height: height ,
@@ -82,7 +83,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                           ),
-                        //  Expanded(child: Container(),),
+
                           showInfo ?   Padding(
                             padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                             child: Text(
@@ -113,7 +114,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                           style: Theme.of(context).textTheme.subtitle,
 
                           children: <TextSpan>[
-                            TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"100 "+data.units}",
+                            TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"1 "+data.units}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .body2
@@ -123,9 +124,10 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                       ),
                       Spacer(),
                       AutoUpdatingWidget<CartUpdated>(
-                        child:(context,e)=>CountButtonGroup(
-                          getText: (){return "${data.units.contains(TextConstants.units) ? Resources().cart.getCount(data.id): Resources().cart.getCount(data.id)*100} ${data.units}";},
-                          setCount: (double count)=>{  Resources().cart.setCount(data.id,data.units.contains(TextConstants.units) ? count: count == 1 ? 3 : count < 3 ? 0 : count  )},
+                        child:(context,e)=> CountButtonGroup(
+                          step: data.units.contains(TextConstants.units)?1:0.25,
+                          getText: (){return "${data.units == "шт"?Resources().cart.getCount(data.id).toInt():Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";},
+                          setCount: (double count)=>{  Resources().cart.setCount(data.id,count)},
                           getCount: (){ return Resources().cart.getCount(data.id);},
                         ),
                       )

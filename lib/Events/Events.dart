@@ -41,6 +41,13 @@ class ShopSelected{
   final int shopId;
   ShopSelected(this.shopId);
 }
+class OrderChanged{
+  final Map<String, dynamic> notification;
+  OrderChanged(this.notification);
+}
 class AllUpToDate{
+
+}
+class NewLoginData{
 
 }

@@ -163,7 +163,7 @@ class _SelectShopState extends State<SelectShop> {
                       expanded: true,
                       color: ColorConstants.red,
                       height: 40,
-                      child: CustomText.white12px(TextConstants.btnNext),
+                      child: CustomText.white12px(TextConstants.btnNext.toUpperCase()),
                       onClick: () => {
                             Resources().selectShop(widget.shopId),
                             Navigator.pushAndRemoveUntil(

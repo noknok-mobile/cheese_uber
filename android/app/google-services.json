@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "972092785389",
+    "firebase_url": "https://cheez-world-57ef0.firebaseio.com",
+    "project_id": "cheez-world-57ef0",
+    "storage_bucket": "cheez-world-57ef0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972092785389:android:e9e625e19e10d1529682e4",
+        "android_client_info": {
+          "package_name": "com.noknok.cheez_world"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972092785389-dos76cpvedqo2170ci2j9n923sfadiv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlrhIPJgDO_BLso-scQBMAkZuIuT_ms90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972092785389-dos76cpvedqo2170ci2j9n923sfadiv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

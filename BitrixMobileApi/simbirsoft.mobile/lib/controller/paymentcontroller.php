@@ -67,7 +67,7 @@ class PaymentController implements Routable {
                 }
 
 
-                return json_encode( $arResult["PAYMENT"]);
+               // return json_encode( $arResult["PAYMENT"]);
             } else {
                 $out->errors[] = Main::addError('0x012','', 'Ошибка получения профиля');
                 print json_encode($out);

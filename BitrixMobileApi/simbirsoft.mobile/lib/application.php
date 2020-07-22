@@ -35,7 +35,9 @@ Class Application {
         '/product' => 'ProductElementController',
         '/storage' =>'StorageElementController',
         '/sity' =>'SityElementController',
-        '/payment' =>'PaymentController'
+        '/payment' =>'PaymentController',
+        '/discount' =>'DiscountElementController'
+
     ];
     private $controllersSign = [
         '/profile/edit' => 'ProfileEditController',

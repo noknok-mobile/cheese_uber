@@ -19,7 +19,8 @@ import 'OrdersPage.dart';
 
 class NewOrderPage extends StatefulWidget {
   final formKey = GlobalKey<FormState>();
-  final double bottomMenuHeight = 140;
+  final double bottomMenuHeight = 160;
+  bool enabled = true;
   SharedValue<int> deliveryMethod = SharedValue<int>(value: 1);
   SharedValue<String> phone =
       SharedValue<String>(value: Resources().userProfile?.phone);
@@ -48,7 +49,7 @@ class NewOrderPage extends StatefulWidget {
    flat = SharedValue<String>(
         value: userAddress.flat);
     comment = SharedValue<String>(
-        value: userAddress.comment);
+        value: "");
 
 
   }
@@ -66,8 +67,10 @@ class _NewOrderPageState extends State<NewOrderPage> {
           bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               child: CartBottomAppBar(
+                isEnable: widget.enabled,
                   height: widget.bottomMenuHeight,
                   onBottomButtonClick: () async{
+
                     if (widget.formKey.currentState.validate()) {
                       widget.formKey.currentState.save();
                       widget.userAddress.phone = widget.phone.value;
@@ -77,6 +80,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                       widget.userAddress.entrance = widget.entrance.value;
                       widget.userAddress.comment = widget.comment.value;
                       widget.userAddress.username = widget.contactName.value;
+                      setState(() {
+                        widget.enabled = false;
+                      });
 
                      await Resources().sendOrderData(Resources().cart,
                           widget.userAddress, widget.deliveryMethod.value, 9,Resources().cart.bonusPoints.toInt());
@@ -85,11 +91,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute( builder: (context) => OrdersPage()),
-                          ModalRoute.withName('/'),
-                           // (Route<dynamic> route){print("route.settings. "+route.runtimeType.toString()); return route.settings.name == "CategoryPage"; }
-                      );
-
-                    }})),
+                          ModalRoute.withName("/"));
+                    }
+                  })),
           //resizeToAvoidBottomPadding: false,
           backgroundColor: ColorConstants.background,
           appBar: NextPageAppBar(
@@ -321,7 +325,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   InputFieldText(
                                     decorated: false,
                                     height: 90,
-                                    prefix: "Коментарий",
+                                    label: "Комментарий",
                                     maxLines: 50,
                                     value: widget.comment,
                                   ),

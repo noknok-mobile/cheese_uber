@@ -24,11 +24,9 @@ class GetOrdersController implements Routable {
                 "CANCELED"=> "N"
             );
 
-            $db_sales = \CSaleOrder::GetList(array("DATE_INSERT" => "ASC"), $arFilter,false,false,array("ID","STATUS_ID","DATE_INSERT","DATE_UPDATE","PRICE","DELIVERY_ID"));
+            $db_sales = \CSaleOrder::GetList(array("DATE_INSERT" => "ASC"), $arFilter,false,false,array("ID","STATUS_ID","DATE_INSERT","DATE_UPDATE","PRICE","DELIVERY_ID", "PRICE_DELIVERY"));
 
             while($ord = $db_sales->fetch()){
-
-
 
                 $arr["ID"] = $ord["ID"];
                 $arr["STATUS_ID"] = $ord["STATUS_ID"];
@@ -36,6 +34,7 @@ class GetOrdersController implements Routable {
                 $arr["DATE_UPDATE"] = $ord["DATE_UPDATE"];
                 $arr["PRICE"] = $ord["PRICE"];
                 $arr["DELIVERY_ID"] = $ord["DELIVERY_ID"];
+				$arr["PRICE_DELIVERY"] = $ord[ "PRICE_DELIVERY"];
 
 
                 $basketItems = \CSaleBasket::GetList(array(), array("ORDER_ID" => $ord["ID"]), false, false, array("ORDER_ID","PRODUCT_ID","QUANTITY","PRICE"));

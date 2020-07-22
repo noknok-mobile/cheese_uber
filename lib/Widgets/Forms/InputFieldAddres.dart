@@ -54,12 +54,15 @@ class _InputFieldAddresState extends State<InputFieldAddres> {
           filled: true,
           fillColor: ColorConstants.mainAppColor,
           focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
               borderSide: BorderSide(
                 color: widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,
               )) ,
           border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
               borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
           enabledBorder:  OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
               borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
           contentPadding: EdgeInsets.all(10),
           hintText: TextConstants.adres,

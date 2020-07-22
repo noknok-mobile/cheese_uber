@@ -35,7 +35,7 @@ class InputFieldEmail extends StatefulWidget{
 class InputFieldEmailState extends State<InputFieldEmail>{
 
   String validateEmail(String value) {
-    print("validateEmail");
+
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
@@ -87,7 +87,7 @@ class InputFieldEmailState extends State<InputFieldEmail>{
           controller: widget._controller,
           validator: validateEmail,
 
-          onChanged:  ((x)=>{ widget.value.value = x,print("onChanged "+widget.value.value)}),
+          onChanged:  ((x)=>{ widget.value.value = x,}),
 
         ),);
 

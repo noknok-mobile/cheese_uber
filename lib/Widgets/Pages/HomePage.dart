@@ -14,9 +14,9 @@ class HomePage extends StatelessWidget{
 
       future: Resources().login(),
       builder: (context,AsyncSnapshot<String> projectSnap) {
-      if (projectSnap.hasError) {
+      if (!projectSnap.hasData) {
         print('project snapshot data is: ${projectSnap.data}');
-        return Container();
+        return Center(child: CircularProgressIndicator());
       }
       if (projectSnap.connectionState != ConnectionState.done) {
         return CircularProgressIndicator();

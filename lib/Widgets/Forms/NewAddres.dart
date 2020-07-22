@@ -122,7 +122,7 @@ class NewAddres extends StatelessWidget {
                InputFieldText(
                 height: 90,
                 maxLines: 5,
-                label: "Коментарий",
+                label: "Комментарий",
                  value: comment,
               ),
 
@@ -131,7 +131,7 @@ class NewAddres extends StatelessWidget {
                width: 9999,
                 height: 40,
                 color: ColorConstants.red,
-                child: CustomText.white12px(TextConstants.btnYes),
+                child: CustomText.white12px(TextConstants.btnYes.toUpperCase()),
                 onClick: () {
                   if(userAddress != null){
                     userAddress.phone = phone.value;

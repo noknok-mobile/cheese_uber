@@ -1,14 +1,16 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'Events/Events.dart';
 import 'Resources/Constants.dart';
+import 'Widgets/Drawers/MySnackBar.dart';
 import 'Widgets/Pages/HomePage.dart';
 import 'Widgets/Pages/SplashScreen.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-
+  static final  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   @override
@@ -46,6 +48,8 @@ class _RootPageState extends State<MyApp>{
       });
     });
     Resources().loadAllData();
+
+
   }
   @override
   Widget build(BuildContext context) {
@@ -88,21 +92,24 @@ class _RootPageState extends State<MyApp>{
     body2:        TextStyle(fontSize: 12,color:ColorConstants.darkGray,fontWeight: FontWeight.w500),
     )
     ),
-    home : Stack(
-      children: <Widget>[
-        AnimatedOpacity(
-            opacity: loaded?0:1,
+    home : Scaffold(
+      key:MyApp.scaffoldKey,
+      body: Stack(
+        children: <Widget>[
+          AnimatedOpacity(
+              opacity: loaded?0:1,
 
-            duration: const Duration(milliseconds: 800),
-            child: SplashScreen())
-        ,
-        AnimatedOpacity(
-            opacity: loaded?1:0,
-            duration: const Duration(milliseconds: 1000),
-            child:  AbsorbPointer(absorbing: loaded?false:true,child: HomePage()),
-        ),
+              duration: const Duration(milliseconds: 800),
+              child: SplashScreen())
+          ,
+          AnimatedOpacity(
+              opacity: loaded?1:0,
+              duration: const Duration(milliseconds: 1000),
+              child:  AbsorbPointer(absorbing: loaded?false:true,child: HomePage()),
+          ),
 
-      ],
+        ],
+      ),
     )
 
 

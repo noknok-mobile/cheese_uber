@@ -56,6 +56,7 @@ class DBProvider {
 class Resources {
   static final Resources _instance = Resources._internal();
   String networkToken = "";
+  String lastLoginInfo = "";
   factory Resources() {
     return _instance;
   }
@@ -66,11 +67,12 @@ class Resources {
   UserProfile _userProfile = UserProfile();
   UserProfile get userProfile => _userProfile;
 
+  DiscountInfo discountInfo = DiscountInfo();
 
   final ListOfGoodsData _allGoods = ListOfGoodsData();
   List<OrderData> orders = List<OrderData>();
   final List<CategoryData> categories = List<CategoryData>();
-
+  List<Discount> discounts = List<Discount>();
   final List<ShopInfo> _allShops =List<ShopInfo>();
 
   List<ShopInfo> get getAllShops =>_allShops;
@@ -80,7 +82,7 @@ class Resources {
   }
 
   Resources._internal() {
-
+   // eventBus.on<CartUpdated>().listen((event)=>{sendBasketData(event.cart)});
   }
 
 
@@ -103,6 +105,10 @@ class Resources {
     _allGoods.addAll(await getProductData());
     _allShops.addAll(await getShopData());
     _allCity.addAll(await getCityData());
+
+   // await getActiveDiscount();
+
+
     if(city != null && shop != null) {
       _userProfile.selectedCity = Resources().getCityWithId(city);
       _userProfile.selectedShop = shop;
@@ -114,11 +120,10 @@ class Resources {
   //#region Network
   Future <String>editUserData()async{
     var data = await NetworkUtil().post("editProfile",body:userProfile.toJson());
-    print("editUserData "+data);
     return data;
   }
   Future <String>editAddrese(UserAddress address)async{
-    print("editAddrese 1 "+address.toJson().toString());
+
     if(!userProfile.userAddress.contains(address)){
       userProfile.userAddress.add(address);
     }
@@ -133,7 +138,11 @@ class Resources {
     return data.toString();
   }
   Future <String>sendBasketData(Cart cart)async{
-    var data = await NetworkUtil().post("basket",headers: {"Token":networkToken},body:jsonEncode(cart.toJson())) ;
+
+    var cartJson = cart.toJson();
+    cartJson["Region"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).priceId;
+    print(jsonEncode(cartJson));
+    var data = await NetworkUtil().post("basket",headers: {"Token":networkToken},body:jsonEncode(cartJson)) ;
 
     if(data.containsKey("errors"))
       return data["errors"][0]["message"];
@@ -147,7 +156,7 @@ class Resources {
     return data["href"].first;
   }
   Future <String>sendOrderData(Cart cart, UserAddress address,int delivery_id,int payment_id,int usedbonucePoints )async{
-    print("sendOrderData");
+
     var cartJson = cart.toJson();
     var addressJson = address.toJson();
     cartJson["address"] = addressJson;
@@ -155,6 +164,9 @@ class Resources {
     cartJson["payment"] = payment_id;
     cartJson["usedBonuce"] = usedbonucePoints;
     cartJson["Region"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).priceId;
+    cartJson["coupon"] = cart.promocode;
+
+    print("sendOrderData "+jsonEncode(cartJson));
     var data = await NetworkUtil().post("order",headers: {"Token":networkToken},body: jsonEncode(cartJson)) ;
 
     if(data.containsKey("errors"))
@@ -163,13 +175,18 @@ class Resources {
   }
   Future <String>getOrdersData()async{
     var data = await NetworkUtil().post("getorders",headers: {"Token":networkToken}) ;
-    orders  = List<OrderData>.from((data["orders"] != null?(data["orders"] as List):List<OrderData>()).map((x) =>OrderData.fromJson(x)));
+    orders  = List<OrderData>.from((data["orders"] != null?(data["orders"] as List):List<OrderData>()).map((x) =>OrderData.fromJson(x))).reversed.toList();
+
     if(data.containsKey("errors"))
       return data["errors"][0]["message"];
     return "OK";
   }
   Future <List<CategoryData>>getCategoryData()async{
-    return List<CategoryData>.from(((await NetworkUtil().post("category")) as List).map((x) =>CategoryData.fromJson(x)));
+    var data =await NetworkUtil().post("category");
+    if(data == "503"||data == "504")
+      return List<CategoryData>();
+  print(data);
+    return List<CategoryData>.from(((data) as List).map((x) =>CategoryData.fromJson(x)));
   }
   Future <List<GoodsData>>getProductData()async{
     return List<GoodsData>.from(((await NetworkUtil().post("product")) as List).map((x) =>GoodsData.fromJson(x)));
@@ -197,6 +214,7 @@ class Resources {
     if(data.containsKey("errors"))
       return data["errors"][0]["message"];
     await getProfile(networkToken);
+
     return "OK";
   }
   Future <String> getProfile(String token)async{
@@ -213,6 +231,8 @@ class Resources {
 
       _userProfile.selectedShop = shop;
     }
+    discounts = await getActiveDiscount(token);
+
     print(data.toString());
     if(data.containsKey("errors"))
       return data["errors"][0]["message"];
@@ -222,10 +242,14 @@ class Resources {
     print('loginWithData');
     var data = await NetworkUtil().post("signin",body:jsonEncode({"login":login,"pass":passHash,"platform":"android"})) as Map;
     networkToken = data['token'];
-    if(data.containsKey("errors"))
-      return data["errors"][0]["message"];
-    await getProfile(networkToken);
 
+    if(data.containsKey("errors")){
+      eventBus.fire(NewLoginData());
+      return data["errors"][0]["message"];
+    }
+
+    await getProfile(networkToken);
+    eventBus.fire(NewLoginData());
     return "OK";
   }
   Future <List<OrderData>>getFinishedOrders()async{
@@ -236,13 +260,31 @@ class Resources {
     await getOrdersData();
     return orders.where((x)=>x.status != "F").toList();
   }
+  Future <List<Discount>>getDiscounts()async{
+    return await getActiveDiscount(networkToken);
+  }
+  Future <List<Discount>>getActiveDiscount(String token)async{
+    var data = await NetworkUtil().post("discount",headers: {"Token":token});
+    var discount = List<Discount>.from( data.map((x)=>Discount.fromJson(x)));
+    return discount;
+  }
   Future <List<GoodsData>>getGoodsInCategory(int categoryId)async{
     await Future.delayed(const Duration(milliseconds: 1), (){});
     return _allGoods.getList().where((x)=>(x.categories==categoryId || categoryId == -1) && x.getPrice().price!=0).toList();
   }
   Future <bool> checkMail(String mail)async{
-    await NetworkUtil().post("checkmail");
+    await NetworkUtil().post("recover",body: jsonEncode({"email":mail}));
     return false;
+  }
+  Future <String> checkPromo(String promocode)async{
+    await Future.delayed(const Duration(milliseconds: 500), (){});
+    var data = await NetworkUtil().post("discount",headers: {"Token":networkToken},body: jsonEncode({"promocode":promocode}));
+
+    if(data.containsKey("errors"))
+      return data["errors"][0]["message"];
+
+    cart.setDiscountData(DiscountInfo.fromJson(data));
+    return "";
   }
   //#endregion
 

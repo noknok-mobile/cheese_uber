@@ -1,4 +1,5 @@
 <?
+
 CModule::AddAutoloadClasses(
   'simbirsoft.mobile',
   [

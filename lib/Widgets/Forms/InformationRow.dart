@@ -7,8 +7,8 @@ class LabeledRow extends StatelessWidget{
   final Widget icon;
   final Widget label;
   final Widget text;
-
-  const LabeledRow({Key key, this.icon, this.label, this.text}) : super(key: key);
+  final Widget posfix;
+  const LabeledRow({Key key, this.icon, this.label, this.text,this.posfix}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,9 @@ class LabeledRow extends StatelessWidget{
             label,
             text,
           ],
-        )
+        ),
+        Expanded(child: Container(),),
+        posfix,
       ],
     );
   }
@@ -36,19 +38,19 @@ class PriceRow extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return   LabeledRow(label:CustomText.black12px("${label}:"),text: CustomText.red24px("${text}"));
+    return   LabeledRow(label:CustomText.black12px("${label}:"),text: CustomText.red24px("${text}"),posfix: Container(),);
   }
 }
 class InformationRow extends StatelessWidget{
   final Widget icon;
   final String label;
   final String text;
-
-  const InformationRow({Key key, this.icon, this.label="", this.text=""}) : super(key: key);
+  final String posfix;
+  const InformationRow({Key key, this.icon, this.label="", this.text="",this.posfix = ""}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return   LabeledRow(icon:icon,label:CustomText.gray16px("${label}:"),text: CustomText.black16px("${text}"));
+    return   LabeledRow(icon:icon,label:CustomText.darkGray16px("${label}:"),text: CustomText.black16px("${text}"),posfix: CustomText.black16px("${posfix}"),);
   }
 }

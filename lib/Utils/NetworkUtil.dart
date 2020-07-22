@@ -52,7 +52,7 @@ class NetworkUtil {
         .then((http.Response response) {
       String res = response.body;
       int statusCode = response.statusCode;
-      print("API Response: " + res);
+
       if (statusCode < 200 || statusCode > 400 || json == null) {
         res = "{\"status\":" +
             statusCode.toString() +
@@ -61,8 +61,12 @@ class NetworkUtil {
             "}";
 
        // throw new Exception( statusCode);
+        return statusCode;
       }
-      return _decoder.convert(res);
+     // print("API Response1: " + res);
+      var value =_decoder.convert(res);
+      print("API Response2: " + value.toString());
+      return value;
     });
   }
 

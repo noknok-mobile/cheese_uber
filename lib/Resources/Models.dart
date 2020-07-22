@@ -169,7 +169,54 @@ class ListOfGoodsData {
     "goodsData": Map<int,GoodsData>.from(goodsData.map((x,y) => x.toJson)),
   };*/
 }
+class Discount implements IDataJsonModel,IDataBaseModel
+{
+  int id;
+  String name;
+  String imageUrl;
+  String detailImageUrl;
+  String title;
+  String detailText;
+  String coupon;
+  Discount({this.id,this.imageUrl,this.detailImageUrl,this.title,this.detailText,this.coupon,this.name});
+  @override
+  String localTableName() {
+    // TODO: implement localTableName
+    return null;
+  }
 
+  @override
+  String toInsertTable({String tableName}) {
+    // TODO: implement toInsertTable
+    return null;
+  }
+
+  @override
+  Map<String, dynamic> toJson()=> {
+    "ID" : id,
+    "PREVIEW_PICTURE": imageUrl,
+    "DETAIL_PICTURE": detailImageUrl,
+    "PREVIEW_TEXT": title,
+    "DETAIL_TEXT": detailText,
+    "COUPON":coupon,
+    "NAME":name,
+  };
+  factory Discount.fromJson(Map<String, dynamic> newJson)=>Discount(
+    id:int.parse(newJson["ID"]) ,
+    imageUrl:newJson["PREVIEW_PICTURE"],
+    detailImageUrl:newJson["DETAIL_PICTURE"],
+    title:newJson["PREVIEW_TEXT"],
+    detailText:newJson["DETAIL_TEXT"],
+    name:newJson["NAME"],
+    coupon: newJson["COUPON"] != null? newJson["COUPON"]:"",
+  );
+  @override
+  String toUpdateTable({String tableName}) {
+    // TODO: implement toUpdateTable
+    return null;
+  }
+
+}
 class Cart implements IDataJsonModel,IDataBaseModel
 {
 
@@ -178,6 +225,8 @@ class Cart implements IDataJsonModel,IDataBaseModel
   Map<int, double> cart = new Map<int, double>();
   Map<int, double> savedCartPrice = new Map<int, double>();
   int _bonusPoints = 0;
+  String promocode = "";
+  DiscountInfo discountInfo = DiscountInfo();
 
   double get cartPrice {
     double price = 0;
@@ -194,19 +243,34 @@ class Cart implements IDataJsonModel,IDataBaseModel
     return price;
   }
 
-  double get resultPrice => cartPrice - bonusPoints.toDouble().clamp(0, cartPrice);
+  double get resultPrice => cartPrice - bonusPoints.toDouble().clamp(0, cartPrice) - cartPrice *  discountInfo.discountValue*0.01;
   double get bonusPoints => _bonusPoints.toDouble();
   set setBonusPoints(int val){
-    _bonusPoints = val;
+    if(val > cartPrice/2)
+      _bonusPoints = (cartPrice/2).toInt();
+    else
+      _bonusPoints = val;
     eventBus.fire(CartUpdated(cart:this));
   }
-
+  set setPromocode(String val){
+    promocode = val;
+    eventBus.fire(CartUpdated(cart:this));
+  }
   double add(int id,int count){
    cartChanged.invoke(this);
 
     return setCount(id, getCount(id) + count);;
   }
+  void clearDiscountData (){
+    discountInfo = DiscountInfo();
 
+    eventBus.fire(CartUpdated(cart:this));
+  }
+  void setDiscountData (DiscountInfo val){
+    discountInfo = val;
+
+    eventBus.fire(CartUpdated(cart:this));
+  }
   double getGoodsInCartCount(){
     double num =0;
     cart.values.map((v)=>num+=v);
@@ -234,7 +298,7 @@ class Cart implements IDataJsonModel,IDataBaseModel
   }
   double setCount(int id,double count){
 
-
+    setBonusPoints = bonusPoints.toInt();
     cart[id] = count == null?0:count;
     if( cart[id] <= 0)
     {
@@ -347,12 +411,14 @@ class OrderData{
   final Cart cart;
   final PayType payType;
   final DeliveryType deliveryType;
+  final double deliveryPrice;
+  final double price;
   final UserAddress userAddress;
 
 
 
 
-  OrderData({this.id, this.orderTime,this.cart,this.orderEndTime,this.status,this.payType,this.userAddress,this.deliveryType});
+  OrderData(  {this.id, this.orderTime,this.cart,this.orderEndTime,this.status,this.payType,this.userAddress,this.deliveryType,this.deliveryPrice,this.price,});
 
   factory OrderData.fromJson(Map<String, dynamic> newJson){
     final DateFormat format = DateFormat("dd.MM.yyyy H:m:s");
@@ -364,6 +430,8 @@ class OrderData{
       orderEndTime: format.parse(newJson["DATE_UPDATE"]),
       deliveryType: int.tryParse(newJson["DELIVERY_ID"]) == 2?DeliveryType.pickup:DeliveryType.courier ,
       status: newJson["STATUS_ID"],
+       deliveryPrice:double.parse(newJson["PRICE_DELIVERY"]) ,
+       price:double.parse( newJson["PRICE"]),
       userAddress: UserAddress.fromJson(newJson["profile"]),
       cart:Cart.fromJson(newJson)
   );}
@@ -406,7 +474,7 @@ class UserAddress {
   String entrance = "";
   String floor = "";
   String flat = "";
-  UserAddress({this.id = 0,this.userID = 0,this.city = " ",this.addres= " ",this.phone ="+7(",this.username=" ",this.name="Новый адрес",this.entrance=" ",this.floor=" ",this.flat=" ",this.comment=" "});
+  UserAddress({this.id = 0,this.userID = 0,this.city = " ",this.addres= " ",this.phone ="+7(",this.username=" ",this.name="Новый адрес",this.entrance=" ",this.floor=" ",this.flat=" ",this.comment=""});
   factory UserAddress.fromJson(Map<String, dynamic> json) =>
       UserAddress(
         id : int.parse(json["id"]) ,
@@ -458,6 +526,39 @@ class CityInfo {
   };
   CityInfo({this.id, this.name, this.previewImage,});
 }
+
+class DiscountInfo {
+  final String name;
+  final String status;
+  final String discountType;
+  final double discountValue;
+
+  final double resultDiscount;
+  final double price;
+  final double basePrice;
+  DiscountInfo({this.name = "", this.status = "INNACTIVE", this.discountType="", this.discountValue=0, this.resultDiscount=0, this.price=0, this.basePrice=0});
+  factory DiscountInfo.fromJson(Map<String, dynamic> json) =>
+      DiscountInfo(
+        name : json["name"] ,
+        status : json["status"] ,
+        discountType : json["discountType"],
+        discountValue :  json["discountValue"].toDouble(),
+        resultDiscount :  json["resultDiscount"].toDouble(),
+        price :  json["price"].toDouble(),
+        basePrice :  json["basePrice"].toDouble(),
+      );
+  @override
+  Map<String, dynamic> toJson() => {
+    "status" : status,
+    "discountType":discountType,
+    "discountValue":discountValue,
+    "resultDiscount":resultDiscount,
+    "price":price,
+    "basePrice":basePrice,
+
+  };
+}
+
 class ShopInfo {
   final int id;
   final int shopId;

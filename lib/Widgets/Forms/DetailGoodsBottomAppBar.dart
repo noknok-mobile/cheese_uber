@@ -72,7 +72,7 @@ class _DetailGoodsBottomAppBarBottomAppBar extends State<DetailGoodsBottomAppBar
               child:Container(),
 
             ),
-            CustomButton.colored(expanded: true, color:ColorConstants.red,height: 45,child:CustomText.white12px(TextConstants.cartAddToOrder),onClick: ()=>{
+            CustomButton.colored(expanded: true, color:ColorConstants.red,height: 45,child:CustomText.white12px(TextConstants.cartAddToOrder.toUpperCase()),onClick: ()=>{
             Navigator.push(
             context,
             CartButtonRoute( builder: (context) => CartPage()),

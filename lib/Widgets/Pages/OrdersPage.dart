@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
+import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/Order.dart';
 
 class OrdersPage extends StatelessWidget {
+  final int openOrder;
+
+  const OrdersPage({Key key, this.openOrder = 0}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     List<Tab> tabsTitles = List<Tab>();
@@ -23,47 +28,50 @@ class OrdersPage extends StatelessWidget {
     ));
 
     for (int i = 0; i < tabsTitles.length; i++) {
-      tabsContent.add(FutureBuilder(
-        future: i!=0?Resources().getFinishedOrders():Resources().getActiveOrders(),
-        builder: (BuildContext buildContext, AsyncSnapshot snapshot) {
+      tabsContent.add(AutoUpdatingWidget<OrderChanged>(
+        child:(context,e)=>  FutureBuilder(
+          future: i!=0?Resources().getFinishedOrders():Resources().getActiveOrders(),
+          builder: (BuildContext buildContext, AsyncSnapshot snapshot) {
 
-          if (snapshot.hasData && snapshot.data != null) {
-            if (snapshot.data.isEmpty) {
-              return Stack(
-                children: <Widget>[
-                  Container(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 150),
+            if (snapshot.hasData && snapshot.data != null) {
+              if (snapshot.data.isEmpty) {
+                return Stack(
+                  children: <Widget>[
+                    Container(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 150),
+                          child: Container(
+                            width: 250,
+                              child: CustomText.black24px(TextConstants.ordersEmpty,align: TextAlign.center,)),
+                        )),
+                    Container(alignment: Alignment.bottomCenter, child: Image(image: AssetsConstants.emptyCart))
+                  ],
+                );
+              } else {
+
+                return ListView.builder(
+                    shrinkWrap: true,
+                    // physics: BouncingScrollPhysics(),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(20,index == 0?20:0,20,7),
                         child: Container(
-                          width: 250,
-                            child: CustomText.black24px(TextConstants.ordersEmpty,align: TextAlign.center,)),
-                      )),
-                  Container(alignment: Alignment.bottomCenter, child: Image(image: AssetsConstants.emptyCart))
-                ],
-              );
+
+                          child: Order(data: snapshot.data[index],opened:openOrder == snapshot.data[index].id),
+                        ),
+                      );
+
+                    });
+
+              }
             } else {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  // physics: BouncingScrollPhysics(),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.fromLTRB(20,index == 0?20:0,20,7),
-                      child: Container(
-
-                        child: Order(data: snapshot.data[index]),
-                      ),
-                    );
-
-                  });
-
+              return Center(child: CircularProgressIndicator());
             }
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-          return CircularProgressIndicator();
-        },
+            return CircularProgressIndicator();
+          },
+        ),
       ));
     }
 

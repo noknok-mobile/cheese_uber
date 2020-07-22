@@ -15,6 +15,7 @@ class InputFieldPassword extends StatefulWidget {
   final SharedValue<String> value;
   final double height;
   final bool decorated;
+  bool showPass = true;
   TextEditingController _controller = new TextEditingController();
 
   InputFieldPassword({Key key,this.value,this.label ="Пароль",this.height = 45, this.decorated=true}) : super(key: key){
@@ -55,26 +56,35 @@ class _InputFieldPasswordState extends State<InputFieldPassword> {
         ],*/
         style:   TextStyle(fontSize: 14,color:ColorConstants.black,fontWeight: FontWeight.w500,),
         keyboardType: TextInputType.text,
-      obscureText: true,
-
+       obscureText: widget.showPass,
+        textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
           errorStyle: TextStyle(height: 0),
           filled: true,
           fillColor: ColorConstants.mainAppColor,
-          focusedBorder:widget.decorated? OutlineInputBorder(
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
               borderSide: BorderSide(
-                color: ColorConstants.darckBlack,
-              )):InputBorder.none,
-          border:widget.decorated? OutlineInputBorder(
-              borderSide: BorderSide(color: ColorConstants.darkGray)):InputBorder.none,
+                color: widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,
+              )) ,
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
+          enabledBorder:  OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
           contentPadding: EdgeInsets.only(left: 10),
+          suffixIcon: GestureDetector(
+            onTap: (){
+              setState(() {
+                widget.showPass = !widget.showPass;
+              });
 
+
+            },
+            child: IconConstants.showPass),
           hintText: widget.label,
-          suffixIcon: Icon(
-            Icons.create,
-            color: ColorConstants.darkGray,
-            size: 16,
-          ),
+
         ),
       validator: validateText,
       onChanged: (String value) => {

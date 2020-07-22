@@ -61,7 +61,7 @@ class DetailGoods extends StatelessWidget {
                   fit: FlexFit.tight,
                   flex: 1,
                   child: Container(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.fromLTRB(20,0,20,0),
                     decoration: BoxDecoration(
 
                       color: ColorConstants.mainAppColor,
@@ -73,8 +73,9 @@ class DetailGoods extends StatelessWidget {
                         ParametersConstants.shadowDecoration,
                       ],
                     ),
-                    child: Column(
+                    child: ListView(
                       children: <Widget>[
+                        SizedBox(width: 30,height: 20,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,7 +115,7 @@ class DetailGoods extends StatelessWidget {
                         Expanded(
                           child: CustomText.black16px(goodsData.detailText,align: TextAlign.left,),
                         ),
-
+                        SizedBox(width: 30,height: 20,),
                       ],
                     ),
                   ),

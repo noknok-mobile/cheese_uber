@@ -14,6 +14,8 @@ import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:flutter_cheez/Widgets/Forms/NewAddres.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
+import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'OrdersPage.dart';
 
@@ -38,7 +40,7 @@ class _UserInfoState extends State<UserInfo> {
         height: ParametersConstants.appBarHeight,
         title: TextConstants.profileHeader,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           width: 9999,
           // height: 9999,
@@ -54,12 +56,28 @@ class _UserInfoState extends State<UserInfo> {
 
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: <Widget>[
-                      CustomText.black20pxBold(Resources().userProfile.username),
-                      CustomText.black16px(Resources().userProfile.email),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          CustomText.black20pxBold(Resources().userProfile.username),
+                          CustomText.black16px(Resources().userProfile.email),
 
+                        ],
+                      ),
+                      Expanded(child:Container()),
+                      GestureDetector(
+                        onTap: () async{
+                          Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+                          final SharedPreferences prefs = await _prefs;
+                          prefs.setString("pass", "");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute( builder: (context) => LoginPage()));
+                        },
+                        child:  CustomText.red14pxUnderline(TextConstants.exit),
+                      )
                     ],
                   ),
                 ),
@@ -129,19 +147,9 @@ class _UserInfoState extends State<UserInfo> {
               /*  Padding(
                   padding: const EdgeInsets.all(8),
                   child: CustomText.black16px(Resources().userProfile?.email),
-                ),
-                Container(
-
-                  height: 1,
-                  color: ColorConstants.gray,
-                ),
-               Padding(
-                  padding: const EdgeInsets.all(0),
-                  child:InputFieldPassword(label: TextConstants.changePassword, value: pass,decorated: false),
                 ),*/
-
-                  Padding(
-                  padding: const EdgeInsets.all(16),
+                Padding(
+                  padding: const EdgeInsets.all(8),
                   child: CustomText.black20pxBold(TextConstants.youAdresHeader),
                 ),
                 Container(
@@ -149,7 +157,7 @@ class _UserInfoState extends State<UserInfo> {
                   color: ColorConstants.gray,
                 ),
 
-                Expanded(child: Container( child: ListView.separated(
+                Container( child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: Resources().userProfile.userAddress == null?0: Resources().userProfile.userAddress.length,
                     separatorBuilder: (context, index) {
@@ -178,11 +186,11 @@ class _UserInfoState extends State<UserInfo> {
                         //  CustomCheckBox(disabledWidget: AssetsConstants.toggleOff,enabledWidget: AssetsConstants.toggleOn,value: true,)
                         ],
                       );
-                    }),),),
+                    }),),
                 Padding(
                   padding: const EdgeInsets.all(8),
 
-                  child: CustomButton.colored(expanded: true, color:ColorConstants.red,height: 40,child:CustomText.white12px(TextConstants.newAddres),onClick: ()=>{
+                  child: CustomButton.colored(expanded: true, color:ColorConstants.red,height: 40,child:CustomText.white12px(TextConstants.newAddres.toUpperCase()),onClick: ()=>{
                     Navigator.push(
                       context,
                       MaterialPageRoute( builder: (context) =>  NewAddres()))}),

@@ -58,7 +58,6 @@ class GoodsPage extends StatelessWidget {
                           // physics: BouncingScrollPhysics(),
                           itemCount: projectSnap.data.length,
                           itemBuilder: (context, index) {
-
                             return Column(
                               children: <Widget>[
 
@@ -70,7 +69,7 @@ class GoodsPage extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0, 3, 0, 3),
-                                  child: Goods(data: projectSnap.data[index],
+                                  child:  Goods(data: projectSnap.data[index],
                                     height: 155,),
                                 ),
                                 SizedBox(

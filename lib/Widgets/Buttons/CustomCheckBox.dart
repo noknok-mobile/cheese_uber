@@ -21,6 +21,7 @@ class _stateCustomCheckBox extends State<CustomCheckBox>{
       width: widget.width,
       height: widget.height,
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         child: AnimatedCrossFade(
           duration: const Duration(milliseconds: 200),
           crossFadeState: widget.value?CrossFadeState.showFirst:CrossFadeState.showSecond,

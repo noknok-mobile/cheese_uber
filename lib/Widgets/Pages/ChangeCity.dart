@@ -53,13 +53,13 @@ class _StateChangeCity extends State<ChangeCity>{
                           CustomText.black18pxBold("${TextConstants.yourCity} ${sectedCity.name} ?"),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0,18,0,0),
-                            child: CustomButton.colored(expanded: true, color:ColorConstants.black,height: 40,child:CustomText.white12px(TextConstants.btnChange),onClick: ()=>{
+                            child: CustomButton.colored(expanded: true, color:ColorConstants.black,height: 40,child:CustomText.white12px(TextConstants.btnChange.toUpperCase()),onClick: ()=>{
                               setState(()=>{widget.itsMyCity = false,})
                             }),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0,18,0,0),
-                            child: CustomButton.colored(expanded: true, color:ColorConstants.red,height: 40,child:CustomText.white12px(TextConstants.btnYes),onClick: ()=>{
+                            child: CustomButton.colored(expanded: true, color:ColorConstants.red,height: 40,child:CustomText.white12px(TextConstants.btnYes.toUpperCase()),onClick: ()=>{
                               Resources().selectCity(sectedCity.id),
                               Navigator.push(
                                 context,
@@ -113,7 +113,7 @@ class _StateChangeCity extends State<ChangeCity>{
                     Expanded(child:Container()),
                     Padding(
                       padding: EdgeInsets.all(20),
-                      child: CustomButton.colored(expanded: true, color:ColorConstants.red,height: 40,child:CustomText.white12px(TextConstants.btnNext),onClick: ()=>{
+                      child: CustomButton.colored(expanded: true, color:ColorConstants.red,height: 40,child:CustomText.white12px(TextConstants.btnNext.toUpperCase()),onClick: ()=>{
                         Navigator.push(
                           context,
                           MaterialPageRoute( builder: (context) => SelectShop(selectedCity: sectedCity,)),)}),

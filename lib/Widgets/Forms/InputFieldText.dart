@@ -19,7 +19,7 @@ class InputFieldText extends CustomInputField {
   final int maxLines;
   final bool decorated;
   TextEditingController _controller = new TextEditingController();
-  var validator = (x){return null;};
+  String Function(String) validator = (x){return null;};
 
   InputFieldText(
       {this.label = "",
@@ -32,7 +32,8 @@ class InputFieldText extends CustomInputField {
         this.decorated = true
       }) {
 
-    _controller.text = value?.value;
+    _controller.text = value?.value != null? value?.value:this.label == ""?" ":"";
+
     content = Container(
       alignment: Alignment.center,
       height: height,
@@ -74,8 +75,21 @@ class InputFieldText extends CustomInputField {
         validator: validator,
         controller: _controller,
         onChanged: (String value) => {
-          this.value.value = value
+          this.value.value = value.trim(),
+          if(value == "" && this.prefix != ""){
+            _controller.text = " "
+
+          }
         },
+          onFieldSubmitted: (String value) => {
+            _controller.text = value.trim(),
+            if(value == "" && this.prefix != ""){
+            _controller.text = " "
+
+            }
+
+          }
+
       ),
     );
   }

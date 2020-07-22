@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tuple/tuple.dart';
 class TextConstants{
   static String get login => "Вход";
-
+  static String get exit => "Выход";
   static String get register => "Регистрация";
   static String get infoHeader => "Инфо";
   static String get newOrderHeader => "Оформление заказа";
@@ -25,10 +25,10 @@ class TextConstants{
   static String get cartBonus => "Оплачено бонусами";
   static String get orderPayHeader => "Оплата";
   static String get orderDeliveryAddress => "Параметры доставки";
-  static String get orderDeliveryHeader => "Споссоб доставки";
+  static String get orderDeliveryHeader => "Способ доставки";
   static String get orderDeliveryCurier => "Курьерская доставка";
   static String get orderDeliverySelf => "Самовывоз";
-  static String get orderPayCard => "Картой Онлайн";
+  static String get orderPayCard => "Картой онлайн";
 
   static String get cartBonusCount => "Количество бонусов для списания";
   static String get cartNoBonuses => "У вас еще нет бонусов";
@@ -46,14 +46,14 @@ class TextConstants{
   static String get btnYes => "ДА";
   static String get btnChange => "ИЗМЕНИТЬ";
   static String get hello => "Добро пожаловать в МИР СЫРОВ";
-  static String get loginOrRegister => "Войдите или зарегистрируйтесь, чтобы сделать заказ";
+  static String get loginOrRegister => "Войдите или зарегистрируйтесь,\n чтобы сделать заказ";
 
   static String get activeOrders => "Активные";
   static String get finishedOrders => "Выполненные";
   static String get orderNumber => "Заказ №";
   static String get orderCall => "обрабатывается";
   static String get orderDone => "выполнен";
-  static String get orderDelivery => "доставляеться";
+  static String get orderDelivery => "доставляется";
   static String get orderPay => "ожидается оплата";
   static String get orderMakePay => "Оплатить";
   static String get orderSberbankPay => "Страница оплаты";
@@ -83,12 +83,17 @@ class TextConstants{
   static String get defaultAddres => "Адрес по умолчанию";
   static String get newAddres => "Новый адрес доставки";
   static String get addresName => "Название";
+  static String get textCopy => "Текст скопирован";
+  static String get usePromocode => "Применить промокод";
 
+  static String get forgotPass => "Забыли пороль";
 
+  static String get politicsHeader => "Соглашение";
+  static String get politics =>"Регистрируясь, вы соглашаетесь с Регламентом работы сайта, Согласием на обработку персональных данных и условиями Договора купли-продажи.";
+  static String get politicsUrl =>"https://xn--90aij3acc4e.xn--p1ai/include/licenses_detail.php";
   static List<Tuple2<String,String>> get informationHeader => [
     Tuple2<String,String>("О магазине","https://xn--90aij3acc4e.xn--p1ai/company/"),
     Tuple2<String,String>("Оплата и доставка","https://xn--90aij3acc4e.xn--p1ai/payment/"),
-   // Tuple2<String,String>("Доставка","https://xn--90aij3acc4e.xn--p1ai/help/delivery/"),
     Tuple2<String,String>("Персональные данные","https://xn--90aij3acc4e.xn--p1ai/include/licenses_detail.php"),
    // Tuple2<String,String>("Правила обмена и возврата товара","https://xn--90aij3acc4e.xn--p1ai/help/warranty/"),
     Tuple2<String,String>("Контакты","https://xn--90aij3acc4e.xn--p1ai/contacts/stores/"),
@@ -98,13 +103,14 @@ class TextConstants{
 class ColorConstants{
   ///color
   static const Color black = Color(0xFF424851);
+  static const Color blackTransparent = Color(0xDD424851);
   static const Color darckBlack = Color(0xFF2C2C2C);
 
   static const Color darkGray = Color(0xFF858688);
 
   static const Color red = Color(0xFFD93740);
   static const Color darkRed = Color(0xFF902719);
-  static const Color background = Color(0xFFDADFEB);
+  static const Color background = Color(0xFFEFF3FE);
   static const Color gray = background;//Color(0xFFDFDFDF);
     //  .fromRGBO(161 ,0.633,0.633,1));
   static const Color goodsBack = Color.fromRGBO(242, 240, 240, 1);
@@ -136,6 +142,16 @@ class IconConstants{
       angle: -90 * 3.14 / 180,
       child: SvgPicture.asset(
         'lib/assets/icons/arrow_left.svg',color: ColorConstants.black,
+      ));
+  static Widget get showPass =>Transform.rotate(
+      angle: 0 * 3.14 / 180,
+
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: SvgPicture.asset(
+
+          'lib/assets/icons/show_pass.svg',color: ColorConstants.darkGray
+        ),
       ));
   static Widget get menu => Icon(Icons.menu,color: ColorConstants.black,);
 
@@ -182,7 +198,10 @@ class AssetsConstants{
   static  Image get iconCheckBox => Image.asset(
     'lib/assets/icons/check_box.png',
   );
+  static  SvgPicture get discountBG => SvgPicture.asset(
+    'lib/assets/backgrounds/discount.svg',
 
+  );
   static  SvgPicture get iconCheese => SvgPicture.asset(
     'lib/assets/icons/cheese.svg',
   );
