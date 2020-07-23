@@ -79,9 +79,9 @@ class ProductElementController implements Routable {
                      $arFields['PREVIEW_PICTURE'] =  $resizedFile['SRC'] ? "https://".$_SERVER['SERVER_NAME'].$resizedFile['SRC'] : "";
                      $resizedFile = \CFile::GetFileArray($arFields['DETAIL_PICTURE']); 
                     $arFields['DETAIL_PICTURE'] =  $resizedFile['SRC'] ? "https://".$_SERVER['SERVER_NAME'].$resizedFile['SRC'] : "";
-                    $arFields['NAME'] = strip_tags($arFields['NAME']);   
-                    $arFields['PREVIEW_TEXT'] = strip_tags($arFields['PREVIEW_TEXT']);
-                     
+                    $arFields['NAME'] = strip_tags($arFields['NAME'] );
+                    $arFields['PREVIEW_TEXT'] = strip_tags($arFields['PREVIEW_TEXT']?$arFields['PREVIEW_TEXT']:"");
+                      $arFields['DETAIL_TEXT'] = strip_tags($arFields['DETAIL_TEXT'] && $arFields['DETAIL_TEXT'] != ""?$arFields['DETAIL_TEXT']:$arFields['PREVIEW_TEXT']);
                     $arResult[] = $arFields;
                     $CACHE_MANAGER->RegisterTag("element_".$arFields["ID"]);
                 }

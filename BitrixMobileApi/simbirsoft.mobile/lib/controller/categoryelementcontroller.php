@@ -25,7 +25,7 @@ class CategoryElementController implements Routable {
             print json_encode($out);
         }
         if (true) {
-            $arOrder = array("IBLOCK_SECTION_ID"=>"ASC", "SORT" => "ASC");
+            $arOrder = array("SORT"=>"ASC", "SORT" => "ASC");
             $arFilter = array('IBLOCK_ID' => 25, 'ACTIVE' => 'Y','ID' => $postJson['id']?$postJson['id']:null,); 
             $arSelect = array('ID', 'NAME',"IBLOCK_ID","PICTURE","IBLOCK_SECTION_ID");
         
