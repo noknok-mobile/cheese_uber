@@ -15,7 +15,6 @@ class DetailGoods extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
-    print("detailImageUrl "+goodsData.detailImageUrl);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -23,8 +22,9 @@ class DetailGoods extends StatelessWidget {
               alignment: Alignment.topCenter,
               child:
                      CachedImage.imageForCategory(
+                       roundBorder: false,
                       url: Resources().getCategoryById(
-          goodsData.categories).imageUrl,
+                        goodsData.categories).imageUrl,
                        child: Container(decoration: BoxDecoration(  gradient: LinearGradient(
                            begin: FractionalOffset.topCenter,
                            end: FractionalOffset.bottomCenter,

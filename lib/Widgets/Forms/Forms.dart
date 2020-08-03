@@ -83,25 +83,26 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
   final String url;
   final Color backgroundColor;
   final Widget child;
+  final bool roundBorder;
   double width;
   double height;
   double radius;
 
-  CachedImage({Key key, this.url, this.child, this.width, this.height, this.radius = 7,this.backgroundColor = ColorConstants.mainAppColor}) : super(key: key);
+  CachedImage({Key key, this.url, this.child, this.width, this.height, this.radius = 7,this.backgroundColor = ColorConstants.mainAppColor,this.roundBorder = true}) : super(key: key);
 
-  CachedImage.imageForCart(double sizeMultipler, {Key key, this.url,this.child,this.height,this.backgroundColor = ColorConstants.mainAppColor}): super(key: key){
+  CachedImage.imageForCart(double sizeMultipler, {Key key, this.url,this.child,this.height,this.backgroundColor = ColorConstants.mainAppColor,this.roundBorder = true}): super(key: key){
 
     width =  ParametersConstants.smallImageWidth*sizeMultipler;
     height = ParametersConstants.smallImageHeight*sizeMultipler;
     radius = ParametersConstants.smallImageBorderRadius;
   }
 
-  CachedImage.imageForShopList({Key key, this.url,this.child,this.height,this.backgroundColor = ColorConstants.mainAppColor}): super(key: key){
+  CachedImage.imageForShopList({Key key, this.url,this.child,this.height,this.backgroundColor = ColorConstants.mainAppColor,this.roundBorder = true}): super(key: key){
     width =  height;
     height = height;
     radius = ParametersConstants.mediumImageBorderRadius;
   }
-  CachedImage.imageForCategory({Key key, this.url,this.child,this.backgroundColor = ColorConstants.mainAppColor}): super(key: key){
+  CachedImage.imageForCategory({Key key, this.url,this.child,this.backgroundColor = ColorConstants.mainAppColor,this.roundBorder = true}): super(key: key){
     width =  ParametersConstants.largeImageWidth;
     height = ParametersConstants.largeImageHeight;
     radius = ParametersConstants.largeImageBorderRadius;
@@ -119,7 +120,7 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
           height: height,
           decoration: BoxDecoration(
             color:backgroundColor,
-            borderRadius: BorderRadius.circular(radius),
+            borderRadius: BorderRadius.circular(  roundBorder? radius:0),
 
             image: DecorationImage(
               image: imageProvider,
@@ -135,6 +136,10 @@ class CachedImage extends StatelessWidget implements PreferredSizeWidget{
       placeholder: (context, url) => Container(
           width: width,
           height: height,
+          decoration: BoxDecoration(
+            color:backgroundColor,
+            borderRadius: BorderRadius.circular(radius),
+          ),
           child: Center(child: CircularProgressIndicator())),
       errorWidget: (context, url, error) => Container(
 
