@@ -11,9 +11,16 @@ import 'package:flutter_cheez/Widgets/Forms/InputFieldPassword.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
+import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ChangeCity.dart';
+
+class LoginPageArguments {
+  final String backRoute;
+
+  LoginPageArguments(this.backRoute);
+}
 
 class LoginPage extends StatefulWidget {
   String errorMessage = "";
@@ -43,18 +50,17 @@ class _LoginPageState extends State<LoginPage> {
   final _scafoldKey = GlobalKey<FormState>();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     /*  final SharedPreferences prefs = await _prefs;
     email.value = prefs.getString("email");
     pass.value = prefs.getString("pass");*/
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
+    final LoginPageArguments args = ModalRoute.of(context).settings.arguments;
+
     List<Tab> tabsTitles = List<Tab>();
     List<Widget> tabsContent = List<Widget>();
     tabsTitles.add(Tab(
@@ -131,10 +137,12 @@ class _LoginPageState extends State<LoginPage> {
 
                           if (value == "OK") {
                             print(value);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ChangeCity()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => CartPage()));
+
+                            Navigator.pushNamed(context, args.backRoute);
                           } else {
                             print(value);
 
@@ -155,40 +163,48 @@ class _LoginPageState extends State<LoginPage> {
                 GestureDetector(
                   onTap: () => {
                     showDialog(
-
                       context: context,
                       builder: (context) {
                         final _formKey = GlobalKey<FormState>();
-                        SharedValue<String> email = SharedValue<String>(value: '');
+                        SharedValue<String> email =
+                            SharedValue<String>(value: '');
                         return SimpleDialog(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(ParametersConstants.largeImageBorderRadius),
+                            borderRadius: BorderRadius.circular(
+                                ParametersConstants.largeImageBorderRadius),
                           ),
                           contentPadding: EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                         // shape:  ShapeBorder().,
+                          // shape:  ShapeBorder().,
                           children: <Widget>[
                             Container(
-                              decoration:BoxDecoration(borderRadius:BorderRadius.all(Radius.circular(ParametersConstants.largeImageBorderRadius)) ) ,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(ParametersConstants
+                                          .largeImageBorderRadius))),
                               height: 100,
                               child: Form(
                                 key: _formKey,
                                 child: Column(
-
                                   children: <Widget>[
-                                    InputFieldEmail(value: email,),
-                                    Expanded(child: Container(),),
+                                    InputFieldEmail(
+                                      value: email,
+                                    ),
+                                    Expanded(
+                                      child: Container(),
+                                    ),
                                     CustomButton.colored(
                                       color: ColorConstants.red,
                                       enable: !widget.inProgress,
                                       height: 45,
                                       width: 9999,
-                                      child: CustomText.white12px("Отправить".toUpperCase()),
-                                      onClick: ()=>{
+                                      child: CustomText.white12px(
+                                          "Отправить".toUpperCase()),
+                                      onClick: () => {
                                         Resources().checkMail(email.value),
-                                        if(_formKey.currentState.validate())
+                                        if (_formKey.currentState.validate())
                                           Navigator.of(context).pop()
                                       },
                                     ),
@@ -265,7 +281,8 @@ class _LoginPageState extends State<LoginPage> {
                   height: 45,
                   width: 9999,
                   color: ColorConstants.red,
-                  child: CustomText.white12px("Зарегистрироваться".toUpperCase()),
+                  child:
+                      CustomText.white12px("Зарегистрироваться".toUpperCase()),
                   onClick: () {
                     widget.inProgress = true;
                     if (_registerFormKey.currentState.validate()) {
@@ -283,10 +300,11 @@ class _LoginPageState extends State<LoginPage> {
 
                         if (value == "OK") {
                           print(value);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChangeCity()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ChangeCity()));
+                          Navigator.pushNamed(context, args.backRoute);
                         } else {
                           //widget.inProgress = false;
                           widget.inProgress = false;

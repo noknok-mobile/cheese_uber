@@ -605,7 +605,7 @@ class ShopInfo {
 class UserProfile {
   int id;
   double bonusPoints = 0;
-  String username = "Иван Иванов";
+  String username = "anonimus";
   String email = "ivanIvanov@gmail.com";
 
   String phone = "";
@@ -614,7 +614,7 @@ class UserProfile {
   List<UserAddress> userAddress = List<UserAddress>();
   bool defaultAddrese = false;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  UserProfile({this.id,this.bonusPoints = 0,this.selectedShop = 0,this.username= "Иван Иванов",this.phone,this.email,this.userAddress});
+  UserProfile({this.id,this.bonusPoints = 0,this.selectedShop = 0,this.username= "anonimus",this.phone,this.email,this.userAddress});
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
       UserProfile(

@@ -32,6 +32,10 @@ class DiscountList extends StatelessWidget implements PreferredSizeWidget{
         future: Resources().getDiscounts(),
         builder: (context,  projectSnap){
 
+          if(Resources().userProfile.id == null) {
+            return Container();
+          }
+
           if (projectSnap.connectionState != ConnectionState.done || projectSnap.data == null){
             return Center(child: CircularProgressIndicator());
           }

@@ -45,6 +45,7 @@ class GoodsPage extends StatelessWidget {
                         if (projectSnap.hasError) {
                           print(
                               'project snapshot data is: ${projectSnap.data}');
+                          print('last error - ${projectSnap.error}');
                           return Container();
                         }
                         if (projectSnap.connectionState !=

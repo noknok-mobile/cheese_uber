@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
+import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
+import 'package:path/path.dart';
 
 class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
@@ -32,7 +35,13 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                     title != "" ? IconButton(
                       icon: IconConstants.arrowBack,
                       onPressed: () {
-                        Navigator.pop(context);
+                        var route = ModalRoute.of(context);
+                        if (route.settings.name == "/cart") {
+                          Navigator.pushAndRemoveUntil(context,
+                            MaterialPageRoute( builder: (context) => CategoryPage()), (Route<dynamic> route) => false);
+                        } else {
+                          Navigator.pop(context);
+                        }
                       },
                     ):Container(),
                     Container(width: 10,),

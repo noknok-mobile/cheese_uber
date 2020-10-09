@@ -9,6 +9,7 @@ import 'package:flutter_cheez/Widgets/Forms/CartBottomAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartGoods.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
+import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
 
 import 'NewOrderPage.dart';
 
@@ -19,10 +20,9 @@ class CartPage extends StatefulWidget {
   final double bottomMenuHeight = 165;
   @override
   _CartPageState createState() => _CartPageState();
-
 }
 
-class _CartPageState extends State<CartPage> with TickerProviderStateMixin{
+class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
   bool showGoodsInCart = false;
   StreamSubscription subsctiprion;
   @override
@@ -30,95 +30,113 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin{
     super.initState();
 
     showGoodsInCart = Resources().cart.getUniqueGoodsInCart() != 0;
-    if(Resources().cart.getUniqueGoodsInCart() > 0)
+    if (Resources().cart.getUniqueGoodsInCart() > 0)
       Resources().sendBasketData(Resources().cart);
-    subsctiprion = eventBus.on<CartUpdated>().listen((CartUpdated data){
-
-     if(data.cart.getUniqueGoodsInCart() == 0)
-     {
-
-       setState(()=>{ showGoodsInCart = false});
-     }
+    subsctiprion = eventBus.on<CartUpdated>().listen((CartUpdated data) {
+      if (data.cart.getUniqueGoodsInCart() == 0) {
+        setState(() => {showGoodsInCart = false});
+      }
     });
   }
+
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     subsctiprion.cancel();
     subsctiprion = null;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: ColorConstants.background,
-        appBar: NextPageAppBar(height: ParametersConstants.appBarHeight,title: TextConstants.cartHeader),
+        //backgroundColor: ColorConstants.background,
+        appBar: NextPageAppBar(
+            height: ParametersConstants.appBarHeight,
+            title: TextConstants.cartHeader),
         drawer: Drawer(child: LeftMenu()),
         //floatingActionButton: CartButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body:Center(child: FutureBuilder(
+        body: Center(
+          child: FutureBuilder(
+            future: Resources().getCart(),
+            builder: (context, AsyncSnapshot<Map<int, double>> projectSnap) {
+              if (projectSnap.hasError) {
+                print('project snapshot data is: ${projectSnap.data}');
+                return Container();
+              }
+              if (projectSnap.connectionState != ConnectionState.done) {
+                return CircularProgressIndicator();
+              }
 
-          future: Resources().getCart(),
-          builder: (context,AsyncSnapshot<Map<int,double>> projectSnap) {
-            if(projectSnap.hasError){
-              print('project snapshot data is: ${projectSnap.data}');
-              return Container();
-            }
-            if (projectSnap.connectionState != ConnectionState.done){
-              return CircularProgressIndicator();
-            }
-
-            return Stack(
-              children: <Widget>[
-
-                !showGoodsInCart? Align(alignment: Alignment.center,
-                    child: Padding(
-                  padding: const EdgeInsets.only(bottom:300),
-                  child: CustomText.black18px(TextConstants.cartEmpty),
-                )):Container(),
-
-                !showGoodsInCart? Align(alignment: Alignment.bottomCenter,  child: Image( image:AssetsConstants.emptyCart)):Container(),
-
-                ListView.builder(
-                  padding: EdgeInsets.only(bottom: widget.bottomMenuHeight + ParametersConstants.paddingInFerstListElemetn),
-                  itemCount: projectSnap.data.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-
-                      children: <Widget>[
-                        SizedBox(
-                            height: index == 0 ? ParametersConstants.paddingInFerstListElemetn:0 ),
-                        CartGoods( data: Resources().getGodById( projectSnap.data.keys.toList()[index])),
-                        index == projectSnap.data.length-1 ? AddBonuses(): Container(),
-
-
-                      ],
-                    );
-                  },
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: showGoodsInCart?widget.bottomMenuHeight:0,
-
-                    child: BottomAppBar(
-                        shape: const CircularNotchedRectangle(),
-                        child: CartBottomAppBar(height:widget.bottomMenuHeight,onBottomButtonClick: ()=>{
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                            return NewOrderPage();
-                            })
-                        )
-
-
-                        },)
+              return Stack(
+                children: <Widget>[
+                  !showGoodsInCart
+                      ? Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 300),
+                            child:
+                                CustomText.black18px(TextConstants.cartEmpty),
+                          ))
+                      : Container(),
+                  !showGoodsInCart
+                      ? Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Image(image: AssetsConstants.emptyCart))
+                      : Container(),
+                  ListView.builder(
+                    padding: EdgeInsets.only(
+                        bottom: widget.bottomMenuHeight +
+                            ParametersConstants.paddingInFerstListElemetn),
+                    itemCount: projectSnap.data.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: <Widget>[
+                          SizedBox(
+                              height: index == 0
+                                  ? ParametersConstants
+                                      .paddingInFerstListElemetn
+                                  : 0),
+                          CartGoods(
+                              data: Resources().getGodById(
+                                  projectSnap.data.keys.toList()[index])),
+                          index == projectSnap.data.length - 1
+                              ? AddBonuses()
+                              : Container(),
+                        ],
+                      );
+                    },
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: showGoodsInCart ? widget.bottomMenuHeight : 0,
+                      child: BottomAppBar(
+                          shape: const CircularNotchedRectangle(),
+                          child: CartBottomAppBar(
+                            height: widget.bottomMenuHeight,
+                            onBottomButtonClick: () => {
+                              if (Resources().userProfile.id != null)
+                                {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NewOrderPage()))
+                                }
+                              else
+                                {
+                                  Navigator.pushNamedAndRemoveUntil(context,
+                                      '/login', (Route<dynamic> route) => false,
+                                      arguments: LoginPageArguments('/cart'))
+                                }
+                            },
+                          )),
                     ),
                   ),
-                ),
-              ],
-            );},
-        ),
-
+                ],
+              );
+            },
+          ),
         ));
   }
 }

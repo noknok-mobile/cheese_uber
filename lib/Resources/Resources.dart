@@ -252,6 +252,11 @@ class Resources {
     eventBus.fire(NewLoginData());
     return "OK";
   }
+
+  void logout() {
+    NetworkUtil().get("signout", headers: {});
+  }
+
   Future <List<OrderData>>getFinishedOrders()async{
     await  getOrdersData();
     return orders.where((x)=>x.status == "F").toList();
@@ -268,10 +273,12 @@ class Resources {
     var discount = List<Discount>.from( data.map((x)=>Discount.fromJson(x)));
     return discount;
   }
+
   Future <List<GoodsData>>getGoodsInCategory(int categoryId)async{
     await Future.delayed(const Duration(milliseconds: 1), (){});
     return _allGoods.getList().where((x)=>(x.categories==categoryId || categoryId == -1) && x.getPrice().price!=0).toList();
   }
+
   Future <bool> checkMail(String mail)async{
     await NetworkUtil().post("recover",body: jsonEncode({"email":mail}));
     return false;
