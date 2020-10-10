@@ -17,7 +17,7 @@ class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
 
   final String title = TextConstants.cartHeader;
-  final double bottomMenuHeight = 165;
+  final double bottomMenuHeight = 196;
   @override
   _CartPageState createState() => _CartPageState();
 }
