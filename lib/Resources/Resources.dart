@@ -164,7 +164,7 @@ class Resources {
     cartJson["payment"] = payment_id;
     cartJson["usedBonuce"] = usedbonucePoints;
     cartJson["priceType"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).priceId;
-    cartJson["region"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).id;
+    cartJson["region"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).locationId;
     cartJson["coupon"] = cart.promocode;
 
     print("sendOrderData "+jsonEncode(cartJson));
