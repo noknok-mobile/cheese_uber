@@ -591,6 +591,7 @@ class ShopInfo {
   final int id;
   final int shopId;
   final int priceId;
+  final int locationId;
   final int city;
   final String address;
   final List<String> phones;
@@ -603,6 +604,7 @@ class ShopInfo {
         id: int.parse(json["ID"]),
         shopId: int.parse(json["STORE_ID"].first),
         priceId: int.parse(json["PRICE_ID"].first),
+        locationId: int.parse(json["LOCATION_LINK"]),
         city: int.parse(json["SITY_ID"]),
         address: json["ADDRESS"].toString(),
         phones: json["PHONES"].toString().split(','),
@@ -620,6 +622,7 @@ class ShopInfo {
         "ID": id,
         "STORE_ID": shopId,
         "PRICE_ID": priceId,
+        "LOCATION_LINK": locationId,
         "ADDRESS": address,
         "PHONES": phones,
         "MAP_POINTS": [
@@ -636,6 +639,7 @@ class ShopInfo {
     this.city = 0,
     this.address = "",
     this.priceId = 1,
+    this.locationId = 4866,
     this.mapPoint = const Point(latitude: 0.0, longitude: 0.0),
     this.id = 0,
     this.phones = const [''],
