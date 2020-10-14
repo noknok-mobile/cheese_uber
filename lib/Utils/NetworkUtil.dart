@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_cheez/Utils/TextUtils.dart';
 
 class NetworkUtil {
   static final defauilPicture =

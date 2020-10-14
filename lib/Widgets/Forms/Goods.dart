@@ -77,7 +77,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                         children: <Widget>[
                           Text(
                             data.name,
-                            style: Theme.of(context).textTheme.body1,
+                            style: Theme.of(context).textTheme.bodyText2,
                             maxLines: 2,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
@@ -88,7 +88,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                             padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                             child: Text(
                               data.previewText,
-                              style: Theme.of(context).textTheme.body2,
+                              style: Theme.of(context).textTheme.bodyText1,
                               maxLines: 2,
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -111,13 +111,13 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                       RichText(
                         text: TextSpan(
                           text: "${data.getPrice().price.toInt().toString()} р \n",
-                          style: Theme.of(context).textTheme.subtitle,
+                          style: Theme.of(context).textTheme.subtitle2,
 
                           children: <TextSpan>[
                             TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"1 "+data.units}",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .body2
+                                    .bodyText1
                             ),
                           ],
                         ),
@@ -156,7 +156,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                     children: <Widget>[
                       Text(
                         data.name,
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         maxLines: 2,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
@@ -168,7 +168,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                        child: Text(
 
                          data.previewText,
-                         style: Theme.of(context).textTheme.body2,
+                         style: Theme.of(context).textTheme.bodyText1,
                          maxLines: 2,
                          softWrap: true,
                          overflow: TextOverflow.ellipsis,
@@ -187,13 +187,13 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                                   RichText(
                                     text: TextSpan(
                                       text: "${data.getPrice().price.toInt().toString()} р \n",
-                                      style: Theme.of(context).textTheme.subtitle,
+                                      style: Theme.of(context).textTheme.subtitle2,
 
                                       children: <TextSpan>[
                                         TextSpan(text: "${data.units}",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .body2
+                                                .bodyText1
                                         ),
                                       ],
                                     ),

@@ -2,16 +2,13 @@
 import 'dart:convert';
 
 import 'package:flutter_cheez/Events/Events.dart';
-import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Utils/Geolocation.dart';
 import 'package:flutter_cheez/Utils/NetworkUtil.dart';
-import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:sqflite/sqflite.dart";
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import 'Models.dart';
 class DBProvider {

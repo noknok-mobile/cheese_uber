@@ -9,9 +9,7 @@ import 'package:flutter_cheez/Widgets/Forms/InputFieldEmail.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldName.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldPassword.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
-import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ChangeCity.dart';
@@ -81,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
-            autovalidate: false,
+            autovalidateMode:  AutovalidateMode.disabled,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -231,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           child: Form(
             key: _registerFormKey,
-            autovalidate: false,
+            autovalidateMode:  AutovalidateMode.disabled,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

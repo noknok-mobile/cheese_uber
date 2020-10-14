@@ -7,7 +7,6 @@ import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'package:flutter_cheez/Widgets/Forms/PriceTextField.dart';
 import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/DetailGoods.dart';
 import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';

@@ -9,10 +9,6 @@ import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldCheckBox.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
-import 'package:flutter_cheez/Widgets/Pages/SelectAddres.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
-
-
 import 'InputFieldAddres.dart';
 import 'InputFieldName.dart';
 
@@ -49,7 +45,7 @@ class NewAddres extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Form(
           key: formKey,
-          autovalidate: false,
+          autovalidateMode:  AutovalidateMode.disabled,
           child: Wrap(
           spacing: 0, // to apply margin horizontally
           runSpacing: 20, // to apply margin vertically

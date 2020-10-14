@@ -5,7 +5,6 @@ import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Forms/DetailGoodsBottomAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'dart:math' as math;
 
 class DetailGoods extends StatelessWidget {
   final GoodsData goodsData;

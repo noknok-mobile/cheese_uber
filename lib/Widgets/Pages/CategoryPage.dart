@@ -1,11 +1,8 @@
 import 'dart:async';
-
-import 'package:event_bus/event_bus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
-import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
@@ -14,7 +11,6 @@ import 'package:flutter_cheez/Widgets/Forms/DiscountList.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/HomePageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
-import '../../main.dart';
 import 'GoodsPage.dart';
 import 'OrdersPage.dart';
 
@@ -162,7 +158,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                               child: Text(
                                 data[index].title,
-                                style: Theme.of(context).textTheme.title,
+                                style: Theme.of(context).textTheme.headline6,
                               ),
                             ),
                           ),

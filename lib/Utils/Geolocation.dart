@@ -2,8 +2,6 @@ import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/services/base.dart';
 import 'package:location/location.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
-
 import 'dart:math' as math;
 
 class Geolocation {
@@ -73,7 +71,6 @@ class Geolocation {
     } catch (e) {
       print("Error occured: $e");
     } finally {}
-    ;
     return List<Address>();
   }
 
@@ -87,7 +84,6 @@ class Geolocation {
     } catch (e) {
       print("Error occured: $e");
     } finally {}
-    ;
     return List<Address>();
   }
 }

@@ -1,15 +1,10 @@
-import 'dart:async';
-
 import "package:flutter/material.dart";
-import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Forms/Goods.dart';
-
-import 'Forms.dart';
 
 class CartGoods extends StatefulWidget implements PreferredSizeWidget {
   final GoodsData data;

@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
-import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Utils/SharedValue.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'CustomInputField.dart';
-import 'Forms.dart';
 
 class InputFieldAddres extends StatefulWidget {
   final String label;

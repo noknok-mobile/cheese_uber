@@ -4,17 +4,12 @@ import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Utils/SharedValue.dart';
-import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Buttons/CustomCheckBox.dart';
-import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartBottomAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldName.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
-import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';
-
 import 'OrdersPage.dart';
 
 class NewOrderPage extends StatefulWidget {
@@ -108,7 +103,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   margin: const EdgeInsets.all(20),
                   child: Form(
                       key: widget.formKey,
-                      autovalidate: false,
+                      autovalidateMode:  AutovalidateMode.disabled,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,

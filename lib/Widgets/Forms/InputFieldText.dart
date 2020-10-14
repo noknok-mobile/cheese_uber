@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Utils/SharedValue.dart';
-import 'package:flutter_cheez/Widgets/Buttons/CustomCheckBox.dart';
-
 import 'CustomInputField.dart';
 import 'Forms.dart';
 

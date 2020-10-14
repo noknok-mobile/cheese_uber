@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
-import 'package:flutter_cheez/Resources/Resources.dart';
-
-import 'Forms.dart';
 
 class Logo extends StatelessWidget implements PreferredSizeWidget {
   final double height;

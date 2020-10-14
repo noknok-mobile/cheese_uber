@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cheez/Widgets/Forms/Logo.dart';
-
-import 'HomePage.dart';
 
 class SplashScreen extends StatelessWidget {
   @override

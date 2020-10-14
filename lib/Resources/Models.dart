@@ -273,7 +273,6 @@ class Cart implements IDataJsonModel, IDataBaseModel {
     cartChanged.invoke(this);
 
     return setCount(id, getCount(id) + count);
-    ;
   }
 
   void clearDiscountData() {

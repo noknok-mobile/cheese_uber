@@ -1,17 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
-import 'package:flutter_cheez/Resources/Resources.dart';
-import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'package:flutter_cheez/Widgets/Forms/Logo.dart';
-import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
-import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
-import 'package:flutter_cheez/Widgets/Pages/ChangeCity.dart';
-import 'package:flutter_cheez/Widgets/Pages/InformationPage.dart';
-import 'package:flutter_cheez/Widgets/Pages/OrdersPage.dart';
-import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
-import 'package:flutter_cheez/Widgets/Pages/UserInfo.dart';
-import 'package:flutter_svg/svg.dart';
 
 enum SnackBatMessageType{
   info,error,warning

@@ -12,7 +12,6 @@ import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/OrdersPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
 import 'package:flutter_cheez/Widgets/Pages/UserInfo.dart';
-import 'package:flutter_svg/svg.dart';
 
 class LeftMenu extends StatelessWidget {
   Widget _content(BuildContext context, bool useExpand) {

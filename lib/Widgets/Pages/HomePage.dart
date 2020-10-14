@@ -5,7 +5,6 @@ import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/ChangeCity.dart';
-import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
 
 class HomePage extends StatelessWidget {
   @override

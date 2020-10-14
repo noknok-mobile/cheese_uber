@@ -1,16 +1,10 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
-import 'package:flutter_cheez/Resources/Resources.dart';
-import 'package:flutter_cheez/Utils/SharedValue.dart';
-import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Drawers/MySnackBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter/services.dart';
-import 'AutoUpdatingWidget.dart';
 
 
 class DetailDiscount extends StatefulWidget {

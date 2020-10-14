@@ -1,7 +1,6 @@
 
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
-import 'package:flutter_cheez/Resources/Resources.dart';
 
 EventBus eventBus = EventBus();
 

@@ -1,12 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
-import 'package:flutter_cheez/Resources/Resources.dart';
-import 'package:flutter_cheez/Widgets/Buttons/CountButtonGroup.dart';
-import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
-import 'package:flutter_cheez/Widgets/Pages/DetailGoods.dart';
 import 'DetailDiscount.dart';
 import 'Forms.dart';
 
