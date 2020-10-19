@@ -49,7 +49,7 @@ class NewAddres extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Form(
           key: formKey,
-          autovalidate: false,
+          autovalidateMode:  AutovalidateMode.disabled,
           child: Wrap(
           spacing: 0, // to apply margin horizontally
           runSpacing: 20, // to apply margin vertically

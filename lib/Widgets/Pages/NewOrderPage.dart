@@ -108,7 +108,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   margin: const EdgeInsets.all(20),
                   child: Form(
                       key: widget.formKey,
-                      autovalidate: false,
+                      autovalidateMode:  AutovalidateMode.disabled,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,

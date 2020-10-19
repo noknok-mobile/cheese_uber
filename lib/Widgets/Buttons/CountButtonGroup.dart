@@ -136,7 +136,7 @@ class _CountButtonGroupState extends State<CountButtonGroup> with TickerProvider
                       decoration: null,
                       style: Theme.of(context)
                         .textTheme
-                        .body1,
+                        .bodyText2,
                       textAlign: TextAlign.center,
                       enableInteractiveSelection: false,
                       autofocus: false,
@@ -144,7 +144,7 @@ class _CountButtonGroupState extends State<CountButtonGroup> with TickerProvider
                       cursorColor: ColorConstants.red,
 
                       inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly,
+                        FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(2),
                       ],
                     controller: _controller,

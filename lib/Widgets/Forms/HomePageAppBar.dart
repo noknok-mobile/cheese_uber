@@ -45,7 +45,7 @@ class HomePageAppBar extends  StatelessWidget implements PreferredSizeWidget {
                       style: Theme
                           .of(context)
                           .textTheme
-                          .headline,
+                          .headline5,
                       ),
                     ),
                   ),

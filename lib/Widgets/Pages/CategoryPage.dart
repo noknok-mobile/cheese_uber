@@ -179,7 +179,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                   child: Text(
                                     data[index].title,
-                                    style: Theme.of(context).textTheme.title,
+                                    style: Theme.of(context).textTheme.headline6,
                                   ),
                                 ),
                               ),

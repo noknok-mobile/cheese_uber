@@ -124,20 +124,20 @@ class _RootPageState extends State<MyApp> {
             accentColor: ColorConstants.red,
             buttonColor: ColorConstants.red,
             textTheme: TextTheme(
-              headline: TextStyle(
+              headline5: TextStyle(
                 fontSize: 24,
                 color: ColorConstants.black,
                 fontWeight: FontWeight.w500,
               ),
-              subhead: TextStyle(
+              subtitle1: TextStyle(
                   fontSize: 32,
                   color: ColorConstants.darkGray,
                   fontWeight: FontWeight.w500),
-              subtitle: TextStyle(
+              subtitle2: TextStyle(
                   fontSize: 18,
                   color: ColorConstants.darckBlack,
                   fontWeight: FontWeight.w800),
-              title: TextStyle(
+              headline6: TextStyle(
                   fontSize: 20,
                   color: ColorConstants.mainAppColor,
                   fontWeight: FontWeight.w500),
@@ -147,11 +147,11 @@ class _RootPageState extends State<MyApp> {
                   fontWeight: FontWeight.w500),
 
               //       TextStyle(fontSize: 20,color:ColorConstants.mainAppColor,fontWeight: FontWeight.w500),
-              body1: TextStyle(
+              bodyText2: TextStyle(
                   fontSize: 16,
                   color: ColorConstants.black,
                   fontWeight: FontWeight.w800),
-              body2: TextStyle(
+              bodyText1: TextStyle(
                   fontSize: 12,
                   color: ColorConstants.darkGray,
                   fontWeight: FontWeight.w500),

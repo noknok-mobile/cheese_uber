@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
-            autovalidate: false,
+            autovalidateMode:  AutovalidateMode.disabled,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -231,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           child: Form(
             key: _registerFormKey,
-            autovalidate: false,
+            autovalidateMode:  AutovalidateMode.disabled,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
