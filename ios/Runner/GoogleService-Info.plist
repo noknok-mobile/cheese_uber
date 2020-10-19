@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>972092785389-mchhmik0p87soulaj2uu0v5jgm86dr0b.apps.googleusercontent.com</string>
+	<string>972092785389-3tv5kvt6qim1k7u8dqfs5kd9v62n4gga.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.972092785389-mchhmik0p87soulaj2uu0v5jgm86dr0b</string>
+	<string>com.googleusercontent.apps.972092785389-3tv5kvt6qim1k7u8dqfs5kd9v62n4gga</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCI0Ceu81O58l__VHiiwS3fODpdWSOGQdo</string>
 	<key>GCM_SENDER_ID</key>
@@ -19,17 +19,17 @@
 	<key>STORAGE_BUCKET</key>
 	<string>cheez-world-57ef0.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:972092785389:ios:5d0817099c688e709682e4</string>
+	<string>1:972092785389:ios:5004bc920f9c8f799682e4</string>
 	<key>DATABASE_URL</key>
 	<string>https://cheez-world-57ef0.firebaseio.com</string>
 </dict>
