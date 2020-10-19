@@ -43,6 +43,8 @@ class _StateChangeCity extends State<ChangeCity> {
               sectedCity = Resources().getCityWithId(projectSnap.data.city);
             }
 
+            // Resources().loadShops();
+
             if (itemsToDisplay.length != 0 && widget.itsMyCity)
               return Padding(
                 padding: const EdgeInsets.all(20.0),

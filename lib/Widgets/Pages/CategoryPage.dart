@@ -56,6 +56,10 @@ class _CategoryPageState extends State<CategoryPage> {
       eventBus.fire(OrderChanged(notification));
     });
 
+    _firebaseMessaging.getToken().then((token) {
+      print("FirebaseMessaging token: $token");
+    });
+
     if (subscription != null) {
       subscription.cancel();
       subscription = null;
@@ -88,7 +92,6 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Resources().getCategoryWithParent(widget.parentCategoryID);
     return Scaffold(
         key: scaffoldKey,
         appBar: widget.parentCategoryID == 0
@@ -102,77 +105,93 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
         drawer: Drawer(child: LeftMenu()),
         floatingActionButton: CartButton(),
-        body: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return Column(children: <Widget>[
-                SizedBox(
-                  height: index == 0
-                      ? ParametersConstants.paddingInFerstListElemetn
-                      : 0,
-                ),
-                widget.parentCategoryID == 0 && index == 0
-                    ? DiscountList(
-                        height: 84,
-                      )
-                    : Container(),
-                Container(
-                    margin: ParametersConstants.goodsContainersMargin,
-                    child: CachedImage.imageForCategory(
-                        url: data[index].imageUrl,
-                        child: FlatButton(
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          onPressed: () {
-                            var x = Resources()
-                                .getCategoryWithParent(data[index].id);
+        body: FutureBuilder(
+          future: Resources().loadCategories(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              print('project snapshot data is: ${snapshot.data}');
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.connectionState != ConnectionState.done) {
+              return CircularProgressIndicator();
+            }
 
-                            if (x.length == 0) {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return GoodsPage(
-                                    categoryId: data[index].id, data: data);
-                              }));
-                            } else {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return CategoryPage(
-                                    parentCategoryID: data[index].id);
-                              }));
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(
-                                    ParametersConstants.largeImageBorderRadius),
-                                gradient: LinearGradient(
-                                  begin: FractionalOffset.topCenter,
-                                  end: FractionalOffset.bottomCenter,
-                                  colors: [
-                                    Colors.grey.withOpacity(0.0),
-                                    Colors.black.withOpacity(0.5),
-                                  ],
-                                  stops: [
-                                    0.0,
-                                    1.0
-                                  ]
-                                )),
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                              child: Text(
-                                data[index].title,
-                                style: Theme.of(context).textTheme.title,
+            var data =
+                Resources().getCategoryWithParent(widget.parentCategoryID);
+
+            return ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return Column(children: <Widget>[
+                    SizedBox(
+                      height: index == 0
+                          ? ParametersConstants.paddingInFerstListElemetn
+                          : 0,
+                    ),
+                    widget.parentCategoryID == 0 && index == 0
+                        ? DiscountList(
+                            height: 84,
+                          )
+                        : Container(),
+                    Container(
+                        margin: ParametersConstants.goodsContainersMargin,
+                        child: CachedImage.imageForCategory(
+                            url: data[index].imageUrl,
+                            child: FlatButton(
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              onPressed: () {
+                                var x = Resources()
+                                    .getCategoryWithParent(data[index].id);
+
+                                if (x.length == 0) {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return GoodsPage(
+                                        categoryId: data[index].id, data: data);
+                                  }));
+                                } else {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return CategoryPage(
+                                        parentCategoryID: data[index].id);
+                                  }));
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(
+                                        ParametersConstants
+                                            .largeImageBorderRadius),
+                                    gradient: LinearGradient(
+                                        begin: FractionalOffset.topCenter,
+                                        end: FractionalOffset.bottomCenter,
+                                        colors: [
+                                          Colors.grey.withOpacity(0.0),
+                                          Colors.black.withOpacity(0.5),
+                                        ],
+                                        stops: [
+                                          0.0,
+                                          1.0
+                                        ])),
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  child: Text(
+                                    data[index].title,
+                                    style: Theme.of(context).textTheme.title,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ))),
-                SizedBox(
-                  height: index == data.length - 1
-                      ? ParametersConstants.paddingInFerstListElemetn
-                      : 0,
-                ),
-              ]);
-            }));
+                            ))),
+                    SizedBox(
+                      height: index == data.length - 1
+                          ? ParametersConstants.paddingInFerstListElemetn
+                          : 0,
+                    ),
+                  ]);
+                });
+          },
+        ));
   }
 }

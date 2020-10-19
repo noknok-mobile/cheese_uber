@@ -54,8 +54,7 @@ class LeftMenu extends StatelessWidget {
                 child: CustomText.red14pxUnderline(
                     TextConstants.login + " / " + TextConstants.register),
                 onTap: () => {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/login', (Route<dynamic> route) => false,
+                      Navigator.pushNamed(context, '/login',
                           arguments: LoginPageArguments('/category'))
                     }),
           ),

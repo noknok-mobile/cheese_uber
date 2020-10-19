@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
@@ -11,18 +12,18 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final PreferredSizeWidget bottom;
 
-  const NextPageAppBar(
-      {Key key, this.height =  65,
-      this.title = "",
-      this.bottom,
-      })
-      : super(key: key);
+  const NextPageAppBar({
+    Key key,
+    this.height = 65,
+    this.title = "",
+    this.bottom,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(color: ColorConstants.mainAppColor,
-
+        decoration: BoxDecoration(
+            color: ColorConstants.mainAppColor,
             boxShadow: [ParametersConstants.shadowDecoration]),
         child: Column(
           children: [
@@ -32,26 +33,32 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Container(
                   height: height,
                   child: Row(children: [
-                    title != "" ? IconButton(
-                      icon: IconConstants.arrowBack,
-                      onPressed: () {
-                        var route = ModalRoute.of(context);
-                        if (route.settings.name == "/cart") {
-                          Navigator.pushAndRemoveUntil(context,
-                            MaterialPageRoute( builder: (context) => CategoryPage()), (Route<dynamic> route) => false);
-                        } else {
-                          Navigator.pop(context);
-                        }
-                      },
-                    ):Container(),
-                    Container(width: 10,),
+                    title != ""
+                        ? IconButton(
+                            icon: IconConstants.arrowBack,
+                            onPressed: () {
+                              var route = ModalRoute.of(context);
+                              if (route.settings.name == "/cart") {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CategoryPage()),
+                                    (Route<dynamic> route) => false);
+                              } else {
+                                Navigator.pop(context);
+                              }
+                            },
+                          )
+                        : Container(),
+                    Container(
+                      width: 10,
+                    ),
                     Flexible(
                         flex: 1,
                         fit: FlexFit.tight,
                         child: //Expanded(
                             CustomText.black24px(
                           title,
-
                         )),
                   ]),
                 ),

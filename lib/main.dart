@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
@@ -84,12 +85,14 @@ class _RootPageState extends State<MyApp> {
         print("AllUpToDate");
       });
     });
-    Resources().loadAllData();
+
+    Resources().startLoad();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+
     MaterialColor colorCustom =
         MaterialColor(ColorConstants.mainAppColor.value, colors);
     return MaterialApp(

@@ -351,7 +351,8 @@ class _LoginPageState extends State<LoginPage> {
           child: Scaffold(
               key: _scafoldKey,
               appBar: NextPageAppBar(
-                height: ParametersConstants.appBarHeight * 0.3,
+                height: ParametersConstants.appBarHeight,
+                title: "Авторизация",
                 bottom: TabBar(
                   labelColor: ColorConstants.darkGray,
                   unselectedLabelColor: ColorConstants.gray,

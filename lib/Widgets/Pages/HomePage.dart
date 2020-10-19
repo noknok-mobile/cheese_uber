@@ -6,6 +6,7 @@ import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/ChangeCity.dart';
 import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/StartPage.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -13,6 +14,7 @@ class HomePage extends StatelessWidget {
     return FutureBuilder(
         future: Resources().login(),
         builder: (context, AsyncSnapshot<String> projectSnap) {
+          print("usrrrrr --- " + Resources().userProfile.id.toString());
           if (!projectSnap.hasData) {
             print('project snapshot data is: ${projectSnap.data}');
             return Center(child: CircularProgressIndicator());
@@ -23,27 +25,10 @@ class HomePage extends StatelessWidget {
           // return CategoryPage();
           if (Resources().userProfile.id != null &&
               Resources().userProfile.selectedShop != 0) {
-            print("category page");
             return CategoryPage();
           } else {
-            print("ChangeCity page");
             return ChangeCity();
           }
-
-          // if(projectSnap.data !="OK"){
-
-          //   return  LoginPage();//
-          // } else{
-          //   if(Resources().userProfile.selectedShop!=0)
-          //     return CategoryPage();
-          //   else
-          //     return ChangeCity();
-          // }
-          return AutoUpdatingWidget<AllUpToDate>(
-            child: (context, data) {
-              return Container();
-            },
-          );
         });
   }
 }
