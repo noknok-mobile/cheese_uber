@@ -405,6 +405,11 @@ class Resources {
     return geolocation.getNearestShop(shops);
   }
 
+  Future<ShopInfo> getNearestShopByLocation(Point point) async {
+    await Future.delayed(const Duration(milliseconds: 1), () {});
+    return geolocation.getNearestShopByLocation(getAllShops, point);
+  }
+
   Future<List<GoodsData>> getGoods() async {
     await Future.delayed(const Duration(milliseconds: 1), () {});
     return _allGoods.getList();

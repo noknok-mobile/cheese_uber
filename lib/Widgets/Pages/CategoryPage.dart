@@ -16,6 +16,8 @@ import 'package:flutter_cheez/Widgets/Forms/HomePageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 import '../../Resources/Resources.dart';
 import '../../Resources/Resources.dart';
+import '../../Resources/Resources.dart';
+import '../../Resources/Resources.dart';
 import '../../main.dart';
 import 'GoodsPage.dart';
 import 'OrdersPage.dart';
@@ -95,7 +97,7 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     Future loadData(int parentCategory) {
-      if (parentCategory == 0) {
+      if (parentCategory == 0 && Resources().categories.length == 0) {
         return Future.wait(
             [Resources().loadCategories(), Resources().loadProducts()]);
       }

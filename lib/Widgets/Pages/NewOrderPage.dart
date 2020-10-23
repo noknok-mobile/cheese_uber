@@ -26,32 +26,25 @@ class NewOrderPage extends StatefulWidget {
       SharedValue<String>(value: Resources().userProfile?.phone);
 
   UserAddress _userAddress = UserAddress();
-  UserAddress get userAddress{
+  UserAddress get userAddress {
+    return Resources().userProfile.userAddress.length > 0
+        ? Resources().userProfile.userAddress.last
+        : _userAddress;
+  }
 
-   return Resources().userProfile.userAddress.length > 0 ?Resources().userProfile.userAddress.first:_userAddress;
-
-}
   SharedValue<String> addres;
   SharedValue<String> contactName;
   SharedValue<String> entrance;
   SharedValue<String> floor;
   SharedValue<String> flat;
   SharedValue<String> comment;
-  NewOrderPage(){
-   addres = SharedValue<String>(
-        value:userAddress.addres);
-    contactName = SharedValue<String>(
-        value: userAddress.username);
-   entrance = SharedValue<String>(
-        value: userAddress.entrance);
-   floor = SharedValue<String>(
-        value: userAddress.floor);
-   flat = SharedValue<String>(
-        value: userAddress.flat);
-    comment = SharedValue<String>(
-        value: "");
-
-
+  NewOrderPage() {
+    addres = SharedValue<String>(value: userAddress.addres);
+    contactName = SharedValue<String>(value: userAddress.username);
+    entrance = SharedValue<String>(value: userAddress.entrance);
+    floor = SharedValue<String>(value: userAddress.floor);
+    flat = SharedValue<String>(value: userAddress.flat);
+    comment = SharedValue<String>(value: "");
   }
 
   @override
@@ -67,10 +60,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               child: CartBottomAppBar(
-                isEnable: widget.enabled,
+                  isEnable: widget.enabled,
                   height: widget.bottomMenuHeight,
-                  onBottomButtonClick: () async{
-
+                  onBottomButtonClick: () async {
                     if (widget.formKey.currentState.validate()) {
                       widget.formKey.currentState.save();
                       widget.userAddress.phone = widget.phone.value;
@@ -84,13 +76,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
                         widget.enabled = false;
                       });
 
-                     await Resources().sendOrderData(Resources().cart,
-                          widget.userAddress, widget.deliveryMethod.value, 9,Resources().cart.bonusPoints.toInt());
+                      await Resources().sendOrderData(
+                          Resources().cart,
+                          widget.userAddress,
+                          widget.deliveryMethod.value,
+                          9,
+                          Resources().cart.bonusPoints.toInt());
                       Resources().cart.clear();
                       Resources().editAddrese(widget.userAddress);
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute( builder: (context) => OrdersPage()),
+                          MaterialPageRoute(builder: (context) => OrdersPage()),
                           ModalRoute.withName("/"));
                     }
                   })),
@@ -108,7 +104,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   margin: const EdgeInsets.all(20),
                   child: Form(
                       key: widget.formKey,
-                      autovalidateMode:  AutovalidateMode.disabled,
+                      autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -320,8 +316,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     height: 1,
                                     color: ColorConstants.gray,
                                   ),
-
-
                                   InputFieldText(
                                     decorated: false,
                                     height: 90,

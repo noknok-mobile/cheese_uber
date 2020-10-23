@@ -6,6 +6,8 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import 'dart:math' as math;
 
+import '../Resources/Models.dart';
+
 class Geolocation {
   Location location = new Location();
   final Geocoding mode = Geocoder.local;
@@ -61,6 +63,17 @@ class Geolocation {
           myPoint
               .distanceTo(math.Point(b.mapPoint.latitude, b.mapPoint.longitude))
               .floor();
+    });
+    return shops.first;
+  }
+
+  ShopInfo getNearestShopByLocation(List<ShopInfo> shops, Point point) {
+    shops.sort((a, b) {
+      math.Point myPoint = math.Point(point.latitude, point.longitude);
+      return myPoint
+          .distanceTo(math.Point(a.mapPoint.latitude, a.mapPoint.longitude))
+          .compareTo(myPoint.distanceTo(
+              math.Point(b.mapPoint.latitude, b.mapPoint.longitude)));
     });
     return shops.first;
   }

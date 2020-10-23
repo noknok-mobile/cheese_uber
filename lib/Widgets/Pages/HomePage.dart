@@ -22,12 +22,12 @@ class HomePage extends StatelessWidget {
             return CircularProgressIndicator();
           }
           // return CategoryPage();
-          if (Resources().userProfile.id != null &&
-              Resources().userProfile.selectedShop != 0) {
-            return CategoryPage();
-          } else {
-            return ChangeCity();
-          }
+          // if (Resources().userProfile.id != null &&
+          //     Resources().userProfile.selectedShop != 0) {
+          //   return CategoryPage();
+          // } else {
+          return ChangeCity();
+          // }
         });
   }
 }
