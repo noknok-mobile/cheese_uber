@@ -14,6 +14,8 @@ import 'package:flutter_cheez/Widgets/Forms/DiscountList.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/HomePageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
+import '../../Resources/Resources.dart';
+import '../../Resources/Resources.dart';
 import '../../main.dart';
 import 'GoodsPage.dart';
 import 'OrdersPage.dart';
@@ -92,6 +94,14 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future loadData(int parentCategory) {
+      if (parentCategory == 0) {
+        return Future.wait(
+            [Resources().loadCategories(), Resources().loadProducts()]);
+      }
+      return Resources().loadCategories();
+    }
+
     return Scaffold(
         key: scaffoldKey,
         appBar: widget.parentCategoryID == 0
@@ -106,7 +116,7 @@ class _CategoryPageState extends State<CategoryPage> {
         drawer: Drawer(child: LeftMenu()),
         floatingActionButton: CartButton(),
         body: FutureBuilder(
-          future: Resources().loadCategories(),
+          future: loadData(widget.parentCategoryID),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               print('project snapshot data is: ${snapshot.data}');
@@ -115,7 +125,6 @@ class _CategoryPageState extends State<CategoryPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return CircularProgressIndicator();
             }
-
             var data =
                 Resources().getCategoryWithParent(widget.parentCategoryID);
 
@@ -179,7 +188,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                   child: Text(
                                     data[index].title,
-                                    style: Theme.of(context).textTheme.headline6,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
                                   ),
                                 ),
                               ),

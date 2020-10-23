@@ -13,6 +13,8 @@ import 'package:path/path.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import 'Models.dart';
+import 'Models.dart';
+import 'Models.dart';
 
 class DBProvider {
   DBProvider._();
@@ -148,6 +150,11 @@ class Resources {
     return categories;
   }
 
+  Future<ListOfGoodsData> loadProducts() async {
+    _allGoods.addAll(await getProductData());
+    return _allGoods;
+  }
+
   //#region Network
   Future<String> editUserData() async {
     var data =
@@ -200,8 +207,14 @@ class Resources {
     cartJson["delivery"] = delivery_id;
     cartJson["payment"] = payment_id;
     cartJson["usedBonuce"] = usedbonucePoints;
-    cartJson["priceType"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).priceId;
-    cartJson["region"] = Resources().getAllShops.firstWhere((y)=>y.shopId == Resources().userProfile.selectedShop).locationId;
+    cartJson["priceType"] = Resources()
+        .getAllShops
+        .firstWhere((y) => y.shopId == Resources().userProfile.selectedShop)
+        .priceId;
+    cartJson["region"] = Resources()
+        .getAllShops
+        .firstWhere((y) => y.shopId == Resources().userProfile.selectedShop)
+        .locationId;
     cartJson["coupon"] = cart.promocode;
 
     print("sendOrderData " + jsonEncode(cartJson));
