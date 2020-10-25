@@ -114,14 +114,16 @@ class Resources {
     print("start load");
     try {
       geolocation.init();
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
     final SharedPreferences prefs = await _prefs;
 
     var city = prefs.getInt("city");
     var shop = prefs.getInt("shop");
 
-    _allShops.addAll(await getShopData());
     _allCity.addAll(await getCityData());
+    _allShops.addAll(await getShopData());
 
     if (city != null && shop != null) {
       _userProfile.selectedCity = Resources().getCityWithId(city);
@@ -137,11 +139,20 @@ class Resources {
   }
 
   Future<List<ShopInfo>> loadShops() async {
+    Future.delayed(const Duration(milliseconds: 1), () {});
+    final SharedPreferences prefs = await _prefs;
+    var shop = prefs.getInt("shop");
+
+    if (shop != null) {
+      _userProfile.selectedShop = shop;
+    }
+
     _allShops.addAll(await getShopData());
     return _allShops;
   }
 
   Future<List<ShopInfo>> getShops() async {
+    Future.delayed(const Duration(milliseconds: 1), () {});
     return _allShops;
   }
 
@@ -299,6 +310,7 @@ class Resources {
 
     var city = prefs.getInt("city");
     var shop = prefs.getInt("shop");
+
     if (city != null && shop != null) {
       _userProfile.selectedCity = Resources().getCityWithId(city);
 

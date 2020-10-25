@@ -6,6 +6,7 @@ import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/ChangeCity.dart';
 import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
 import 'package:flutter_cheez/Widgets/Pages/StartPage.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,13 +22,7 @@ class HomePage extends StatelessWidget {
           if (projectSnap.connectionState != ConnectionState.done) {
             return CircularProgressIndicator();
           }
-          // return CategoryPage();
-          // if (Resources().userProfile.id != null &&
-          //     Resources().userProfile.selectedShop != 0) {
-          //   return CategoryPage();
-          // } else {
-          return ChangeCity();
-          // }
+          return SelectShop();
         });
   }
 }

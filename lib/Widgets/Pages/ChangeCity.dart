@@ -83,9 +83,7 @@ class _StateChangeCity extends State<ChangeCity> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SelectShop(
-                                              selectedCity: sectedCity,
-                                            )),
+                                        builder: (context) => SelectShop()),
                                   )
                                 }),
                       ),
@@ -157,9 +155,7 @@ class _StateChangeCity extends State<ChangeCity> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SelectShop(
-                                          selectedCity: sectedCity,
-                                        )),
+                                    builder: (context) => SelectShop()),
                               )
                             }),
                   )

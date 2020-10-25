@@ -76,7 +76,7 @@ class _RootPageState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement initStat
     super.initState();
 
     eventBus.on<AllUpToDate>().listen((event) {

@@ -669,7 +669,14 @@ class UserProfile {
       this.username = "anonimus",
       this.phone,
       this.email,
-      this.userAddress});
+      this.userAddress}) {
+    _prefs.then((value) {
+      var shop = value.getInt("shop");
+      if (shop != null) {
+        selectedShop = shop;
+      }
+    });
+  }
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         id: int.parse(json["id"]),
