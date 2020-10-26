@@ -375,6 +375,16 @@ class Resources {
         .toList();
   }
 
+  int getGoodsInCategoryCount(int categoryId) {
+    return _allGoods
+        .getList()
+        .where((x) =>
+            (x.categories == categoryId || categoryId == -1) &&
+            x.getPrice().price != 0)
+        .toList()
+        .length;
+  }
+
   Future<bool> checkMail(String mail) async {
     await NetworkUtil().post("recover", body: jsonEncode({"email": mail}));
     return false;

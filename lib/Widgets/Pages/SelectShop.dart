@@ -87,66 +87,55 @@ class _SelectShopState extends State<SelectShop> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         resizeToAvoidBottomPadding: false,
-        body: FutureBuilder(
-          future: Resources().loadShops(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done ||
-                snapshot.data == null) {
-              return CircularProgressIndicator();
+        body: YandexMap(
+          onMapTap: (Point point) async {
+            selectedLocation = point;
+
+            selectShop(selectedLocation);
+          },
+          onMapCreated: (YandexMapController yandexMapController) async {
+            controller = yandexMapController;
+            List<ShopInfo> shops = Resources().getAllShops;
+
+            shops.forEach((x) async => await controller.addPlacemark(Placemark(
+                point: Point(
+                    longitude: x.mapPoint.longitude,
+                    latitude: x.mapPoint.latitude),
+                opacity: 1,
+                scale: 2,
+                iconName: 'lib/assets/icons/map_pointer_shop.png',
+                iconAnchor: Point(latitude: 0.5, longitude: 1.0)
+                // onTap: (Point point) => {
+                //       widget.shopId = x.shopId,
+                //       setState(() => {}),
+                //     }
+                // Resources().selectShop(x.shopId),
+                // log(x.shopId)
+                // },
+                )));
+
+            final SharedPreferences prefs = await _prefs;
+            var currentLong = prefs.getDouble("currentLong");
+            var currentLat = prefs.getDouble("currentLat");
+
+            if (currentLong != null && currentLat != null) {
+              selectedLocation =
+                  Point(longitude: currentLong, latitude: currentLat);
+            } else {
+              if (Resources().geolocation.latitude != null ||
+                  Resources().geolocation.longitude != null) {
+                selectedLocation = Point(
+                    longitude: Resources().geolocation.longitude,
+                    latitude: Resources().geolocation.latitude);
+              } else {
+                selectedLocation = shops.first.mapPoint;
+              }
             }
 
-            return YandexMap(
-              onMapTap: (Point point) async {
-                selectedLocation = point;
+            selectShop(selectedLocation);
 
-                selectShop(selectedLocation);
-              },
-              onMapCreated: (YandexMapController yandexMapController) async {
-                controller = yandexMapController;
-                List<ShopInfo> shops = Resources().getAllShops;
-
-                shops.forEach((x) async => await controller.addPlacemark(
-                    Placemark(
-                        point: Point(
-                            longitude: x.mapPoint.longitude,
-                            latitude: x.mapPoint.latitude),
-                        opacity: 1,
-                        scale: 2,
-                        iconName: 'lib/assets/icons/map_pointer_shop.png',
-                        iconAnchor: Point(latitude: 0.5, longitude: 1.0)
-                        // onTap: (Point point) => {
-                        //       widget.shopId = x.shopId,
-                        //       setState(() => {}),
-                        //     }
-                        // Resources().selectShop(x.shopId),
-                        // log(x.shopId)
-                        // },
-                        )));
-
-                final SharedPreferences prefs = await _prefs;
-                var currentLong = prefs.getDouble("currentLong");
-                var currentLat = prefs.getDouble("currentLat");
-
-                if (currentLong != null && currentLat != null) {
-                  selectedLocation =
-                      Point(longitude: currentLong, latitude: currentLat);
-                } else {
-                  if (Resources().geolocation.latitude != null ||
-                      Resources().geolocation.longitude != null) {
-                    selectedLocation = Point(
-                        longitude: Resources().geolocation.longitude,
-                        latitude: Resources().geolocation.latitude);
-                  } else {
-                    selectedLocation = shops.first.mapPoint;
-                  }
-                }
-
-                selectShop(selectedLocation);
-
-                controller.move(point: selectedLocation);
-                controller.zoomIn();
-              },
-            );
+            controller.move(point: selectedLocation);
+            controller.zoomIn();
           },
         ),
         bottomNavigationBar: Padding(
