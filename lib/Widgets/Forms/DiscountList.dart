@@ -1,16 +1,9 @@
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cheez/Events/Events.dart';
-import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
-import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
-import 'package:flutter_cheez/Widgets/Buttons/CountButtonGroup.dart';
-import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Forms/DiscountPreview.dart';
-import 'package:flutter_cheez/Widgets/Pages/DetailGoods.dart';
-import 'Forms.dart';
 
 class DiscountList extends StatelessWidget implements PreferredSizeWidget {
   DiscountList({Key key, this.data, this.height}) : super(key: key);
@@ -28,10 +21,6 @@ class DiscountList extends StatelessWidget implements PreferredSizeWidget {
       child: FutureBuilder(
         future: Resources().getDiscounts(),
         builder: (context, projectSnap) {
-          if (Resources().userProfile.id == null) {
-            return Container();
-          }
-
           if (projectSnap.connectionState != ConnectionState.done ||
               projectSnap.data == null) {
             return Center(child: CircularProgressIndicator());

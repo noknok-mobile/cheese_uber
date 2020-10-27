@@ -13,15 +13,14 @@ class DiscountElementController implements Routable {
     ];
 
     public function post() {
-        GLOBAL $USER;
         $post_data = file_get_contents('php://input');
         $postJson = json_decode($post_data, true);
         $out = new \stdClass();
-        $userFields = \Bitrix\Main\UserTable::getById($USER->GetID());
-
-
 
         if ($postJson['promocode'] != null){
+			GLOBAL $USER;
+			$userFields = \Bitrix\Main\UserTable::getById($USER->GetID());
+
 			\Bitrix\Sale\Compatible\DiscountCompatibility::stopUsageCompatible();
             $getCoupon = \Bitrix\Sale\DiscountCouponsManager::getData($postJson['promocode'], true);
            // $out->coupon = $getCoupon;

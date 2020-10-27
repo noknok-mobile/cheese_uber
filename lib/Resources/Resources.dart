@@ -360,7 +360,7 @@ class Resources {
   }
 
   Future<List<Discount>> getActiveDiscount(String token) async {
-    var data = await NetworkUtil().post("discount", headers: {"Token": token});
+    var data = await NetworkUtil().post("discount");
     var discount = List<Discount>.from(data.map((x) => Discount.fromJson(x)));
     return discount;
   }
