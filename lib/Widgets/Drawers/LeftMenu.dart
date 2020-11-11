@@ -152,8 +152,6 @@ class LeftMenu extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             alignment: Alignment.bottomLeft,
             child: GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ChangeCity())),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[

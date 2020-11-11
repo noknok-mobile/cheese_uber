@@ -2,16 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
-import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Utils/SharedValue.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'CustomInputField.dart';
-import 'Forms.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-class InputFieldPhone extends StatefulWidget {
 
+class InputFieldPhone extends StatefulWidget {
   final String label;
   final String prefix;
   final SharedValue<String> value;
@@ -19,16 +13,21 @@ class InputFieldPhone extends StatefulWidget {
   final double height;
   final _mobileFormatter = new MaskedTextController(mask: '+7 (000) 000 00 00');
 
-  InputFieldPhone({Key key,this.value,this.label ="Телефон",this.height = 45,this.decorated = true,this.prefix = ""}) : super(key: key){
-
+  InputFieldPhone(
+      {Key key,
+      this.value,
+      this.label = "Телефон",
+      this.height = 45,
+      this.decorated = true,
+      this.prefix = ""})
+      : super(key: key) {
     _mobileFormatter.text = value?.value;
   }
-
-
 
   @override
   _InputFieldPhoneState createState() => _InputFieldPhoneState();
 }
+
 class NumberTextInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -70,68 +69,79 @@ class NumberTextInputFormatter extends TextInputFormatter {
   }
 }
 
-
 class _InputFieldPhoneState extends State<InputFieldPhone> {
-
   List<String> suggestions = List<String>();
-
 
   String response = '';
   String currentText;
 
-  String validateText(String value){
-    String trimmedText = value.replaceAll(' ', '').replaceAll('+', '').replaceAll('(', '').replaceAll(')', '');
-    Pattern pattern =
-     '[0-9]';
+  String validateText(String value) {
+    String trimmedText = value
+        .replaceAll(' ', '')
+        .replaceAll('+', '')
+        .replaceAll('(', '')
+        .replaceAll(')', '');
+    Pattern pattern = '[0-9]';
     RegExp regex = new RegExp(pattern);
-    if(trimmedText.length != 11 || !regex.hasMatch(trimmedText)){
+    if (trimmedText.length != 11 || !regex.hasMatch(trimmedText)) {
       return "Не верный номер телефона";
     }
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
     var textField = TextFormField(
-        controller:widget._mobileFormatter,
-        style:   TextStyle(fontSize: 14,color:ColorConstants.black,fontWeight: FontWeight.w500,),
-        keyboardType: TextInputType.phone,
-        textAlignVertical: TextAlignVertical.bottom,
-        decoration: InputDecoration(
-          prefixText:widget.prefix!=""? widget. prefix+": ":"",
-          filled: true,
-          errorStyle: TextStyle(height: 0),
-          fillColor: ColorConstants.mainAppColor,
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              borderSide: BorderSide(
-                color: widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,
-              )) ,
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
-          enabledBorder:  OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              borderSide: BorderSide(color:   widget.decorated?ColorConstants.darckBlack:ColorConstants.mainAppColor,)),
-
-          contentPadding: EdgeInsets.only(left: 10,bottom: 20),
-          hintText: widget.label,
-          suffixIcon: Icon(
-            Icons.create,
-            color: ColorConstants.darkGray,
-            size: 16,
-          ),
-
+      controller: widget._mobileFormatter,
+      style: TextStyle(
+        fontSize: 14,
+        color: ColorConstants.black,
+        fontWeight: FontWeight.w500,
+      ),
+      keyboardType: TextInputType.phone,
+      textAlignVertical: TextAlignVertical.bottom,
+      decoration: InputDecoration(
+        prefixText: widget.prefix != "" ? widget.prefix + ": " : "",
+        filled: true,
+        errorStyle: TextStyle(height: 0),
+        fillColor: ColorConstants.mainAppColor,
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderSide: BorderSide(
+              color: widget.decorated
+                  ? ColorConstants.darckBlack
+                  : ColorConstants.mainAppColor,
+            )),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderSide: BorderSide(
+              color: widget.decorated
+                  ? ColorConstants.darckBlack
+                  : ColorConstants.mainAppColor,
+            )),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderSide: BorderSide(
+              color: widget.decorated
+                  ? ColorConstants.darckBlack
+                  : ColorConstants.mainAppColor,
+            )),
+        contentPadding: EdgeInsets.only(left: 10, bottom: 20),
+        hintText: widget.label,
+        suffixIcon: Icon(
+          Icons.create,
+          color: ColorConstants.darkGray,
+          size: 16,
         ),
+      ),
       validator: validateText,
       onChanged: (String value) => {
         widget._mobileFormatter.moveCursorToEnd(),
         widget.value.value = widget._mobileFormatter.text
       },
-        //controller: queryController,
-      );
+      //controller: queryController,
+    );
 
     return Container(height: widget.height, child: textField);
   }
-
-
 }

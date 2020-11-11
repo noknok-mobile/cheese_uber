@@ -119,6 +119,12 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
+  - square_in_app_payments (1.3.0):
+    - Flutter
+    - SquareBuyerVerificationSDK (= 1.3.0)
+    - SquareInAppPaymentsSDK (= 1.4.0)
+  - SquareBuyerVerificationSDK (1.3.0)
+  - SquareInAppPaymentsSDK (1.4.0)
   - webview_flutter (0.0.1):
     - Flutter
   - yandex_mapkit (0.0.1):
@@ -144,6 +150,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - square_in_app_payments (from `.symlinks/plugins/square_in_app_payments/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
   - yandex_mapkit (from `.symlinks/plugins/yandex_mapkit/ios`)
 
@@ -169,6 +176,8 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
+    - SquareBuyerVerificationSDK
+    - SquareInAppPaymentsSDK
     - YandexMapKit
     - YandexMapKitSearch
     - YandexRuntime
@@ -194,6 +203,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  square_in_app_payments:
+    :path: ".symlinks/plugins/square_in_app_payments/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
   yandex_mapkit:
@@ -230,12 +241,15 @@ SPEC CHECKSUMS:
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+  square_in_app_payments: 339aa5d1c828be189639090149e0fb303c2d9812
+  SquareBuyerVerificationSDK: 6a73cc3b073d8e613cb1fe8643600ff9ac4d6373
+  SquareInAppPaymentsSDK: 6c3293e5600c121bbdc5499ffa3b3976e2cf0054
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
   yandex_mapkit: 808e1857438445c61e2789a9e4374b230a0a97ca
   YandexMapKit: ecd4b78de34a35df63d066ac299e6fd0fe46d1ba
   YandexMapKitSearch: b46ddd1c80e2e35d006cdfc4ab88070a50cebeda
   YandexRuntime: 2d55244d06267106cf9b00c25a1e63f72a73b6fd
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
 
 COCOAPODS: 1.10.0

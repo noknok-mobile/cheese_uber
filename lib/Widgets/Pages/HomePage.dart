@@ -15,11 +15,15 @@ class HomePage extends StatelessWidget {
     return FutureBuilder(
         future: Resources().login(),
         builder: (context, AsyncSnapshot<String> projectSnap) {
-          if (!projectSnap.hasData) {
-            print('project snapshot data is: ${projectSnap.data}');
-            return Center(child: CircularProgressIndicator());
+          // if (!projectSnap.hasData) {
+          //   print('project snapshot data is: ${projectSnap.data}');
+          //   return Center(child: CircularProgressIndicator());
+          // }
+          if (projectSnap.hasError) {
+            print("ERROR -- " + projectSnap.error.toString());
           }
-          if (projectSnap.connectionState != ConnectionState.done) {
+
+          if (projectSnap.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           }
           return SelectShop();

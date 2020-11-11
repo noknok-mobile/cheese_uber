@@ -20,25 +20,25 @@ class DetailGoods extends StatelessWidget {
         children: <Widget>[
           Align(
               alignment: Alignment.topCenter,
-              child:
-                     CachedImage.imageForCategory(
-                       roundBorder: false,
-                      url: Resources().getCategoryById(
-                        goodsData.categories).imageUrl,
-                       child: Container(decoration: BoxDecoration(  gradient: LinearGradient(
-                           begin: FractionalOffset.topCenter,
-                           end: FractionalOffset.bottomCenter,
-                           colors: [
-                             Colors.black.withOpacity(0.0),
-                             Colors.black.withOpacity(0.6),
-                           ],
-                           stops: [
-                             0.0,
-                             1.0
-                           ]),),),
-                    )),
-
-
+              child: CachedImage.imageForCategory(
+                roundBorder: false,
+                url: Resources().getCategoryById(goodsData.categories).imageUrl,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: FractionalOffset.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.0),
+                          Colors.black.withOpacity(0.6),
+                        ],
+                        stops: [
+                          0.0,
+                          1.0
+                        ]),
+                  ),
+                ),
+              )),
           SafeArea(
             child: Column(
               children: <Widget>[
@@ -47,13 +47,16 @@ class DetailGoods extends StatelessWidget {
                   child: Row(children: <Widget>[
                     //SizedBox(width: 20,height: 0,),
 
-                       IconButton(
-                         padding: EdgeInsets.all(0),
-                        icon: IconConstants.arrowDown,
-                        onPressed: () => {Navigator.of(context).pop()},
-                      ),
+                    IconButton(
+                      padding: EdgeInsets.all(0),
+                      icon: IconConstants.arrowDown,
+                      onPressed: () => {Navigator.of(context).pop()},
+                    ),
 
-                    SizedBox(width: 30,height: 0,),
+                    SizedBox(
+                      width: 30,
+                      height: 0,
+                    ),
                     CustomText.white24px(TextConstants.detailsHeader),
                   ]),
                 ),
@@ -61,9 +64,8 @@ class DetailGoods extends StatelessWidget {
                   fit: FlexFit.tight,
                   flex: 1,
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(20,0,20,0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                     decoration: BoxDecoration(
-
                       color: ColorConstants.mainAppColor,
                       borderRadius: BorderRadius.circular(
                           ParametersConstants.largeImageBorderRadius),
@@ -75,7 +77,10 @@ class DetailGoods extends StatelessWidget {
                     ),
                     child: ListView(
                       children: <Widget>[
-                        SizedBox(width: 30,height: 20,),
+                        SizedBox(
+                          width: 30,
+                          height: 20,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,12 +115,15 @@ class DetailGoods extends StatelessWidget {
                         ),
                         Container(
                           height: 13,
-
                         ),
-                        Expanded(
-                          child: CustomText.black16px(goodsData.detailText,align: TextAlign.left,),
+                        CustomText.black16px(
+                          goodsData.detailText,
+                          align: TextAlign.left,
                         ),
-                        SizedBox(width: 30,height: 20,),
+                        SizedBox(
+                          width: 30,
+                          height: 20,
+                        ),
                       ],
                     ),
                   ),
@@ -126,8 +134,10 @@ class DetailGoods extends StatelessWidget {
           Container(),
         ],
       ),
-
-      bottomNavigationBar: DetailGoodsBottomAppBar(height: 145,goodItem: goodsData,),
+      bottomNavigationBar: DetailGoodsBottomAppBar(
+        height: 145,
+        goodItem: goodsData,
+      ),
     );
   }
 }

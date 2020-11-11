@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Utils/Geolocation.dart';
 import 'package:flutter_cheez/Utils/NetworkUtil.dart';
 import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
+import 'package:geocoder/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:sqflite/sqflite.dart";
 import 'dart:io';
@@ -70,7 +72,7 @@ class Resources {
 
   DiscountInfo discountInfo = DiscountInfo();
 
-  final ListOfGoodsData _allGoods = ListOfGoodsData();
+  List<GoodsData> allGoods = List<GoodsData>();
   List<OrderData> orders = List<OrderData>();
   final List<CategoryData> categories = List<CategoryData>();
   List<Discount> discounts = List<Discount>();
@@ -96,8 +98,8 @@ class Resources {
     var city = prefs.getInt("city");
     var shop = prefs.getInt("shop");
 
-    categories.addAll(await getCategoryData());
-    _allGoods.addAll(await getProductData());
+    // categories.addAll(await getCategoryData());
+    allGoods.addAll(await getProductData());
     _allShops.addAll(await getShopData());
     _allCity.addAll(await getCityData());
 
@@ -157,13 +159,21 @@ class Resources {
   }
 
   Future<List<CategoryData>> loadCategories() async {
+    await Future.delayed(const Duration(milliseconds: 1), () {});
     categories.addAll(await getCategoryData());
     return categories;
   }
 
-  Future<ListOfGoodsData> loadProducts() async {
-    _allGoods.addAll(await getProductData());
-    return _allGoods;
+  Future<List<GoodsData>> loadProducts() async {
+    await Future.delayed(const Duration(milliseconds: 1), () {});
+    allGoods.addAll(await getProductData());
+    return allGoods;
+  }
+
+  Future<List<GoodsData>> loadProductsByCategory(int categoryId) async {
+    await Future.delayed(const Duration(milliseconds: 1), () {});
+    allGoods.addAll(await getProductDataByCategory(categoryId));
+    return getGoodsInCategory(categoryId);
   }
 
   //#region Network
@@ -227,6 +237,7 @@ class Resources {
         .firstWhere((y) => y.shopId == Resources().userProfile.selectedShop)
         .locationId;
     cartJson["coupon"] = cart.promocode;
+    cartJson["comment"] = address.comment;
 
     print("sendOrderData " + jsonEncode(cartJson));
     var data = await NetworkUtil().post("order",
@@ -259,6 +270,28 @@ class Resources {
     return List<GoodsData>.from(((await NetworkUtil().post("product")) as List)
         .map((x) => GoodsData.fromJson(x)));
   }
+
+  Future<List<GoodsData>> getProductDataByCategory(int categoryId) async {
+    return List<GoodsData>.from(((await NetworkUtil().post("product",
+            body: jsonEncode({"section_id": categoryId}))) as List)
+        .map((x) => GoodsData.fromJson(x)));
+  }
+
+  Future<GoodsData> getProduct(int id) async {
+    return List<GoodsData>.from(
+        ((await NetworkUtil().get("product?id=" + id.toString())) as List)
+            .map((e) => GoodsData.fromJson(e))).first;
+  }
+
+  // List<GoodsData> getProductsInCart(Cart cart) {
+  //   List<GoodsData> products = List();
+
+  //   cart.cart.keys.forEach((element) async {
+  //     products.add(await getProduct(element));
+  //   });
+
+  //   return products;
+  // }
 
   Future<List<ShopInfo>> getShopData() async {
     return List<ShopInfo>.from(((await NetworkUtil().post("storage")) as List)
@@ -324,6 +357,7 @@ class Resources {
   }
 
   Future<String> loginWithData(String login, String passHash) async {
+    await Future.delayed(const Duration(milliseconds: 1000), () {});
     print('loginWithData ' + login);
     var data = await NetworkUtil().post("signin",
         body: jsonEncode(
@@ -367,8 +401,7 @@ class Resources {
 
   Future<List<GoodsData>> getGoodsInCategory(int categoryId) async {
     await Future.delayed(const Duration(milliseconds: 1), () {});
-    return _allGoods
-        .getList()
+    return allGoods
         .where((x) =>
             (x.categories == categoryId || categoryId == -1) &&
             x.getPrice().price != 0)
@@ -376,8 +409,7 @@ class Resources {
   }
 
   int getGoodsInCategoryCount(int categoryId) {
-    return _allGoods
-        .getList()
+    return allGoods
         .where((x) =>
             (x.categories == categoryId || categoryId == -1) &&
             x.getPrice().price != 0)
@@ -409,7 +441,7 @@ class Resources {
   }
 
   GoodsData getGodById(int id) {
-    return _allGoods.get(id);
+    return allGoods.where((element) => element.id == id).first;
   }
 
   CityInfo getCityWithId(int id) {
@@ -434,7 +466,7 @@ class Resources {
 
   Future<List<GoodsData>> getGoods() async {
     await Future.delayed(const Duration(milliseconds: 1), () {});
-    return _allGoods.getList();
+    return allGoods;
   }
 
   Future<Map<int, double>> getCart() async {
@@ -481,4 +513,27 @@ class Resources {
     return city;
   }
 //#endregion
+
+  Future<List<String>> getStringList(String key) async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getStringList(key);
+  }
+
+  Future<Address> getAddressFromCoordinates(Point point) async {
+    var addresses = await Geolocation()
+        .findAddressesFromCoordinates(point.latitude, point.longitude);
+
+    return addresses[0];
+  }
+
+  Future<String> getCurrentDeliveryAddress() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var currentLong = prefs.getDouble("currentLong");
+    var currentLat = prefs.getDouble("currentLat");
+
+    Address address = await getAddressFromCoordinates(
+        Point(latitude: currentLat, longitude: currentLong));
+
+    return address.locality + ", " + address.featureName;
+  }
 }

@@ -42,6 +42,7 @@ class _CategoryPageState extends State<CategoryPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   StreamSubscription<OrderChanged> subscription;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -55,10 +56,13 @@ class _CategoryPageState extends State<CategoryPage> {
 
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> notification) async {
+      print("onMessage");
       eventBus.fire(OrderChanged(notification));
     }, onLaunch: (Map<String, dynamic> notification) async {
+      print("onLaunch");
       eventBus.fire(OrderChanged(notification));
     }, onResume: (Map<String, dynamic> notification) async {
+      print("onResume");
       eventBus.fire(OrderChanged(notification));
     });
 
@@ -71,7 +75,8 @@ class _CategoryPageState extends State<CategoryPage> {
       subscription = null;
     }
     subscription = eventBus.on<OrderChanged>().listen((event) {
-      setState(() => Scaffold.of(context).showSnackBar(MySnackBar.build(
+      print("call order change");
+      setState(() => scaffoldKey.currentState.showSnackBar(MySnackBar.build(
           context: scaffoldKey.currentContext,
           message: event.notification["notification"]["body"],
           type: SnackBatMessageType.info,
@@ -98,11 +103,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future loadData(int parentCategory) {
-      if (parentCategory == 0 && Resources().categories.length == 0) {
-        return Future.wait(
-            [Resources().loadCategories(), Resources().loadProducts()]);
-      }
+    Future<List<CategoryData>> loadData() {
       if (Resources().categories.length == 0) {
         return Resources().loadCategories();
       }
@@ -124,14 +125,17 @@ class _CategoryPageState extends State<CategoryPage> {
         drawer: Drawer(child: LeftMenu()),
         floatingActionButton: CartButton(),
         body: FutureBuilder(
-          future: loadData(widget.parentCategoryID),
+          future: loadData(),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              print("CATEGORY ERRORR ${snapshot.error}");
+            }
             if (!snapshot.hasData) {
               print('project snapshot data is: ${snapshot.data}');
               return Center(child: CircularProgressIndicator());
             }
             if (snapshot.connectionState != ConnectionState.done) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }
             var data =
                 Resources().getCategoryWithParent(widget.parentCategoryID);
@@ -231,9 +235,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 BorderRadius.circular(16)),
                                         child: Center(
                                             child: Text(
-                                                Resources()
-                                                    .getGoodsInCategoryCount(
-                                                        data[index].id)
+                                                data[index]
+                                                    .elementCount
                                                     .toString(),
                                                 style: TextStyle(
                                                     color: Colors.white,

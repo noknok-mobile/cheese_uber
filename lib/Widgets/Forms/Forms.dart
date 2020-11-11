@@ -21,17 +21,22 @@ class PriceText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        text: "${(goodsData.getPrice().price + 0.4).round().toString()} р \n",
-        style: Theme.of(context).textTheme.subtitle2,
-        children: <TextSpan>[
-          TextSpan(
-              text:
-                  "${goodsData.units.contains(TextConstants.units) ? "1 " + goodsData.units : "1 " + goodsData.units}",
-              style: Theme.of(context).textTheme.bodyText1),
-        ],
-      ),
+    return Column(
+      children: [
+        RichText(
+          text: TextSpan(
+            text:
+                "${(goodsData.getPrice().price + 0.4).round().toString()} р \n",
+            style: Theme.of(context).textTheme.subtitle2,
+            children: <TextSpan>[
+              TextSpan(
+                  text:
+                      "${goodsData.units.contains(TextConstants.units) ? "1 " + goodsData.units : "1 " + goodsData.units}",
+                  style: Theme.of(context).textTheme.bodyText1),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

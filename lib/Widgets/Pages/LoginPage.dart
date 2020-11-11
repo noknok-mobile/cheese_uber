@@ -12,6 +12,7 @@ import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
 import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -137,13 +138,22 @@ class _LoginPageState extends State<LoginPage> {
                           prefs.setString("pass", pass.value);
 
                           if (value == "OK") {
-                            print(value);
                             // Navigator.push(
                             //     context,
                             //     MaterialPageRoute(
                             //         builder: (context) => CartPage()));
 
-                            Navigator.pushNamed(context, args.backRoute);
+                            if (args != null) {
+                              Navigator.pushNamed(context, args.backRoute);
+                            } else {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CategoryPage()),
+                                  (x) {
+                                return false;
+                              });
+                            }
                           } else {
                             print(value);
 
@@ -305,7 +315,16 @@ class _LoginPageState extends State<LoginPage> {
                           //     context,
                           //     MaterialPageRoute(
                           //         builder: (context) => ChangeCity()));
-                          Navigator.pushNamed(context, args.backRoute);
+                          if (args != null) {
+                            Navigator.pushNamed(context, args.backRoute);
+                          } else {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CategoryPage()), (x) {
+                              return false;
+                            });
+                          }
                         } else {
                           //widget.inProgress = false;
                           widget.inProgress = false;

@@ -1,27 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cheez/Events/Events.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
-import 'package:flutter_cheez/Widgets/Buttons/CustomCheckBox.dart';
-import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/SelectAddres.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-import 'dart:math' as math;
 
 import '../../Resources/Models.dart';
 import '../../Resources/Resources.dart';
-import '../../Resources/Resources.dart';
-import '../../Resources/Resources.dart';
-import '../../Resources/Resources.dart';
-import '../../Resources/Resources.dart';
-import '../../Utils/Geolocation.dart';
 import '../../Utils/Geolocation.dart';
 
 class SelectShop extends StatefulWidget {
@@ -29,7 +21,9 @@ class SelectShop extends StatefulWidget {
   final double _itemHeight = 40.0;
   int shopId = 0;
   Address deliveryAddress;
-  SelectShop();
+  String selectedAddress;
+
+  SelectShop({this.selectedAddress});
 
   @override
   _SelectShopState createState() => _SelectShopState();
@@ -46,40 +40,14 @@ class _SelectShopState extends State<SelectShop> {
 
   bool _selectShopButtonEnabled = true;
 
+  String SAVED_ADDRESSES_LIST_KEY = "SAVED_ADDRESSES_LIST_KEY";
+  List<String> savedAddresses = List<String>();
+
   Future<Address> getAddressFromCoordinates(Point point) async {
     var addresses = await Geolocation()
         .findAddressesFromCoordinates(point.latitude, point.longitude);
 
     return addresses[0];
-  }
-
-  void selectShop(Point location) async {
-    final SharedPreferences prefs = await _prefs;
-    prefs.setDouble("currentLong", location.longitude);
-    prefs.setDouble("currentLat", location.latitude);
-
-    if (currentPlacemark != null) {
-      controller.removePlacemark(currentPlacemark);
-    }
-
-    currentPlacemark = Placemark(
-        point:
-            Point(longitude: location.longitude, latitude: location.latitude),
-        opacity: 1,
-        scale: 2,
-        iconName: 'lib/assets/icons/address.png',
-        iconAnchor: Point(latitude: 0.5, longitude: 1.0));
-
-    controller.addPlacemark(currentPlacemark);
-
-    Address address = await getAddressFromCoordinates(location);
-
-    addressTextField.text = address.locality + ", " + address.featureName;
-
-    widget.shopId =
-        (await Resources().getNearestShopByLocation(location)).shopId;
-
-    widget.deliveryAddress = address;
   }
 
   @override
@@ -88,11 +56,6 @@ class _SelectShopState extends State<SelectShop> {
         resizeToAvoidBottomInset: false,
         resizeToAvoidBottomPadding: false,
         body: YandexMap(
-          onMapTap: (Point point) async {
-            selectedLocation = point;
-
-            selectShop(selectedLocation);
-          },
           onMapCreated: (YandexMapController yandexMapController) async {
             controller = yandexMapController;
             List<ShopInfo> shops = Resources().getAllShops;
@@ -118,21 +81,34 @@ class _SelectShopState extends State<SelectShop> {
             var currentLong = prefs.getDouble("currentLong");
             var currentLat = prefs.getDouble("currentLat");
 
-            if (currentLong != null && currentLat != null) {
-              selectedLocation =
-                  Point(longitude: currentLong, latitude: currentLat);
+            if (widget.selectedAddress != null) {
+              var addressList = await Geolocation()
+                  .findAddressesFromQuery(widget.selectedAddress);
+
+              selectedLocation = Point(
+                  latitude: addressList[0].coordinates.latitude,
+                  longitude: addressList[0].coordinates.longitude);
             } else {
               if (Resources().geolocation.latitude != null ||
                   Resources().geolocation.longitude != null) {
                 selectedLocation = Point(
                     longitude: Resources().geolocation.longitude,
                     latitude: Resources().geolocation.latitude);
+              } else if (currentLong != null && currentLat != null) {
+                selectedLocation =
+                    Point(longitude: currentLong, latitude: currentLat);
               } else {
                 selectedLocation = shops.first.mapPoint;
               }
             }
-
-            selectShop(selectedLocation);
+            await controller.enableCameraTracking(
+                Placemark(
+                    point: selectedLocation,
+                    iconName: 'lib/assets/icons/address.png',
+                    opacity: 1,
+                    scale: 1.8,
+                    iconAnchor: Point(latitude: 0.5, longitude: 1.0)),
+                cameraPositionChanged);
 
             controller.move(point: selectedLocation);
             controller.zoomIn();
@@ -142,7 +118,7 @@ class _SelectShopState extends State<SelectShop> {
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
-            height: 225,
+            height: 260,
             decoration: ParametersConstants.BoxShadowDecoration,
             child: Column(
               children: <Widget>[
@@ -185,7 +161,7 @@ class _SelectShopState extends State<SelectShop> {
                             latitude: addressList[0].coordinates.latitude,
                             longitude: addressList[0].coordinates.longitude);
 
-                        selectShop(currentLocation);
+                        selectShop();
 
                         controller.move(point: currentLocation);
                         controller.zoomIn();
@@ -193,6 +169,75 @@ class _SelectShopState extends State<SelectShop> {
                     ),
                   ),
                 ),
+                Container(
+                    height: 25.0,
+                    margin: EdgeInsets.only(top: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                      child: FutureBuilder(
+                        future:
+                            Resources().getStringList(SAVED_ADDRESSES_LIST_KEY),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.hasData) {
+                            savedAddresses = snapshot.data;
+                            return ListView.builder(
+                              itemCount: savedAddresses.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: Colors.grey[200],
+                                        ),
+                                        margin: EdgeInsets.only(right: 10.0),
+                                        padding: EdgeInsets.only(
+                                            right: 10,
+                                            left: 10,
+                                            top: 5,
+                                            bottom: 5),
+                                        child: Text(savedAddresses[index],
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight:
+                                                    FontWeight.normal))),
+                                    onTap: () async {
+                                      addressTextField.text =
+                                          widget.deliveryAddress.locality +
+                                              ", " +
+                                              savedAddresses[index];
+
+                                      var addressList = await Geolocation()
+                                          .findAddressesFromQuery(
+                                              addressTextField.text);
+
+                                      currentLocation = Point(
+                                          latitude: addressList[0]
+                                              .coordinates
+                                              .latitude,
+                                          longitude: addressList[0]
+                                              .coordinates
+                                              .longitude);
+
+                                      selectShop();
+
+                                      controller.move(point: currentLocation);
+                                      controller.zoomIn();
+                                    });
+                              },
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                    )),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
@@ -205,16 +250,9 @@ class _SelectShopState extends State<SelectShop> {
                           child: CustomText.white12px(
                               TextConstants.btnNext.toUpperCase()),
                           onClick: () => {
-                                Resources().editAddrese(UserAddress(
-                                    city: Resources()
-                                        .getCityWithId(Resources()
-                                            .getShopWithId(widget.shopId)
-                                            .city)
-                                        .name,
-                                    addres: widget
-                                            .deliveryAddress.thoroughfare +
-                                        ", " +
-                                        widget.deliveryAddress.featureName)),
+                                selectShop(),
+                                saveDeliveryAddress(
+                                    widget.deliveryAddress.featureName),
                                 Resources().selectShop(widget.shopId),
                                 Navigator.pushAndRemoveUntil(
                                     context,
@@ -228,15 +266,50 @@ class _SelectShopState extends State<SelectShop> {
               ],
             ),
           ),
-        )
-        /*    GoogleMap (
+        ));
+  }
 
-        mapType: MapType.normal,
-        initialCameraPosition: widget.kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          widget.controller.complete(controller);
-        },
-      ),*/
-        );
+  void selectShop() async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setDouble("currentLong", selectedLocation.longitude);
+    prefs.setDouble("currentLat", selectedLocation.latitude);
+  }
+
+  saveDeliveryAddress(String address) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("currentAddress", address);
+
+    if (!savedAddresses.contains(address)) {
+      savedAddresses.insert(0, address);
+      storeStringList(savedAddresses);
+
+      Resources().editAddrese(UserAddress(
+          city: Resources()
+              .getCityWithId(Resources().getShopWithId(widget.shopId).city)
+              .name,
+          addres: address));
+    }
+  }
+
+  Future<void> cameraPositionChanged(dynamic arguments) async {
+    final bool bFinal = arguments['final'];
+    selectedLocation = Point(
+        latitude: arguments['latitude'], longitude: arguments['longitude']);
+
+    if (bFinal) {
+      Address address = await getAddressFromCoordinates(selectedLocation);
+
+      addressTextField.text = address.locality + ", " + address.featureName;
+
+      widget.shopId =
+          (await Resources().getNearestShopByLocation(selectedLocation)).shopId;
+
+      widget.deliveryAddress = address;
+    }
+  }
+
+  void storeStringList(List<String> list) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setStringList(SAVED_ADDRESSES_LIST_KEY, list);
   }
 }

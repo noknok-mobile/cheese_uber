@@ -38,7 +38,9 @@ class NextPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                             icon: IconConstants.arrowBack,
                             onPressed: () {
                               var route = ModalRoute.of(context);
-                              if (route.settings.name == "/cart") {
+
+                              if (route.settings.name == "/cart" ||
+                                  route.settings.name == "/orders") {
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(

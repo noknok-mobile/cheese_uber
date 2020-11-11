@@ -5,6 +5,7 @@ import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/OrdersPage.dart';
 import 'Events/Events.dart';
 import 'Resources/Constants.dart';
 import 'Widgets/Drawers/MySnackBar.dart';
@@ -101,6 +102,7 @@ class _RootPageState extends State<MyApp> {
           '/cart': (context) => CartPage(),
           '/category': (context) => CategoryPage(),
           '/login': (context) => LoginPage(),
+          '/orders': (context) => OrdersPage()
         },
         theme: ThemeData(
             // This is the theme of your application.

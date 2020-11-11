@@ -9,14 +9,25 @@ import 'package:flutter_cheez/Widgets/Forms/Goods.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 
 class GoodsPage extends StatelessWidget {
-  GoodsPage({Key key, this.categoryId,this.data}): super(key: key);
+  GoodsPage({Key key, this.categoryId, this.data}) : super(key: key);
 
   final int categoryId;
 
   final List<CategoryData> data;
   final String title = TextConstants.goodsHeader;
 
-  int initialTab=0;
+  int initialTab = 0;
+
+  Future<List<GoodsData>> loadData(int id) {
+    if (data.first.parentId != 0) {
+      Resources().allGoods.clear();
+    }
+    if (Resources().allGoods.length == 0)
+      return Resources().loadProductsByCategory(id);
+
+    return Resources().getGoodsInCategory(id);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Tab> tabsTitles = List<Tab>();
@@ -24,54 +35,49 @@ class GoodsPage extends StatelessWidget {
 
     var newTitle = Resources().getCategoryById(data.first.parentId);
 
-    data.forEach(
-            (f)=>
+    data.forEach((f) => {
+          print(f.id),
+          if (Resources().getCategoryWithParent(f.id).length == 0)
             {
-              if(Resources()
-                  .getCategoryWithParent(f.id)
-                  .length == 0){
-                if(f.id == categoryId)
-                  initialTab = tabsTitles.length,
-                tabsTitles.add(Tab(child: Container(
-                    padding: const EdgeInsets.only(top: 25),
-                    child: CustomText.black12px(f.title)))),
-
+              if (f.id == categoryId) initialTab = tabsTitles.length,
+              tabsTitles.add(Tab(
+                  child: Container(
+                      padding: const EdgeInsets.only(top: 25),
+                      child: CustomText.black12px(f.title)))),
               tabsContent.add(
                 Center(
                   child: FutureBuilder(
-                      future: Resources().getGoodsInCategory(f.id),
+                      future: loadData(f.id),
                       builder: (context,
                           AsyncSnapshot<List<GoodsData>> projectSnap) {
                         if (projectSnap.hasError) {
-                          print(
-                              'project snapshot data is: ${projectSnap.data}');
-                          print('last error - ${projectSnap.error}');
-                          return Container();
+                          print("ERROR --- ${projectSnap.error}");
                         }
-                        if (projectSnap.connectionState !=
-                            ConnectionState.done) {
+
+                        if (projectSnap.connectionState ==
+                            ConnectionState.waiting) {
                           return CircularProgressIndicator();
                         }
 
                         return ListView.builder(
-
                           shrinkWrap: true,
                           // physics: BouncingScrollPhysics(),
                           itemCount: projectSnap.data.length,
                           itemBuilder: (context, index) {
                             return Column(
                               children: <Widget>[
-
                                 SizedBox(
-                                    height: index == 0 ? ParametersConstants
-                                        .paddingInFerstListElemetn : 0
-
-                                ),
+                                    height: index == 0
+                                        ? ParametersConstants
+                                            .paddingInFerstListElemetn
+                                        : 0),
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      0, 3, 0, 3),
-                                  child:  Goods(data: projectSnap.data[index],
-                                    height: 155,),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                                  child: Goods(
+                                    data: projectSnap.data[index],
+                                    height: 155,
+                                  ),
                                 ),
                                 SizedBox(
                                     height: projectSnap.data.length - 1 == index
@@ -81,42 +87,35 @@ class GoodsPage extends StatelessWidget {
                             );
                           },
                         );
-                      }
-                  ),
+                      }),
                   //child: Text('Hello World!'),
-                ),),
+                ),
+              ),
             }
-
-    });
-
+        });
 
     return DefaultTabController(
-
         length: tabsTitles.length,
-        initialIndex:initialTab,
-        child:  Scaffold(
+        initialIndex: initialTab,
+        child: Scaffold(
             drawer: Drawer(child: LeftMenu()),
             appBar: NextPageAppBar(
               height: ParametersConstants.appBarHeight,
-              title:   newTitle!=null?newTitle.title : title,
-              bottom:  TabBar(
+              title: newTitle != null ? newTitle.title : title,
+              bottom: TabBar(
                 labelColor: ColorConstants.darkGray,
                 unselectedLabelColor: ColorConstants.gray,
-                indicatorColor:ColorConstants.red ,
+                indicatorColor: ColorConstants.red,
                 indicatorWeight: 3,
                 labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
                 isScrollable: true,
-                tabs:tabsTitles,
-
+                tabs: tabsTitles,
               ),
             ),
-
             floatingActionButton: CartButton(),
-
-            body:TabBarView(
-                children: tabsContent,)
-
-            ));
+            body: TabBarView(
+              children: tabsContent,
+            )));
   }
   /*
   @override

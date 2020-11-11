@@ -27,7 +27,7 @@ class NetworkUtil {
         .then((http.Response response) {
       String res = response.body;
       int statusCode = response.statusCode;
-      print("API Response: " + res);
+      // print("API Response: " + res);
       if (statusCode < 200 || statusCode > 400 || json == null) {
         res = "{\"status\":" +
             statusCode.toString() +

@@ -21,18 +21,27 @@ class OrdersPage extends StatelessWidget {
     var query = MediaQuery.of(context);
 
     tabsTitles.add(Tab(
-      child: Container(width: query.size.width/2-20,padding: const EdgeInsets.only(top: 25), alignment: Alignment.center,  child: CustomText.black12px(TextConstants.activeOrders)),
+      child: Container(
+          width: query.size.width / 2 - 20,
+          padding: const EdgeInsets.only(top: 25),
+          alignment: Alignment.center,
+          child: CustomText.black12px(TextConstants.activeOrders)),
     ));
     tabsTitles.add(Tab(
-      child: Container(width: query.size.width/2-20,padding: const EdgeInsets.only(top: 25), alignment: Alignment.center, child: CustomText.black12px(TextConstants.finishedOrders)),
+      child: Container(
+          width: query.size.width / 2 - 20,
+          padding: const EdgeInsets.only(top: 25),
+          alignment: Alignment.center,
+          child: CustomText.black12px(TextConstants.finishedOrders)),
     ));
 
     for (int i = 0; i < tabsTitles.length; i++) {
       tabsContent.add(AutoUpdatingWidget<OrderChanged>(
-        child:(context,e)=>  FutureBuilder(
-          future: i!=0?Resources().getFinishedOrders():Resources().getActiveOrders(),
+        child: (context, e) => FutureBuilder(
+          future: i != 0
+              ? Resources().getFinishedOrders()
+              : Resources().getActiveOrders(),
           builder: (BuildContext buildContext, AsyncSnapshot snapshot) {
-
             if (snapshot.hasData && snapshot.data != null) {
               if (snapshot.data.isEmpty) {
                 return Stack(
@@ -42,29 +51,33 @@ class OrdersPage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 150),
                           child: Container(
-                            width: 250,
-                              child: CustomText.black24px(TextConstants.ordersEmpty,align: TextAlign.center,)),
+                              width: 250,
+                              child: CustomText.black24px(
+                                TextConstants.ordersEmpty,
+                                align: TextAlign.center,
+                              )),
                         )),
-                    Container(alignment: Alignment.bottomCenter, child: Image(image: AssetsConstants.emptyCart))
+                    Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Image(image: AssetsConstants.emptyCart))
                   ],
                 );
               } else {
-
                 return ListView.builder(
                     shrinkWrap: true,
                     // physics: BouncingScrollPhysics(),
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        padding: EdgeInsets.fromLTRB(20,index == 0?20:0,20,7),
+                        padding:
+                            EdgeInsets.fromLTRB(20, index == 0 ? 20 : 0, 20, 7),
                         child: Container(
-
-                          child: Order(data: snapshot.data[index],opened:openOrder == snapshot.data[index].id),
+                          child: Order(
+                              data: snapshot.data[index],
+                              opened: openOrder == snapshot.data[index].id),
                         ),
                       );
-
                     });
-
               }
             } else {
               return Center(child: CircularProgressIndicator());

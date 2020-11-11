@@ -61,7 +61,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
               shape: const CircularNotchedRectangle(),
               child: CartBottomAppBar(
                   isEnable: widget.enabled,
-                  height: widget.bottomMenuHeight,
+                  height: widget.bottomMenuHeight + 2,
                   onBottomButtonClick: () async {
                     if (widget.formKey.currentState.validate()) {
                       widget.formKey.currentState.save();
@@ -84,10 +84,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
                           Resources().cart.bonusPoints.toInt());
                       Resources().cart.clear();
                       Resources().editAddrese(widget.userAddress);
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => OrdersPage()),
-                          ModalRoute.withName("/"));
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/orders', (Route<dynamic> route) => false);
                     }
                   })),
           //resizeToAvoidBottomPadding: false,
@@ -96,237 +94,246 @@ class _NewOrderPageState extends State<NewOrderPage> {
             height: ParametersConstants.appBarHeight,
             title: TextConstants.profileHeader,
           ),
-          body: SingleChildScrollView(
-              child: Container(
-                  width: 9999,
-                  // height: 9999,
-                  decoration: ParametersConstants.BoxShadowDecoration,
-                  margin: const EdgeInsets.all(20),
-                  child: Form(
-                      key: widget.formKey,
-                      autovalidateMode: AutovalidateMode.disabled,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(10, 16, 16, 16),
-                              child: CustomText.black20pxBold(
-                                  TextConstants.orderPayHeader),
-                            ),
-                            Container(
-                              height: 1,
-                              color: ColorConstants.gray,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: CustomCheckBox(
-                                enabledWidget: Center(
-                                    child: Container(
-                                  height: 40,
-                                  width: 99999,
-                                  color: ColorConstants.red,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CustomText.white12px(
-                                            TextConstants.orderPayCard),
-                                      )),
-                                )),
-                                disabledWidget: Center(
-                                    child: Container(
-                                  height: 40,
-                                  width: 99999,
-                                  color: ColorConstants.mainAppColor,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CustomText.black12px(
-                                            TextConstants.orderPayCard),
-                                      )),
-                                )),
-                                active: false,
-                                value: true,
+          body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+            child: SingleChildScrollView(
+                child: Container(
+                    width: 9999,
+                    // height: 9999,
+                    decoration: ParametersConstants.BoxShadowDecoration,
+                    margin: const EdgeInsets.all(20),
+                    child: Form(
+                        key: widget.formKey,
+                        autovalidateMode: AutovalidateMode.disabled,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 16, 16, 16),
+                                child: CustomText.black20pxBold(
+                                    TextConstants.orderPayHeader),
                               ),
-                            ),
-                            Container(
-                              height: 1,
-                              color: ColorConstants.gray,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(10, 16, 16, 16),
-                              child: CustomText.black20pxBold(
-                                  TextConstants.orderDeliveryHeader),
-                            ),
-                            Container(
-                              height: 1,
-                              color: ColorConstants.gray,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: CustomCheckBox(
-                                enabledWidget: Center(
-                                    child: Container(
-                                  height: 40,
-                                  width: 99999,
-                                  color: ColorConstants.red,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CustomText.white12px(
-                                            TextConstants.orderDeliveryCurier),
-                                      )),
-                                )),
-                                disabledWidget: Center(
-                                    child: Container(
-                                  height: 40,
-                                  width: 99999,
-                                  color: ColorConstants.mainAppColor,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CustomText.black12px(
-                                            TextConstants.orderDeliveryCurier),
-                                      )),
-                                )),
-                                value: widget.deliveryMethod.value == 1,
-                                onChanged: (x) => {
-                                  setState(
-                                      () => widget.deliveryMethod.value = 1)
-                                },
+                              Container(
+                                height: 1,
+                                color: ColorConstants.gray,
                               ),
-                            ),
-                            Container(
-                              height: 1,
-                              color: ColorConstants.gray,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: CustomCheckBox(
-                                enabledWidget: Center(
-                                    child: Container(
-                                  height: 40,
-                                  width: 99999,
-                                  color: ColorConstants.red,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CustomText.white12px(
-                                            TextConstants.deliveryMethodPickup),
-                                      )),
-                                )),
-                                disabledWidget: Center(
-                                    child: Container(
-                                  height: 40,
-                                  width: 99999,
-                                  color: ColorConstants.mainAppColor,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CustomText.black12px(
-                                            TextConstants.deliveryMethodPickup),
-                                      )),
-                                )),
-                                onChanged: (x) => {
-                                  setState(
-                                      () => widget.deliveryMethod.value = 2)
-                                },
-                                value: widget.deliveryMethod.value == 2,
+                              Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: CustomCheckBox(
+                                  enabledWidget: Center(
+                                      child: Container(
+                                    height: 40,
+                                    width: 99999,
+                                    color: ColorConstants.red,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomText.white12px(
+                                              TextConstants.orderPayCard),
+                                        )),
+                                  )),
+                                  disabledWidget: Center(
+                                      child: Container(
+                                    height: 40,
+                                    width: 99999,
+                                    color: ColorConstants.mainAppColor,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomText.black12px(
+                                              TextConstants.orderPayCard),
+                                        )),
+                                  )),
+                                  active: false,
+                                  value: true,
+                                ),
                               ),
-                            ),
-                            Container(
-                              height: 1,
-                              color: ColorConstants.gray,
-                            ),
-                            InputFieldPhone(
-                                decorated: false,
-                                prefix: TextConstants.phone,
-                                value: widget.phone),
-                            Container(
-                              height:
-                                  widget.deliveryMethod.value == 2 ? 0 : null,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10, 16, 16, 16),
-                                    child: CustomText.black20pxBold(
-                                        TextConstants.orderDeliveryAddress),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: ColorConstants.gray,
-                                  ),
-                                  InputFieldText(
-                                    decorated: false,
-                                    prefix: TextConstants.adres,
-                                    textInputType: TextInputType.text,
-                                    value: widget.addres,
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: ColorConstants.gray,
-                                  ),
-                                  InputFieldText(
-                                    decorated: false,
-                                    //label: TextConstants.addresEntrance,
-                                    textInputType: TextInputType.number,
-                                    prefix: TextConstants.addresEntrance,
-                                    value: widget.entrance,
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: ColorConstants.gray,
-                                  ),
-                                  InputFieldText(
+                              Container(
+                                height: 1,
+                                color: ColorConstants.gray,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 16, 16, 16),
+                                child: CustomText.black20pxBold(
+                                    TextConstants.orderDeliveryHeader),
+                              ),
+                              Container(
+                                height: 1,
+                                color: ColorConstants.gray,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: CustomCheckBox(
+                                  enabledWidget: Center(
+                                      child: Container(
+                                    height: 40,
+                                    width: 99999,
+                                    color: ColorConstants.red,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomText.white12px(
+                                              TextConstants
+                                                  .orderDeliveryCurier),
+                                        )),
+                                  )),
+                                  disabledWidget: Center(
+                                      child: Container(
+                                    height: 40,
+                                    width: 99999,
+                                    color: ColorConstants.mainAppColor,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomText.black12px(
+                                              TextConstants
+                                                  .orderDeliveryCurier),
+                                        )),
+                                  )),
+                                  value: widget.deliveryMethod.value == 1,
+                                  onChanged: (x) => {
+                                    setState(
+                                        () => widget.deliveryMethod.value = 1)
+                                  },
+                                ),
+                              ),
+                              Container(
+                                height: 1,
+                                color: ColorConstants.gray,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: CustomCheckBox(
+                                  enabledWidget: Center(
+                                      child: Container(
+                                    height: 40,
+                                    width: 99999,
+                                    color: ColorConstants.red,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomText.white12px(
+                                              TextConstants
+                                                  .deliveryMethodPickup),
+                                        )),
+                                  )),
+                                  disabledWidget: Center(
+                                      child: Container(
+                                    height: 40,
+                                    width: 99999,
+                                    color: ColorConstants.mainAppColor,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomText.black12px(
+                                              TextConstants
+                                                  .deliveryMethodPickup),
+                                        )),
+                                  )),
+                                  onChanged: (x) => {
+                                    setState(
+                                        () => widget.deliveryMethod.value = 2)
+                                  },
+                                  value: widget.deliveryMethod.value == 2,
+                                ),
+                              ),
+                              Container(
+                                height: 1,
+                                color: ColorConstants.gray,
+                              ),
+                              InputFieldPhone(
+                                  decorated: false,
+                                  prefix: TextConstants.phone,
+                                  value: widget.phone),
+                              Container(
+                                height:
+                                    widget.deliveryMethod.value == 2 ? 0 : null,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 16, 16, 16),
+                                      child: CustomText.black20pxBold(
+                                          TextConstants.orderDeliveryAddress),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      color: ColorConstants.gray,
+                                    ),
+                                    InputFieldText(
                                       decorated: false,
-                                      //label: TextConstants.addresFloor,
-                                      prefix: TextConstants.addresFloor,
+                                      prefix: TextConstants.adres,
+                                      textInputType: TextInputType.text,
+                                      value: widget.addres,
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      color: ColorConstants.gray,
+                                    ),
+                                    InputFieldText(
+                                      decorated: false,
+                                      //label: TextConstants.addresEntrance,
                                       textInputType: TextInputType.number,
-                                      value: widget.floor),
-                                  Container(
-                                    height: 1,
-                                    color: ColorConstants.gray,
-                                  ),
-                                  InputFieldText(
+                                      prefix: TextConstants.addresEntrance,
+                                      value: widget.entrance,
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      color: ColorConstants.gray,
+                                    ),
+                                    InputFieldText(
+                                        decorated: false,
+                                        //label: TextConstants.addresFloor,
+                                        prefix: TextConstants.addresFloor,
+                                        textInputType: TextInputType.number,
+                                        value: widget.floor),
+                                    Container(
+                                      height: 1,
+                                      color: ColorConstants.gray,
+                                    ),
+                                    InputFieldText(
+                                        decorated: false,
+                                        //label: TextConstants.addresFlat,
+                                        prefix: TextConstants.addresFlat,
+                                        textInputType: TextInputType.number,
+                                        value: widget.flat),
+                                    Container(
+                                      height: 1,
+                                      color: ColorConstants.gray,
+                                    ),
+                                    InputFieldText(
+                                        decorated: false,
+                                        prefix: TextConstants.contactName,
+                                        value: widget.contactName),
+                                    Container(
+                                      height: 1,
+                                      color: ColorConstants.gray,
+                                    ),
+                                    InputFieldText(
                                       decorated: false,
-                                      //label: TextConstants.addresFlat,
-                                      prefix: TextConstants.addresFlat,
-                                      textInputType: TextInputType.number,
-                                      value: widget.flat),
-                                  Container(
-                                    height: 1,
-                                    color: ColorConstants.gray,
-                                  ),
-                                  InputFieldText(
-                                      decorated: false,
-                                      prefix: TextConstants.contactName,
-                                      value: widget.contactName),
-                                  Container(
-                                    height: 1,
-                                    color: ColorConstants.gray,
-                                  ),
-                                  InputFieldText(
-                                    decorated: false,
-                                    height: 90,
-                                    label: "Комментарий",
-                                    maxLines: 50,
-                                    value: widget.comment,
-                                  ),
-                                ],
+                                      height: 90,
+                                      label: "Комментарий",
+                                      maxLines: 50,
+                                      value: widget.comment,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ]))))),
+                            ])))),
+          )),
     );
   }
 }

@@ -83,17 +83,16 @@ class GoodsData implements IDataBaseModel, IDataJsonModel {
     return price.firstWhere((x) => x.storeId == shopID);
   }
 
-  GoodsData({
-    this.id,
-    this.imageUrl,
-    this.name,
-    this.previewText,
-    this.detailText,
-    this.units,
-    this.categories,
-    this.price,
-    this.detailImageUrl,
-  });
+  GoodsData(
+      {this.id,
+      this.imageUrl,
+      this.name,
+      this.previewText,
+      this.detailText,
+      this.units,
+      this.categories,
+      this.price,
+      this.detailImageUrl});
   factory GoodsData.fromJson(Map<String, dynamic> json) {
     var price = json["PRICES"] != null
         ? List<PriceData>.from(((json["PRICES"].values as Iterable)
@@ -454,17 +453,25 @@ class CategoryData {
   final String title;
   final int parentId;
   final int sort;
-  CategoryData({this.id, this.imageUrl, this.title, this.parentId, this.sort});
+  int elementCount = 0;
+  CategoryData(
+      {this.id,
+      this.imageUrl,
+      this.title,
+      this.parentId,
+      this.sort,
+      this.elementCount});
 
   factory CategoryData.fromJson(Map<String, dynamic> json) => CategoryData(
-        id: int.parse(json["ID"]),
-        imageUrl: json["PICTURE"],
-        title: json["NAME"],
-        parentId: json["IBLOCK_SECTION_ID"] != null
-            ? int.parse(json["IBLOCK_SECTION_ID"])
-            : 0,
-        sort: json["SORT"] != null ? int.parse(json["SORT"]) : 0,
-      );
+      id: int.parse(json["ID"]),
+      imageUrl: json["PICTURE"],
+      title: json["NAME"],
+      parentId: json["IBLOCK_SECTION_ID"] != null
+          ? int.parse(json["IBLOCK_SECTION_ID"])
+          : 0,
+      sort: json["SORT"] != null ? int.parse(json["SORT"]) : 0,
+      elementCount: int.parse(json["ELEMENT_CNT"]));
+
   @override
   Map<String, dynamic> toJson() => {
         "ID": id,
@@ -672,8 +679,18 @@ class UserProfile {
       this.userAddress}) {
     _prefs.then((value) {
       var shop = value.getInt("shop");
+      var addressList = value.getStringList("SAVED_ADDRESSES_LIST_KEY");
+      print(addressList);
       if (shop != null) {
         selectedShop = shop;
+        if (addressList != null)
+          addressList.forEach((element) {
+            userAddress.add(UserAddress(
+                city: Resources()
+                    .getCityWithId(Resources().getShopWithId(shop).city)
+                    .name,
+                addres: element));
+          });
       }
     });
   }

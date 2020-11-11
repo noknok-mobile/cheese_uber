@@ -9,7 +9,7 @@ import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Pages/DetailGoods.dart';
 import 'Forms.dart';
 
-class Goods extends StatelessWidget implements PreferredSizeWidget{
+class Goods extends StatelessWidget implements PreferredSizeWidget {
   Goods({Key key, this.data, this.height}) : super(key: key);
   final double height;
   final GoodsData data;
@@ -21,42 +21,42 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
-    bool showInfo = height>150;
+    bool showInfo = height > 150;
     bool oneLine = query.size.width > 380;
-    double padding = 12 * (oneLine ? 1.0 : 0.5 );
+    double padding = 12 * (oneLine ? 1.0 : 0.5);
 
     return FlatButton(
-      child: Container(
-        height: height ,
-
-          padding: EdgeInsets.fromLTRB(padding, padding , padding , padding ),
-          decoration: BoxDecoration(
-            color: ColorConstants.mainAppColor,
-            borderRadius:
-            BorderRadius.circular(ParametersConstants.largeImageBorderRadius),
-            border:
-            Border.all(color: ColorConstants.goodsBorder.withOpacity(0.1)),
-            boxShadow: [
-              ParametersConstants.shadowDecoration,
-            ],
-          ),
-          child: LayoutBuilder(
-            builder: (context, snapshot) {
-              if(oneLine){
-                return _buildOneLine(context,showInfo: showInfo);
+        child: Container(
+            height: height,
+            padding: EdgeInsets.fromLTRB(padding, padding, padding, padding),
+            decoration: BoxDecoration(
+              color: ColorConstants.mainAppColor,
+              borderRadius: BorderRadius.circular(
+                  ParametersConstants.largeImageBorderRadius),
+              border: Border.all(
+                  color: ColorConstants.goodsBorder.withOpacity(0.1)),
+              boxShadow: [
+                ParametersConstants.shadowDecoration,
+              ],
+            ),
+            child: LayoutBuilder(builder: (context, snapshot) {
+              if (oneLine) {
+                return _buildOneLine(context, showInfo: showInfo);
               } else {
-
-                return _buildTooLine(context,showInfo: showInfo);
+                return _buildTooLine(context, showInfo: showInfo);
               }
-            }
-          )
-      ),
-      onPressed:(){
-        Navigator.of(context).push(new MaterialPageRoute(builder:(context){ return  DetailGoods(goodsData: data,);}));
-      }
-    );
+            })),
+        onPressed: () {
+          Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+            return DetailGoods(
+              goodsData: data,
+            );
+          }));
+        });
   }
-  Widget _buildTooLine(BuildContext context,{bool showInfo = true,double padding = 6}){
+
+  Widget _buildTooLine(BuildContext context,
+      {bool showInfo = true, double padding = 6}) {
     var query = MediaQuery.of(context);
     return Column(
       children: <Widget>[
@@ -64,9 +64,13 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-
-              Center(child: CachedImage.imageForShopList(url: data.imageUrl,height: (preferredSize.height*query.size.width/query.size.height - padding*2))),
-
+              Center(
+                  child: CachedImage.imageForShopList(
+                      url: data.imageUrl,
+                      height: (preferredSize.height *
+                              query.size.width /
+                              query.size.height -
+                          padding * 2))),
               Flexible(
                   flex: 1,
                   child: Container(
@@ -83,23 +87,23 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                           ),
-
-                          showInfo ?   Padding(
-                            padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
-                            child: Text(
-                              data.previewText,
-                              style: Theme.of(context).textTheme.bodyText1,
-                              maxLines: 2,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                            ),
-                          ) : Container(),
-
+                          showInfo
+                              ? Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
+                                  child: Text(
+                                    data.previewText,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                    maxLines: 2,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                )
+                              : Container(),
                         ]),
                   ))
             ]),
-
         Flexible(
           child: Padding(
               padding: EdgeInsets.fromLTRB(0, padding, 0, 0),
@@ -110,25 +114,34 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                     children: <Widget>[
                       RichText(
                         text: TextSpan(
-                          text: "${data.getPrice().price.toInt().toString()} р \n",
+                          text:
+                              "${data.getPrice().price.toInt().toString()} р \n",
                           style: Theme.of(context).textTheme.subtitle2,
-
                           children: <TextSpan>[
-                            TextSpan(text: "${data.units.contains(TextConstants.units) ?"1 "+data.units :"1 "+data.units}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                            ),
+                            TextSpan(
+                                text:
+                                    "${data.units.contains(TextConstants.units) ? "1 " + data.units : "1 " + data.units}",
+                                style: Theme.of(context).textTheme.bodyText1),
                           ],
                         ),
                       ),
                       Spacer(),
                       AutoUpdatingWidget<CartUpdated>(
-                        child:(context,e)=> CountButtonGroup(
-                          step: data.units.contains(TextConstants.units)?1:0.25,
-                          getText: (){return "${data.units == "шт"?Resources().cart.getCount(data.id).toInt():Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";},
-                          setCount: (double count)=>{  Resources().cart.setCount(data.id,count)},
-                          getCount: (){ return Resources().cart.getCount(data.id);},
+                        child: (context, e) => CountButtonGroup(
+                          step: data.units.contains(TextConstants.units)
+                              ? 1
+                              : 0.25,
+                          getText: () {
+                            return "${data.units == "шт" ? Resources().cart.getCount(data.id).toInt() : Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";
+                          },
+                          setCount: (double count) => {
+                            print(count),
+                            print(data.id),
+                            Resources().cart.setCount(data.id, count)
+                          },
+                          getCount: () {
+                            return Resources().cart.getCount(data.id);
+                          },
                         ),
                       )
                     ]),
@@ -137,15 +150,18 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
       ],
     );
   }
-  Widget _buildOneLine(BuildContext context,{bool showInfo = true,double padding = 12}){
+
+  Widget _buildOneLine(BuildContext context,
+      {bool showInfo = true, double padding = 12}) {
     var query = MediaQuery.of(context);
     return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-
-          Center(child: CachedImage.imageForShopList(url: data.imageUrl,height:preferredSize.height - padding*2)),
-
+          Center(
+              child: CachedImage.imageForShopList(
+                  url: data.imageUrl,
+                  height: preferredSize.height - padding * 2)),
           Flexible(
               flex: 1,
               child: Container(
@@ -162,49 +178,61 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
                       ),
-
-                    showInfo ? Padding(
-                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
-                       child: Text(
-
-                         data.previewText,
-                         style: Theme.of(context).textTheme.bodyText1,
-                         maxLines: 2,
-                         softWrap: true,
-                         overflow: TextOverflow.ellipsis,
-                         textAlign: TextAlign.left,
-                       ),
-                     ) : Container(),
-
-                      Expanded(child: Container(),),
+                      showInfo
+                          ? Padding(
+                              padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
+                              child: Text(
+                                data.previewText,
+                                style: Theme.of(context).textTheme.bodyText1,
+                                maxLines: 2,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                              ),
+                            )
+                          : Container(),
                       Padding(
                           padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                           child: Container(
                             alignment: Alignment.bottomCenter,
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
+                                children: [
                                   RichText(
                                     text: TextSpan(
-                                      text: "${data.getPrice().price.toInt().toString()} р \n",
-                                      style: Theme.of(context).textTheme.subtitle2,
-
+                                      text:
+                                          "${data.getPrice().price.toInt().toString()} р \n",
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2,
                                       children: <TextSpan>[
-                                        TextSpan(text: "${data.units}",
+                                        TextSpan(
+                                            text: "${data.units}",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1
-                                        ),
+                                                .bodyText1),
                                       ],
                                     ),
                                   ),
                                   Spacer(),
                                   AutoUpdatingWidget<CartUpdated>(
-                                    child:(context,e)=> CountButtonGroup(
-                                      step: data.units.contains(TextConstants.units)?1:0.25,
-                                      getText: (){return "${data.units == "шт"?Resources().cart.getCount(data.id).toInt():Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";},
-                                      setCount: (double count)=>{  Resources().cart.setCount(data.id,count)},
-                                      getCount: (){ return Resources().cart.getCount(data.id);},
+                                    child: (context, e) => CountButtonGroup(
+                                      step: data.units
+                                              .contains(TextConstants.units)
+                                          ? 1
+                                          : 0.25,
+                                      getText: () {
+                                        return "${data.units == "шт" ? Resources().cart.getCount(data.id).toInt() : Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";
+                                      },
+                                      setCount: (double count) => {
+                                        Resources()
+                                            .cart
+                                            .setCount(data.id, count)
+                                      },
+                                      getCount: () {
+                                        return Resources()
+                                            .cart
+                                            .getCount(data.id);
+                                      },
                                     ),
                                   )
                                 ]),
@@ -213,5 +241,4 @@ class Goods extends StatelessWidget implements PreferredSizeWidget{
               ))
         ]);
   }
-
 }

@@ -18,15 +18,14 @@ import 'InformationRow.dart';
 class Order extends StatefulWidget implements PreferredSizeWidget {
   final OrderData data;
   final bool opened;
-  const Order({Key key, this.data,this.opened = false}) : super(key: key);
+  const Order({Key key, this.data, this.opened = false}) : super(key: key);
 
   Widget _getDetailInfo(OrderData _data) {}
 
-  Widget detailBuilder(BuildContext context){
-    return  Container(
+  Widget detailBuilder(BuildContext context) {
+    return Container(
       margin: EdgeInsets.all(20),
       child: ListView(
-
         children: <Widget>[
           Row(
             children: <Widget>[
@@ -58,101 +57,176 @@ class Order extends StatefulWidget implements PreferredSizeWidget {
               //  shrinkWrap: true,
 
               children: <Widget>[
-                Container(height: 20,),
+                Container(
+                  height: 20,
+                ),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: data.cart.cart.keys.length,
-
                     itemBuilder: (context, index) {
-                      return FlatButton(
-                        onPressed: ()=>{
-                          Navigator.of(context).push(new MaterialPageRoute(builder:(context){ return  DetailGoods(goodsData: Resources().getGodById(data.cart.cart.keys.elementAt(index)),);}))
+                      return FutureBuilder(
+                        future: Resources()
+                            .getProduct(data.cart.cart.keys.elementAt(index)),
+                        builder: (context, AsyncSnapshot<GoodsData> snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return Center(child: CircularProgressIndicator());
+                          }
 
-                        },
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              flex: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right:8.0),
-                                child: CustomText.black16px(
-                                  "${Resources().getGodById(data.cart.cart.keys.elementAt(index)).name}",maxLines: 2,),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: CustomText.black16px(
-                                    "${data.cart.cart[data.cart.cart.keys.elementAt(index)]} x "
+                          return FlatButton(
+                            onPressed: () => {
+                              Navigator.of(context).push(
+                                  new MaterialPageRoute(builder: (context) {
+                                return DetailGoods(
+                                  goodsData: snapshot.data,
+                                );
+                              }))
+                            },
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: CustomText.black16px(
+                                      snapshot.data.name,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: CustomText.black16px(
+                                        "${data.cart.cart[data.cart.cart.keys.elementAt(index)]} x "
                                         "${data.cart.savedCartPrice.values.elementAt(index)}${TextConstants.pricePostfix}"),
-                              ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: CustomText.black16px(
+                                        "${data.cart.savedCartPrice.values.elementAt(index) * data.cart.cart[data.cart.cart.keys.elementAt(index)]}${TextConstants.pricePostfix}",
+                                        maxLines: 1),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: CustomText.black16px(
-                                    "${data.cart.savedCartPrice.values.elementAt(index) * data.cart.cart[data.cart.cart.keys.elementAt(index)]}${TextConstants.pricePostfix}",
-                                    maxLines: 1),
-                              ),
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       );
                     }),
-                InformationRow(icon: AssetsConstants.iconInfoPay,label: TextConstants.payMethod,text: data.payType == PayType.cash?TextConstants.payMethodCash:TextConstants.payMethodOnline,),
-                Container(height: 10,),
-                InformationRow(icon: AssetsConstants.iconInfoDelivery,label: TextConstants.delivery,text: data.deliveryType == DeliveryType.courier?TextConstants.deliveryMethodCourier:TextConstants.deliveryMethodPickup,posfix: data.deliveryPrice.toStringAsFixed(1)+TextConstants.pricePostfix,),
-                Container(height: 10,),
-                InformationRow(icon: AssetsConstants.iconInfoTime,label: TextConstants.deliveryTime,text: "${DateFormat.d().format(data.orderTime)}.${DateFormat.M().format(data.orderTime)}.${DateFormat.y().format(data.orderTime)}  ${DateFormat.Hm().format(data.orderTime)}",),
-                Container(height: 10,),
-                InformationRow(icon: AssetsConstants.iconInfoUser,label: TextConstants.contactName,text: data.userAddress.username,),
-                Container(height: 10,),
-                InformationRow(icon: AssetsConstants.iconInfoAdres,label: TextConstants.adres,text:data.userAddress.addres ,),
-                Container(height: 20,),
+                InformationRow(
+                  icon: AssetsConstants.iconInfoPay,
+                  label: TextConstants.payMethod,
+                  text: data.payType == PayType.cash
+                      ? TextConstants.payMethodCash
+                      : TextConstants.payMethodOnline,
+                ),
+                Container(
+                  height: 10,
+                ),
+                InformationRow(
+                  icon: AssetsConstants.iconInfoDelivery,
+                  label: TextConstants.delivery,
+                  text: data.deliveryType == DeliveryType.courier
+                      ? TextConstants.deliveryMethodCourier
+                      : TextConstants.deliveryMethodPickup,
+                  posfix: data.deliveryPrice.toStringAsFixed(1) +
+                      TextConstants.pricePostfix,
+                ),
+                Container(
+                  height: 10,
+                ),
+                InformationRow(
+                  icon: AssetsConstants.iconInfoTime,
+                  label: TextConstants.deliveryTime,
+                  text:
+                      "${DateFormat.d().format(data.orderTime)}.${DateFormat.M().format(data.orderTime)}.${DateFormat.y().format(data.orderTime)}  ${DateFormat.Hm().format(data.orderTime)}",
+                ),
+                Container(
+                  height: 10,
+                ),
+                InformationRow(
+                  icon: AssetsConstants.iconInfoUser,
+                  label: TextConstants.contactName,
+                  text: data.userAddress.username,
+                ),
+                Container(
+                  height: 10,
+                ),
+                InformationRow(
+                  icon: AssetsConstants.iconInfoAdres,
+                  label: TextConstants.adres,
+                  text: data.userAddress.addres,
+                ),
+                Container(
+                  height: 20,
+                ),
               ],
             ),
           ),
-          Container(height: 1,margin: const EdgeInsets.only(bottom: 10),color: ColorConstants.darkGray,),
+          Container(
+            height: 1,
+            margin: const EdgeInsets.only(bottom: 10),
+            color: ColorConstants.darkGray,
+          ),
           Row(
             children: <Widget>[
-
-              Expanded(child: PriceRow(text: data.price,)),
-              data.status == "ON"?_payOrder(context):_duplicateOrder(context)
+              Expanded(
+                  child: PriceRow(
+                text: data.price,
+              )),
+              data.status == "ON"
+                  ? _payOrder(context)
+                  : _duplicateOrder(context)
             ],
           ),
         ],
       ),
     );
   }
+
   @override
-
-  Widget _duplicateOrder(BuildContext context){
-   return CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.cartDiplicateOrder.toUpperCase()),onClick: ()=>{
-          Resources().cart.setCart(data.cart.cart),
-           Navigator.push( context,CartButtonRoute( builder: (context) => CartPage()),)
-   });
-
-
-
-  }
-  Widget _payOrder(BuildContext context){
-    return CustomButton.colored(color:ColorConstants.red, width: 190,height: 45,child:CustomText.white12px(TextConstants.orderMakePay.toUpperCase()),onClick: ()async{
-      String href =  await Resources().getPayment(data.id);
-
-          Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute( builder: (context) => WebPage(title:TextConstants.orderSberbankPay ,url:href)),
-          ModalRoute.withName("/"));
-
-    },);
+  Widget _duplicateOrder(BuildContext context) {
+    return CustomButton.colored(
+        color: ColorConstants.red,
+        width: 190,
+        height: 45,
+        child: CustomText.white12px(
+            TextConstants.cartDiplicateOrder.toUpperCase()),
+        onClick: () => {
+              Resources().cart.setCart(data.cart.cart),
+              Navigator.push(
+                context,
+                CartButtonRoute(builder: (context) => CartPage()),
+              )
+            });
   }
 
-  Widget _getText(String orderStatus,
-      {TextAlign align = TextAlign.center}) {
+  Widget _payOrder(BuildContext context) {
+    return CustomButton.colored(
+      color: ColorConstants.red,
+      width: 190,
+      height: 45,
+      child: CustomText.white12px(TextConstants.orderMakePay.toUpperCase()),
+      onClick: () async {
+        String href = await Resources().getPayment(data.id);
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    WebPage(title: TextConstants.orderSberbankPay, url: href)));
+      },
+    );
+  }
+
+  Widget _getText(String orderStatus, {TextAlign align = TextAlign.center}) {
     switch (orderStatus) {
       case "N":
         return CustomText.gray12px(
@@ -161,22 +235,26 @@ class Order extends StatefulWidget implements PreferredSizeWidget {
         );
         break;
       case "P":
-        return CustomText.gray12px(TextConstants.orderDelivery.toUpperCase(), align: align);
+        return CustomText.gray12px(TextConstants.orderDelivery.toUpperCase(),
+            align: align);
         break;
       case "F":
-        return CustomText.gray12px(TextConstants.orderDone.toUpperCase(), align: align);
+        return CustomText.gray12px(TextConstants.orderDone.toUpperCase(),
+            align: align);
         break;
       case "ON":
-        return CustomText.gray12px(TextConstants.orderPay.toUpperCase(), align: align);
+        return CustomText.gray12px(TextConstants.orderPay.toUpperCase(),
+            align: align);
         break;
       default:
-        return CustomText.gray12px(TextConstants.orderDone.toUpperCase(), align: align);
+        return CustomText.gray12px(TextConstants.orderDone.toUpperCase(),
+            align: align);
     }
   }
 
   Color _getColor(String orderStatus) {
     switch (orderStatus) {
-      case  "N":
+      case "N":
         return ColorConstants.orderCall;
         break;
       case "P":
@@ -241,49 +319,45 @@ class Order extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => null;
 
   @override
-  State<StatefulWidget> createState() =>_OrderState();
-
-
-
+  State<StatefulWidget> createState() => _OrderState();
 }
 
 class _OrderState extends State<Order> {
   @override
-  void initState()  {
+  void initState() {
     super.initState();
-
   }
-  void _showModalBar(){
+
+  void _showModalBar() {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
-
-          borderRadius:BorderRadius.vertical(top:Radius.circular(ParametersConstants.largeImageBorderRadius) ),),
-        builder:widget.detailBuilder);
-
+          borderRadius: BorderRadius.vertical(
+              top: Radius.circular(ParametersConstants.largeImageBorderRadius)),
+        ),
+        builder: widget.detailBuilder);
   }
+
   var timer;
   @override
   Widget build(BuildContext context) {
-   /* print("opened "+widget.opened.toString());
+    /* print("opened "+widget.opened.toString());
     if(widget.opened) setState(() { showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
 
           borderRadius:BorderRadius.vertical(top:Radius.circular(ParametersConstants.largeImageBorderRadius) ),),
         builder:widget.detailBuilder);})  ;*/
-    final  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-     print("opened "+widget.opened.toString());
-    if(widget.opened && timer == null) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    print("opened " + widget.opened.toString());
+    if (widget.opened && timer == null) {
+      timer = new Timer(
+          Duration(milliseconds: 200),
+          () => setState(() {
+                print("Timer tick showModalBottomSheet");
 
-       timer = new Timer(Duration(milliseconds: 200), ()=>setState(() {
-          print("Timer tick showModalBottomSheet");
-
-          _showModalBar();
-
-       }));
-
-
+                _showModalBar();
+              }));
     }
 
     return Center(
@@ -291,14 +365,12 @@ class _OrderState extends State<Order> {
         height: 90,
         decoration: BoxDecoration(
           color: ColorConstants.mainAppColor,
-          borderRadius:
-          BorderRadius.vertical(top:Radius.circular(ParametersConstants.largeImageBorderRadius) ),
+          borderRadius: BorderRadius.vertical(
+              top: Radius.circular(ParametersConstants.largeImageBorderRadius)),
         ),
         child: FlatButton(
           padding: const EdgeInsets.all(0),
-          onPressed: () => {
-            _showModalBar()
-          },
+          onPressed: () => {_showModalBar()},
           child: Row(
             children: <Widget>[
               Padding(
