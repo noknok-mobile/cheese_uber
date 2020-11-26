@@ -716,3 +716,19 @@ class UserProfile {
         "PROPS": jsonEncode(userAddress.map((x) => x.toJson())),
       };
 }
+
+class AddressDto {
+  final String city;
+  final String address;
+
+  AddressDto({this.city, this.address});
+
+  Map<String, dynamic> toJson() => {
+        'city': city,
+        'address': address,
+      };
+
+  AddressDto.fromJson(Map<String, dynamic> json)
+      : city = json['city'],
+        address = json['address'];
+}

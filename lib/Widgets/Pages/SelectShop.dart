@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -40,8 +43,8 @@ class _SelectShopState extends State<SelectShop> {
 
   bool _selectShopButtonEnabled = true;
 
-  String SAVED_ADDRESSES_LIST_KEY = "SAVED_ADDRESSES_LIST_KEY";
-  List<String> savedAddresses = List<String>();
+  String SAVED_ADDRESSES_LIST_KEY = "SAVED_ADDRESSES_DTO_LISTS_KEY";
+  List<AddressDto> savedAddresses = List<AddressDto>();
 
   Future<Address> getAddressFromCoordinates(Point point) async {
     var addresses = await Geolocation()
@@ -177,13 +180,17 @@ class _SelectShopState extends State<SelectShop> {
                       child: FutureBuilder(
                         future:
                             Resources().getStringList(SAVED_ADDRESSES_LIST_KEY),
-                        builder: (context, snapshot) {
+                        builder:
+                            (context, AsyncSnapshot<List<String>> snapshot) {
                           if (snapshot.connectionState !=
                               ConnectionState.done) {
                             return Center(child: CircularProgressIndicator());
                           }
                           if (snapshot.hasData) {
-                            savedAddresses = snapshot.data;
+                            savedAddresses = snapshot.data
+                                .map((e) => AddressDto.fromJson(json.decode(e)))
+                                .toList();
+
                             return ListView.builder(
                               itemCount: savedAddresses.length,
                               scrollDirection: Axis.horizontal,
@@ -201,7 +208,8 @@ class _SelectShopState extends State<SelectShop> {
                                             left: 10,
                                             top: 5,
                                             bottom: 5),
-                                        child: Text(savedAddresses[index],
+                                        child: Text(
+                                            savedAddresses[index].address,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.black,
@@ -209,9 +217,9 @@ class _SelectShopState extends State<SelectShop> {
                                                     FontWeight.normal))),
                                     onTap: () async {
                                       addressTextField.text =
-                                          widget.deliveryAddress.locality +
+                                          savedAddresses[index].city +
                                               ", " +
-                                              savedAddresses[index];
+                                              savedAddresses[index].address;
 
                                       var addressList = await Geolocation()
                                           .findAddressesFromQuery(
@@ -252,6 +260,7 @@ class _SelectShopState extends State<SelectShop> {
                           onClick: () => {
                                 selectShop(),
                                 saveDeliveryAddress(
+                                    widget.deliveryAddress.locality,
                                     widget.deliveryAddress.featureName),
                                 Resources().selectShop(widget.shopId),
                                 Navigator.pushAndRemoveUntil(
@@ -275,20 +284,21 @@ class _SelectShopState extends State<SelectShop> {
     prefs.setDouble("currentLat", selectedLocation.latitude);
   }
 
-  saveDeliveryAddress(String address) async {
+  saveDeliveryAddress(String city, String address) async {
+    print("saveDeliveryAddress ----");
     final SharedPreferences prefs = await _prefs;
     prefs.setString("currentAddress", address);
 
-    if (!savedAddresses.contains(address)) {
-      savedAddresses.insert(0, address);
-      storeStringList(savedAddresses);
+    // if (!savedAddresses.contains(address)) {
+    savedAddresses.insert(0, AddressDto(city: city, address: address));
+    storeStringList(savedAddresses.map((e) => json.encode(e)).toList());
 
-      Resources().editAddrese(UserAddress(
-          city: Resources()
-              .getCityWithId(Resources().getShopWithId(widget.shopId).city)
-              .name,
-          addres: address));
-    }
+    Resources().editAddrese(UserAddress(
+        city: Resources()
+            .getCityWithId(Resources().getShopWithId(widget.shopId).city)
+            .name,
+        addres: address));
+    // }
   }
 
   Future<void> cameraPositionChanged(dynamic arguments) async {
@@ -299,7 +309,15 @@ class _SelectShopState extends State<SelectShop> {
     if (bFinal) {
       Address address = await getAddressFromCoordinates(selectedLocation);
 
-      addressTextField.text = address.locality + ", " + address.featureName;
+      if (Platform.isAndroid) {
+        addressTextField.text = address.locality +
+            ", " +
+            address.thoroughfare +
+            ", " +
+            address.featureName;
+      } else {
+        addressTextField.text = address.locality + ", " + address.featureName;
+      }
 
       widget.shopId =
           (await Resources().getNearestShopByLocation(selectedLocation)).shopId;
@@ -309,6 +327,7 @@ class _SelectShopState extends State<SelectShop> {
   }
 
   void storeStringList(List<String> list) async {
+    print("storeStringList --- ");
     final SharedPreferences prefs = await _prefs;
     prefs.setStringList(SAVED_ADDRESSES_LIST_KEY, list);
   }
