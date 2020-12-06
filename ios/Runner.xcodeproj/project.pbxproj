@@ -380,7 +380,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = SZ5HFYRCGA;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = armv7;
@@ -397,7 +397,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.noknok.cheezworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -522,7 +522,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = SZ5HFYRCGA;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = armv7;
@@ -539,7 +539,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.noknok.cheezworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -556,7 +556,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = SZ5HFYRCGA;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = armv7;
@@ -573,7 +573,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.noknok.cheezworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

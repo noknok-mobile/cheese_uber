@@ -22,14 +22,17 @@ import 'OrdersPage.dart';
 class UserInfo extends StatefulWidget {
   final _formKey = GlobalKey<FormState>();
   @override
-  State<StatefulWidget> createState() =>_UserInfoState();
-
+  State<StatefulWidget> createState() => _UserInfoState();
 }
+
 class _UserInfoState extends State<UserInfo> {
-  SharedValue<String> phone =   SharedValue<String>(value:Resources().userProfile?.phone);
-  SharedValue<String> email=   SharedValue<String>(value: Resources().userProfile?.email);
-  SharedValue<String> pass=   SharedValue<String>(value:"");
-  SharedValue<String> name =   SharedValue<String>(value:Resources().userProfile?.username);
+  SharedValue<String> phone =
+      SharedValue<String>(value: Resources().userProfile?.phone);
+  SharedValue<String> email =
+      SharedValue<String>(value: Resources().userProfile?.email);
+  SharedValue<String> pass = SharedValue<String>(value: "");
+  SharedValue<String> name =
+      SharedValue<String>(value: Resources().userProfile?.username);
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +51,10 @@ class _UserInfoState extends State<UserInfo> {
           margin: const EdgeInsets.all(20),
 
           child: Form(
-            key:widget._formKey,
+            key: widget._formKey,
             child: Column(
-
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 16, 16, 16),
                   child: Row(
@@ -61,28 +62,29 @@ class _UserInfoState extends State<UserInfo> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomText.black20pxBold(Resources().userProfile.username),
+                          CustomText.black20pxBold(
+                              Resources().userProfile.username),
                           CustomText.black16px(Resources().userProfile.email),
-
                         ],
                       ),
-                      Expanded(child:Container()),
+                      Expanded(child: Container()),
                       GestureDetector(
-                        onTap: () async{
-                          Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+                        onTap: () async {
+                          Future<SharedPreferences> _prefs =
+                              SharedPreferences.getInstance();
                           final SharedPreferences prefs = await _prefs;
                           prefs.setString("pass", "");
                           Navigator.push(
                               context,
-                              MaterialPageRoute( builder: (context) => LoginPage()));
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
                         },
-                        child:  CustomText.red14pxUnderline(TextConstants.exit),
+                        child: CustomText.red14pxUnderline(TextConstants.exit),
                       )
                     ],
                   ),
                 ),
                 Container(
-
                   height: 1,
                   color: ColorConstants.gray,
                 ),
@@ -90,13 +92,12 @@ class _UserInfoState extends State<UserInfo> {
                   padding: const EdgeInsets.all(8),
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
-
                       onTap: () {
                         Navigator.push(
                             context,
-                            MaterialPageRoute( builder: (context) => OrdersPage()));
+                            MaterialPageRoute(
+                                builder: (context) => OrdersPage()));
                       },
-
                       child: CustomText.black16px(TextConstants.orderHeader)),
                 ),
                 Container(
@@ -108,13 +109,16 @@ class _UserInfoState extends State<UserInfo> {
                   child: Row(
                     children: <Widget>[
                       CustomText.black16px(TextConstants.bonusPoint),
-                      Expanded(child: Container(),),
-                      CustomText.black16px(Resources().userProfile.bonusPoints.toString()+TextConstants.pricePostfix),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      CustomText.black16px(
+                          Resources().userProfile.bonusPoints.toString() +
+                              TextConstants.pricePostfix),
                     ],
                   ),
                 ),
                 Container(
-
                   height: 1,
                   color: ColorConstants.gray,
                 ),
@@ -123,79 +127,27 @@ class _UserInfoState extends State<UserInfo> {
                   child: CustomText.black20pxBold(TextConstants.contactDate),
                 ),
                 Container(
-
                   height: 1,
                   color: ColorConstants.gray,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(0),
-                  child:InputFieldName(label: TextConstants.contactName, value: name,decorated: false),
+                  child: InputFieldName(
+                      label: TextConstants.contactName,
+                      value: name,
+                      decorated: false),
                 ),
                 Container(
-
                   height: 1,
                   color: ColorConstants.gray,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(0),
-                  child:InputFieldPhone(label: TextConstants.phone, value: phone,decorated: false),
+                  child: InputFieldPhone(
+                      label: TextConstants.phone,
+                      value: phone,
+                      decorated: false),
                 ),
-                Container(
-                  height: 1,
-                  color: ColorConstants.gray,
-                ),
-              /*  Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: CustomText.black16px(Resources().userProfile?.email),
-                ),*/
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: CustomText.black20pxBold(TextConstants.youAdresHeader),
-                ),
-                Container(
-                  height: 1,
-                  color: ColorConstants.gray,
-                ),
-
-                Container( child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: Resources().userProfile.userAddress == null?0: Resources().userProfile.userAddress.length,
-                    separatorBuilder: (context, index) {
-                      return Container(
-                        height: 1,
-                        color: ColorConstants.gray,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return Row(
-
-                        children: <Widget>[
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                              alignment: Alignment.centerLeft,
-                              child: GestureDetector(
-
-                                  onTap: () => {
-                                    Navigator.of(context).push(new MaterialPageRoute(builder:(context){ return  NewAddres(userAddress:Resources().userProfile.userAddress[index]);}))
-                                  },
-
-                                  child: CustomText.black16px(Resources().userProfile.userAddress[index].name)),
-                            ),
-                          ),
-                        //  CustomCheckBox(disabledWidget: AssetsConstants.toggleOff,enabledWidget: AssetsConstants.toggleOn,value: true,)
-                        ],
-                      );
-                    }),),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-
-                  child: CustomButton.colored(expanded: true, color:ColorConstants.red,height: 40,child:CustomText.white12px(TextConstants.newAddres.toUpperCase()),onClick: ()=>{
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute( builder: (context) =>  NewAddres()))}),
-                  ),
-
               ],
             ),
           ),
