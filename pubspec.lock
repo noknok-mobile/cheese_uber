@@ -317,6 +317,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2"
+  localstorage:
+    dependency: "direct main"
+    description:
+      name: localstorage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.3+6"
   location:
     dependency: "direct main"
     description:

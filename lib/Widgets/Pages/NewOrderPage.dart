@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
@@ -52,8 +54,17 @@ class NewOrderPage extends StatefulWidget {
 }
 
 class _NewOrderPageState extends State<NewOrderPage> {
+  void getUserAddress() async {
+    print("deliveryParams ----- ");
+    UserAddress deliveryParams =
+        await Resources().getDeliveryParams("Краснодар,улица Игнатова, 61");
+    print(deliveryParams.addres);
+  }
+
   @override
   Widget build(BuildContext context) {
+    getUserAddress();
+
     // TODO: implement build
     return Center(
       child: Scaffold(
@@ -72,6 +83,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                       widget.userAddress.entrance = widget.entrance.value;
                       widget.userAddress.comment = widget.comment.value;
                       widget.userAddress.username = widget.contactName.value;
+
+                      Resources().saveDeliveryParams(widget.userAddress);
+
                       setState(() {
                         widget.enabled = false;
                       });
@@ -259,77 +273,116 @@ class _NewOrderPageState extends State<NewOrderPage> {
                               Container(
                                 height:
                                     widget.deliveryMethod.value == 2 ? 0 : null,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 16, 16, 16),
-                                      child: CustomText.black20pxBold(
-                                          TextConstants.orderDeliveryAddress),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: ColorConstants.gray,
-                                    ),
-                                    InputFieldText(
-                                      decorated: false,
-                                      prefix: TextConstants.adres,
-                                      textInputType: TextInputType.text,
-                                      value: widget.addres,
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: ColorConstants.gray,
-                                    ),
-                                    InputFieldText(
-                                      decorated: false,
-                                      //label: TextConstants.addresEntrance,
-                                      textInputType: TextInputType.number,
-                                      prefix: TextConstants.addresEntrance,
-                                      value: widget.entrance,
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: ColorConstants.gray,
-                                    ),
-                                    InputFieldText(
-                                        decorated: false,
-                                        //label: TextConstants.addresFloor,
-                                        prefix: TextConstants.addresFloor,
-                                        textInputType: TextInputType.number,
-                                        value: widget.floor),
-                                    Container(
-                                      height: 1,
-                                      color: ColorConstants.gray,
-                                    ),
-                                    InputFieldText(
-                                        decorated: false,
-                                        //label: TextConstants.addresFlat,
-                                        prefix: TextConstants.addresFlat,
-                                        textInputType: TextInputType.number,
-                                        value: widget.flat),
-                                    Container(
-                                      height: 1,
-                                      color: ColorConstants.gray,
-                                    ),
-                                    InputFieldText(
-                                        decorated: false,
-                                        prefix: TextConstants.contactName,
-                                        value: widget.contactName),
-                                    Container(
-                                      height: 1,
-                                      color: ColorConstants.gray,
-                                    ),
-                                    InputFieldText(
-                                      decorated: false,
-                                      height: 90,
-                                      label: "Комментарий",
-                                      maxLines: 50,
-                                      value: widget.comment,
-                                    ),
-                                  ],
+                                child: FutureBuilder(
+                                  future: Resources().getLocalStorageReady(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data == null) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+
+                                    print("READY --- " +
+                                        snapshot.data.toString());
+
+                                    print(Resources().localStorage.getItem(
+                                        widget.userAddress.city +
+                                            ',' +
+                                            widget.userAddress.addres));
+
+                                    var item = Resources().localStorage.getItem(
+                                        widget.userAddress.city +
+                                            ',' +
+                                            widget.userAddress.addres);
+
+                                    if (item != null) {
+                                      UserAddress userAddress =
+                                          UserAddress.decode(json.decode(item));
+
+                                      widget.entrance.value =
+                                          userAddress.entrance;
+                                      widget.floor.value = userAddress.floor;
+                                      widget.flat.value = userAddress.flat;
+                                      widget.contactName.value =
+                                          userAddress.username;
+                                    }
+
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              10, 16, 16, 16),
+                                          child: CustomText.black20pxBold(
+                                              TextConstants
+                                                  .orderDeliveryAddress),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: ColorConstants.gray,
+                                        ),
+                                        InputFieldText(
+                                          decorated: false,
+                                          prefix: TextConstants.adres,
+                                          textInputType: TextInputType.text,
+                                          value: widget.addres,
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: ColorConstants.gray,
+                                        ),
+                                        InputFieldText(
+                                          decorated: false,
+                                          //label: TextConstants.addresEntrance,
+                                          textInputType: TextInputType.number,
+                                          prefix: TextConstants.addresEntrance,
+                                          value: widget.entrance,
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: ColorConstants.gray,
+                                        ),
+                                        InputFieldText(
+                                            decorated: false,
+                                            //label: TextConstants.addresFloor,
+                                            prefix: TextConstants.addresFloor,
+                                            textInputType: TextInputType.number,
+                                            value: widget.floor),
+                                        Container(
+                                          height: 1,
+                                          color: ColorConstants.gray,
+                                        ),
+                                        InputFieldText(
+                                            decorated: false,
+                                            //label: TextConstants.addresFlat,
+                                            prefix: TextConstants.addresFlat,
+                                            textInputType: TextInputType.number,
+                                            value: widget.flat),
+                                        Container(
+                                          height: 1,
+                                          color: ColorConstants.gray,
+                                        ),
+                                        InputFieldText(
+                                            decorated: false,
+                                            prefix: TextConstants.contactName,
+                                            value: widget.contactName),
+                                        Container(
+                                          height: 1,
+                                          color: ColorConstants.gray,
+                                        ),
+                                        InputFieldText(
+                                          decorated: false,
+                                          height: 90,
+                                          label: "Комментарий",
+                                          maxLines: 50,
+                                          value: widget.comment,
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
                             ])))),

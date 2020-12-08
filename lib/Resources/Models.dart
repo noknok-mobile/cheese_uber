@@ -518,6 +518,19 @@ class UserAddress {
         floor: json['data']["24"],
         flat: json['data']["25"],
       );
+
+  UserAddress.decode(Map<String, dynamic> json)
+      : id = int.parse(json["ID"]),
+        userID = int.parse(json["USER_ID"]),
+        name = json["name"],
+        city = json["5"],
+        addres = json["7"],
+        phone = json["3"],
+        username = json["1"],
+        entrance = json["23"],
+        floor = json["24"],
+        flat = json["25"];
+
   @override
   Map<String, dynamic> toJson() => {
         "ID": id.toString(),
@@ -683,14 +696,14 @@ class UserProfile {
       print(addressList);
       if (shop != null) {
         selectedShop = shop;
-        if (addressList != null)
-          addressList.forEach((element) {
-            userAddress.add(UserAddress(
-                city: Resources()
-                    .getCityWithId(Resources().getShopWithId(shop).city)
-                    .name,
-                addres: element));
-          });
+        // if (addressList != null)
+        //   addressList.forEach((element) {
+        //     userAddress.add(UserAddress(
+        //         city: Resources()
+        //             .getCityWithId(Resources().getShopWithId(shop).city)
+        //             .name,
+        //         addres: element));
+        //   });
       }
     });
   }

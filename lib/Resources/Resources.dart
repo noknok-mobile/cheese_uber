@@ -7,6 +7,7 @@ import 'package:flutter_cheez/Utils/Geolocation.dart';
 import 'package:flutter_cheez/Utils/NetworkUtil.dart';
 import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
 import 'package:geocoder/model.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:sqflite/sqflite.dart";
 import 'dart:io';
@@ -83,6 +84,8 @@ class Resources {
   List<CityInfo> get getAllCity {
     return _allCity;
   }
+
+  final LocalStorage localStorage = LocalStorage("cheese_uber");
 
   Resources._internal() {
     // eventBus.on<CartUpdated>().listen((event)=>{sendBasketData(event.cart)});
@@ -337,6 +340,7 @@ class Resources {
     print('getProfile');
     var data =
         await NetworkUtil().post("profile", headers: {"Token": token}) as Map;
+
     _userProfile = UserProfile.fromJson(data);
 
     final SharedPreferences prefs = await _prefs;
@@ -353,6 +357,7 @@ class Resources {
 
     print(data.toString());
     if (data.containsKey("errors")) return data["errors"][0]["message"];
+    print("OK");
     return "OK";
   }
 
@@ -535,5 +540,23 @@ class Resources {
         Point(latitude: currentLat, longitude: currentLong));
 
     return address.locality + ", " + address.featureName;
+  }
+
+  void saveDeliveryParams(UserAddress address) async {
+    await localStorage.ready;
+    print("LOCAL STORAGE -----");
+    print(address.city + ',' + address.addres);
+    localStorage.setItem(
+        address.city + ',' + address.addres, json.encode(address));
+  }
+
+  Future<UserAddress> getDeliveryParams(String address) async {
+    await localStorage.ready;
+    print("GET LOCAL STORAGE -----");
+    return localStorage.getItem(address);
+  }
+
+  Future<bool> getLocalStorageReady() async {
+    return await localStorage.ready;
   }
 }
