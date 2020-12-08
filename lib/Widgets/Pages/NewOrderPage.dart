@@ -282,14 +282,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       );
                                     }
 
-                                    print("READY --- " +
-                                        snapshot.data.toString());
-
-                                    print(Resources().localStorage.getItem(
-                                        widget.userAddress.city +
-                                            ',' +
-                                            widget.userAddress.addres));
-
                                     var item = Resources().localStorage.getItem(
                                         widget.userAddress.city +
                                             ',' +

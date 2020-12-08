@@ -65,7 +65,7 @@ class TextConstants {
   static String get payMethodOnline => "Онлайн";
   static String get adres => "Адрес";
   static String get delivery => "Доставка";
-  static String get deliveryTime => "Время доставки";
+  static String get deliveryTime => "Время заказа";
   static String get deliveryMethodPickup => "Самовывоз";
   static String get deliveryMethodCourier => "Курьер";
   static String get contactName => "Контактное лицо";
