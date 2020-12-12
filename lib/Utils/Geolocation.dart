@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/services/base.dart';
@@ -78,13 +80,30 @@ class Geolocation {
     return shops.first;
   }
 
-  Future<List<Address>> findAddressesFromQuery(String address) async {
+  Future<List<Address>> findAddressesFromQuery(
+      String address, BuildContext context, VoidCallback onOk) async {
     try {
       var geocoding = mode;
       var results = await geocoding.findAddressesFromQuery(address);
       return results;
     } catch (e) {
       print("Error occured: $e");
+      showDialog(
+        context: context,
+        child: CupertinoAlertDialog(
+          title: Text('Ошибка'),
+          content: Text("Адресс не найден"),
+          actions: [
+            CupertinoDialogAction(
+                isDefaultAction: true,
+                onPressed: () {
+                  Navigator.pop(context);
+                  onOk();
+                },
+                child: Text("OK"))
+          ],
+        ),
+      );
     } finally {}
     ;
     return List<Address>();

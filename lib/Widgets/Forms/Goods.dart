@@ -135,9 +135,7 @@ class Goods extends StatelessWidget implements PreferredSizeWidget {
                             return "${data.units == "шт" ? Resources().cart.getCount(data.id).toInt() : Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";
                           },
                           setCount: (double count) => {
-                            print(count),
-                            print(data.id),
-                            Resources().cart.setCount(data.id, count)
+                            Resources().cart.setCount(data.id, count),
                           },
                           getCount: () {
                             return Resources().cart.getCount(data.id);

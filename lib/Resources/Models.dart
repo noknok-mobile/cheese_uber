@@ -240,11 +240,11 @@ class Cart implements IDataJsonModel, IDataBaseModel {
   double get cartPrice {
     double price = 0;
 
-    cart.forEach((k, v) {
+    cart.forEach((k, v) async {
       if (savedCartPrice.containsKey(k)) {
         price += savedCartPrice[k] * v;
       } else {
-        price += Resources().getGodById(k).getPrice().price * v;
+        price += (await Resources().getProduct(k)).getPrice().price * v;
       }
     });
     return price;
@@ -320,6 +320,8 @@ class Cart implements IDataJsonModel, IDataBaseModel {
       removeAll(id);
     }
 
+    Resources().saveCart(this);
+
     eventBus.fire(CartUpdated(cart: this));
 
     return getCount(id);
@@ -359,11 +361,15 @@ class Cart implements IDataJsonModel, IDataBaseModel {
   Cart();
   void setCart(Map<int, double> newCart) {
     clear();
-
-    newCart.forEach((key, value) => {
-          if (Resources().getGodById(key).getPrice().price != 0)
-            cart[key] = value
-        });
+    print("newCart -- " + newCart.toString());
+    newCart.forEach((key, value) async {
+      print("key --- " + key.toString());
+      var price = (await Resources().getProduct(key)).getPrice().price;
+      if (price != 0) {
+        cart[key] = value;
+        savedCartPrice[key] = price;
+      }
+    });
 
     //cart = newCart;
   }
@@ -378,9 +384,12 @@ class Cart implements IDataJsonModel, IDataBaseModel {
             mapPrice[int.parse(x["ID"])] = (x["PRICE"].toDouble())
           });
     }
-
     return Cart.fromData(cart: map, savedCartPrice: mapPrice);
   }
+
+  Cart.decode(Map<String, dynamic> json)
+      : cart = Map.from(json['cart'])
+            .map((key, value) => MapEntry(int.parse(key), double.parse(value)));
 
   @override
   String localTableName() {

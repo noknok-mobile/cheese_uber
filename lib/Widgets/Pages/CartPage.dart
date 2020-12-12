@@ -97,9 +97,17 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
                                   ? ParametersConstants
                                       .paddingInFerstListElemetn
                                   : 0),
-                          CartGoods(
-                              data: Resources().getGodById(
-                                  projectSnap.data.keys.toList()[index])),
+                          FutureBuilder(
+                            future: Resources().getProduct(
+                                projectSnap.data.keys.toList()[index]),
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) {
+                                return CircularProgressIndicator();
+                              }
+
+                              return CartGoods(data: snapshot.data);
+                            },
+                          ),
                           index == projectSnap.data.length - 1
                               ? AddBonuses()
                               : Container(),

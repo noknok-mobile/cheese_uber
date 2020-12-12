@@ -44,7 +44,7 @@ class _SelectShopState extends State<SelectShop> {
   bool _selectShopButtonEnabled = true;
 
   String SAVED_ADDRESSES_LIST_KEY = "SAVED_ADDRESSES_DTO_LISTS_KEY";
-  List<AddressDto> savedAddresses = List<AddressDto>();
+  Set<AddressDto> savedAddresses = Set<AddressDto>();
 
   Future<Address> getAddressFromCoordinates(Point point) async {
     var addresses = await Geolocation()
@@ -86,7 +86,11 @@ class _SelectShopState extends State<SelectShop> {
 
             if (widget.selectedAddress != null) {
               var addressList = await Geolocation()
-                  .findAddressesFromQuery(widget.selectedAddress);
+                  .findAddressesFromQuery(widget.selectedAddress, context, () {
+                setState(() {
+                  _selectShopButtonEnabled = false;
+                });
+              });
 
               selectedLocation = Point(
                   latitude: addressList[0].coordinates.latitude,
@@ -158,7 +162,12 @@ class _SelectShopState extends State<SelectShop> {
                         });
 
                         var addressList = await Geolocation()
-                            .findAddressesFromQuery(addressTextField.text);
+                            .findAddressesFromQuery(
+                                addressTextField.text, context, () {
+                          setState(() {
+                            _selectShopButtonEnabled = false;
+                          });
+                        });
 
                         currentLocation = Point(
                             latitude: addressList[0].coordinates.latitude,
@@ -181,7 +190,7 @@ class _SelectShopState extends State<SelectShop> {
                         future:
                             Resources().getStringList(SAVED_ADDRESSES_LIST_KEY),
                         builder:
-                            (context, AsyncSnapshot<List<String>> snapshot) {
+                            (context, AsyncSnapshot<Set<String>> snapshot) {
                           if (snapshot.connectionState !=
                               ConnectionState.done) {
                             return Center(child: CircularProgressIndicator());
@@ -189,7 +198,7 @@ class _SelectShopState extends State<SelectShop> {
                           if (snapshot.hasData) {
                             savedAddresses = snapshot.data
                                 .map((e) => AddressDto.fromJson(json.decode(e)))
-                                .toList();
+                                .toSet();
 
                             return ListView.builder(
                               itemCount: savedAddresses.length,
@@ -209,7 +218,9 @@ class _SelectShopState extends State<SelectShop> {
                                             top: 5,
                                             bottom: 5),
                                         child: Text(
-                                            savedAddresses[index].address,
+                                            savedAddresses
+                                                .elementAt(index)
+                                                .address,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.black,
@@ -217,13 +228,20 @@ class _SelectShopState extends State<SelectShop> {
                                                     FontWeight.normal))),
                                     onTap: () async {
                                       addressTextField.text =
-                                          savedAddresses[index].city +
+                                          savedAddresses.elementAt(index).city +
                                               ", " +
-                                              savedAddresses[index].address;
+                                              savedAddresses
+                                                  .elementAt(index)
+                                                  .address;
 
                                       var addressList = await Geolocation()
                                           .findAddressesFromQuery(
-                                              addressTextField.text);
+                                              addressTextField.text, context,
+                                              () {
+                                        setState(() {
+                                          _selectShopButtonEnabled = false;
+                                        });
+                                      });
 
                                       currentLocation = Point(
                                           latitude: addressList[0]
@@ -249,28 +267,69 @@ class _SelectShopState extends State<SelectShop> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: CustomButton.colored(
-                          enable: _selectShopButtonEnabled,
-                          expanded: true,
-                          color: ColorConstants.red,
-                          height: 40,
-                          child: CustomText.white12px(
-                              TextConstants.btnNext.toUpperCase()),
-                          onClick: () => {
-                                selectShop(),
+                    padding: EdgeInsets.all(20),
+                    child: _selectShopButtonEnabled
+                        ? CustomButton.colored(
+                            expanded: true,
+                            color: ColorConstants.red,
+                            height: 40,
+                            child: CustomText.white12px(
+                                TextConstants.btnNext.toUpperCase()),
+                            onClick: () {
+                              selectShop();
+                              if (Platform.isAndroid) {
                                 saveDeliveryAddress(
                                     widget.deliveryAddress.locality,
-                                    widget.deliveryAddress.featureName),
-                                Resources().selectShop(widget.shopId),
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CategoryPage()),
-                                    (x) {
-                                  return false;
-                                })
-                              })),
+                                    widget.deliveryAddress.thoroughfare +
+                                        ", " +
+                                        widget.deliveryAddress.featureName);
+                              } else {
+                                saveDeliveryAddress(
+                                    widget.deliveryAddress.locality,
+                                    widget.deliveryAddress.featureName);
+                              }
+
+                              Resources().selectShop(widget.shopId);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CategoryPage()),
+                                  (x) {
+                                return false;
+                              });
+                            })
+                        : CustomButton.colored(
+                            expanded: true,
+                            color: ColorConstants.red,
+                            height: 40,
+                            child: CustomText.white12px("Найти".toUpperCase()),
+                            onClick: () async {
+                              setState(() {
+                                _selectShopButtonEnabled = true;
+                              });
+
+                              var addressList = await Geolocation()
+                                  .findAddressesFromQuery(
+                                      addressTextField.text, context, () {
+                                setState(() {
+                                  _selectShopButtonEnabled = false;
+                                });
+                              });
+
+                              currentLocation = Point(
+                                  latitude: addressList[0].coordinates.latitude,
+                                  longitude:
+                                      addressList[0].coordinates.longitude);
+
+                              selectShop();
+
+                              controller.move(point: currentLocation);
+                              controller.zoomIn();
+
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            },
+                          ),
+                  ),
                 ),
               ],
             ),
@@ -285,12 +344,10 @@ class _SelectShopState extends State<SelectShop> {
   }
 
   saveDeliveryAddress(String city, String address) async {
-    print("saveDeliveryAddress ----");
     final SharedPreferences prefs = await _prefs;
     prefs.setString("currentAddress", address);
 
-    // if (!savedAddresses.contains(address)) {
-    savedAddresses.insert(0, AddressDto(city: city, address: address));
+    savedAddresses.add(AddressDto(city: city, address: address));
     storeStringList(savedAddresses.map((e) => json.encode(e)).toList());
 
     Resources().editAddrese(UserAddress(
@@ -298,7 +355,6 @@ class _SelectShopState extends State<SelectShop> {
             .getCityWithId(Resources().getShopWithId(widget.shopId).city)
             .name,
         addres: address));
-    // }
   }
 
   Future<void> cameraPositionChanged(dynamic arguments) async {

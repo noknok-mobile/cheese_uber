@@ -519,9 +519,9 @@ class Resources {
   }
 //#endregion
 
-  Future<List<String>> getStringList(String key) async {
+  Future<Set<String>> getStringList(String key) async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getStringList(key);
+    return prefs.getStringList(key).toSet();
   }
 
   Future<Address> getAddressFromCoordinates(Point point) async {
@@ -539,24 +539,40 @@ class Resources {
     Address address = await getAddressFromCoordinates(
         Point(latitude: currentLat, longitude: currentLong));
 
-    return address.locality + ", " + address.featureName;
+    if (Platform.isAndroid) {
+      return address.locality +
+          ", " +
+          address.thoroughfare +
+          ", " +
+          address.featureName;
+    } else {
+      return address.locality + ", " + address.featureName;
+    }
   }
 
   void saveDeliveryParams(UserAddress address) async {
     await localStorage.ready;
-    print("LOCAL STORAGE -----");
-    print(address.city + ',' + address.addres);
     localStorage.setItem(
         address.city + ',' + address.addres, json.encode(address));
   }
 
   Future<UserAddress> getDeliveryParams(String address) async {
     await localStorage.ready;
-    print("GET LOCAL STORAGE -----");
     return localStorage.getItem(address);
   }
 
   Future<bool> getLocalStorageReady() async {
     return await localStorage.ready;
+  }
+
+  void saveCart(Cart cart) async {
+    await localStorage.ready;
+    localStorage.setItem("cart", json.encode(cart));
+  }
+
+  Future<Cart> readCart() async {
+    var loadedCart = Cart.decode(json.decode(localStorage.getItem('cart')));
+    cart.setCart(loadedCart.cart);
+    return loadedCart;
   }
 }
