@@ -320,6 +320,8 @@ class Cart implements IDataJsonModel, IDataBaseModel {
       removeAll(id);
     }
 
+    setSavedCartPrice(cart);
+
     Resources().saveCart(this);
 
     eventBus.fire(CartUpdated(cart: this));
@@ -372,6 +374,16 @@ class Cart implements IDataJsonModel, IDataBaseModel {
     });
 
     //cart = newCart;
+  }
+
+  void setSavedCartPrice(Map<int, double> newCart) {
+    newCart.forEach((key, value) async {
+      print("key --- " + key.toString());
+      var price = (await Resources().getProduct(key)).getPrice().price;
+      if (price != 0) {
+        savedCartPrice[key] = price;
+      }
+    });
   }
 
   Cart.fromData({this.cart, this.savedCartPrice});

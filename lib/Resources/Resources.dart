@@ -134,6 +134,9 @@ class Resources {
       _userProfile.selectedCity = Resources().getCityWithId(city);
       _userProfile.selectedShop = shop;
     }
+
+    Resources().readCart();
+
     eventBus.fire(AllUpToDate());
   }
 

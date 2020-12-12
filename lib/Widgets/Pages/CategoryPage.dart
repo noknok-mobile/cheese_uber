@@ -102,8 +102,14 @@ class _CategoryPageState extends State<CategoryPage> {
     subscription = null;
   }
 
+  void getCart() async {
+    await Resources().readCart();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // getCart();
+
     Future<List<CategoryData>> loadData() {
       if (Resources().categories.length == 0) {
         return Resources().loadCategories();
