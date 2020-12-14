@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:event_bus/event_bus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
@@ -14,14 +13,12 @@ import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Drawers/MySnackBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/DiscountList.dart';
-import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/HomePageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
+import 'package:new_version/new_version.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 import '../../Resources/Resources.dart';
-import '../../Resources/Resources.dart';
-import '../../Resources/Resources.dart';
-import '../../Resources/Resources.dart';
-import '../../main.dart';
 import 'GoodsPage.dart';
 import 'OrdersPage.dart';
 
@@ -44,9 +41,13 @@ class _CategoryPageState extends State<CategoryPage> {
   StreamSubscription<OrderChanged> subscription;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
+  NewVersion newVersion;
+
   @override
   void initState() {
     super.initState();
+
+    _checkNewVersion();
 
     if (Resources().userProfile.id != null) {
       _firebaseMessaging
@@ -262,5 +263,69 @@ class _CategoryPageState extends State<CategoryPage> {
                 });
           },
         ));
+  }
+
+  _checkNewVersion() async {
+    newVersion = NewVersion(context: context);
+    VersionStatus versionStatus = await newVersion.getVersionStatus();
+    if (versionStatus != null && versionStatus.canUpdate) {
+      _showUpdateDialog(versionStatus);
+    }
+  }
+
+  void _showUpdateDialog(VersionStatus versionStatus) async {
+    const title = Text('Доступна новая версия');
+    final content = Text(
+        'Вы можете обновить приложение до версии ${versionStatus.storeVersion}');
+    const dismissText = Text('Позже');
+    final dismissAction = () => Navigator.pop(context);
+    const updateText = Text('Обновить');
+    final updateAction = () {
+      _launchAppStore(versionStatus.appStoreLink);
+      Navigator.pop(context);
+    };
+    final platform = Theme.of(context).platform;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return platform == TargetPlatform.android
+            ? AlertDialog(
+                title: title,
+                content: content,
+                actions: <Widget>[
+                  FlatButton(
+                    child: dismissText,
+                    onPressed: dismissAction,
+                  ),
+                  FlatButton(
+                    child: updateText,
+                    onPressed: updateAction,
+                  ),
+                ],
+              )
+            : CupertinoAlertDialog(
+                title: title,
+                content: content,
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: dismissText,
+                    onPressed: dismissAction,
+                  ),
+                  CupertinoDialogAction(
+                    child: updateText,
+                    onPressed: updateAction,
+                  ),
+                ],
+              );
+      },
+    );
+  }
+
+  void _launchAppStore(String appStoreLink) async {
+    if (await canLaunch(appStoreLink)) {
+      await launch(appStoreLink, forceWebView: true);
+    } else {
+      throw 'Ошибка';
+    }
   }
 }
