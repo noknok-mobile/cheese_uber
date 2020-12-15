@@ -50,11 +50,12 @@ class PaymentController implements Routable {
                                     $initResult = $paySystemService->initiatePay($payment, null, PaySystem\BaseServiceHandler::STRING);
                                     if ($initResult->isSuccess()) {
                                         $arResult["PAYMENT"] = $initResult->getTemplate();
-                                        $regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
-                                        if(preg_match_all("/$regexp/siU", $arResult["PAYMENT"], $matches)) {
-                                            $arResult["href"] = $matches[2];
+                                        $regexp = '/\<form.+?((action|id|method|name)=(\"|\')(.*?)?(\"|\')).*?\>/i';
+                                        if(preg_match_all($regexp, $arResult["PAYMENT"], $matches)) {
+                                            $arResult["href"] = $matches[4];
                                         }
-                                        $arResult["PAYMENT"] = "";
+
+                                        $arResult["PAYMENT"] = '';
 
                                         $arPaySysAction['BUFFERED_OUTPUT'] = $initResult->getTemplate(); // получаем форму оплаты из обработчика
                                         return json_encode($arResult);
@@ -67,7 +68,7 @@ class PaymentController implements Routable {
                 }
 
 
-               // return json_encode( $arResult["PAYMENT"]);
+                return json_encode( $arResult["PAYMENT"]);
             } else {
                 $out->errors[] = Main::addError('0x012','', 'Ошибка получения профиля');
                 print json_encode($out);
