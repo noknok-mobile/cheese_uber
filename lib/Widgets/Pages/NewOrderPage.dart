@@ -94,7 +94,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                           Resources().cart,
                           widget.userAddress,
                           widget.deliveryMethod.value,
-                          9,
+                          11,
                           Resources().cart.bonusPoints.toInt());
                       Resources().cart.clear();
                       Resources().editAddrese(widget.userAddress);
