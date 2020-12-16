@@ -113,6 +113,9 @@ PODS:
   - GTMSessionFetcher/Core (1.5.0)
   - GTMSessionFetcher/Full (1.5.0):
     - GTMSessionFetcher/Core (= 1.5.0)
+  - keyboard_visibility (0.5.0):
+    - Flutter
+    - Reachability
   - location (0.0.1):
     - Flutter
   - nanopb (1.30906.0):
@@ -126,6 +129,7 @@ PODS:
     - Flutter
   - PromisesObjC (1.2.11)
   - Protobuf (3.13.0)
+  - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.1):
@@ -155,6 +159,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - geocoder (from `.symlinks/plugins/geocoder/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - keyboard_visibility (from `.symlinks/plugins/keyboard_visibility/ios`)
   - location (from `.symlinks/plugins/location/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -185,6 +190,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
+    - Reachability
     - YandexMapKit
     - YandexMapKitSearch
     - YandexRuntime
@@ -204,6 +210,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geocoder/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
+  keyboard_visibility:
+    :path: ".symlinks/plugins/keyboard_visibility/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
   package_info:
@@ -245,12 +253,14 @@ SPEC CHECKSUMS:
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  keyboard_visibility: 96a24de806fe6823c3ad956c01ba2ec6d056616f
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef

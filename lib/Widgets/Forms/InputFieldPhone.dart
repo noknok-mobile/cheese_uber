@@ -12,15 +12,17 @@ class InputFieldPhone extends StatefulWidget {
   final bool decorated;
   final double height;
   final _mobileFormatter = new MaskedTextController(mask: '+7 (000) 000 00 00');
+  final FocusNode focusNode;
 
-  InputFieldPhone(
-      {Key key,
-      this.value,
-      this.label = "Телефон",
-      this.height = 45,
-      this.decorated = true,
-      this.prefix = ""})
-      : super(key: key) {
+  InputFieldPhone({
+    Key key,
+    this.value,
+    this.label = "Телефон",
+    this.height = 45,
+    this.decorated = true,
+    this.prefix = "",
+    this.focusNode,
+  }) : super(key: key) {
     _mobileFormatter.text = value?.value;
   }
 
@@ -99,6 +101,7 @@ class _InputFieldPhoneState extends State<InputFieldPhone> {
         fontWeight: FontWeight.w500,
       ),
       keyboardType: TextInputType.phone,
+      focusNode: widget.focusNode,
       textAlignVertical: TextAlignVertical.bottom,
       decoration: InputDecoration(
         prefixText: widget.prefix != "" ? widget.prefix + ": " : "",

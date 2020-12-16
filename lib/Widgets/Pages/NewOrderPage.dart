@@ -10,12 +10,14 @@ import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Buttons/CustomCheckBox.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartBottomAppBar.dart';
+import 'package:flutter_cheez/Widgets/Forms/DoneInputView.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldName.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 import 'OrdersPage.dart';
 
@@ -54,11 +56,59 @@ class NewOrderPage extends StatefulWidget {
 }
 
 class _NewOrderPageState extends State<NewOrderPage> {
+  OverlayEntry overlayEntry;
+  FocusNode entranceFocusNode = new FocusNode();
+  FocusNode flatFocusNode = new FocusNode();
+  FocusNode floorFocusNode = new FocusNode();
+  FocusNode phoneFocusNode = new FocusNode();
+
   void getUserAddress() async {
     print("deliveryParams ----- ");
     UserAddress deliveryParams =
         await Resources().getDeliveryParams("Краснодар,улица Игнатова, 61");
     print(deliveryParams.addres);
+  }
+
+  @override
+  void initState() {
+    [entranceFocusNode, flatFocusNode, floorFocusNode, phoneFocusNode]
+        .forEach((element) {
+      element.addListener(() {
+        if (element.hasFocus) {
+          showOverlay(context);
+        } else {
+          removeOverlay();
+        }
+      });
+    });
+
+    KeyboardVisibilityNotification().addNewListener(
+      onHide: () {
+        removeOverlay();
+      },
+    );
+  }
+
+  showOverlay(BuildContext context) {
+    if (overlayEntry != null) return;
+    OverlayState overlayState = Overlay.of(context);
+    overlayEntry = OverlayEntry(builder: (context) {
+      return Positioned(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+        right: 0,
+        left: 0,
+        child: DoneInputView(),
+      );
+    });
+
+    overlayState.insert(overlayEntry);
+  }
+
+  removeOverlay() {
+    if (overlayEntry != null) {
+      overlayEntry.remove();
+      overlayEntry = null;
+    }
   }
 
   @override
@@ -268,6 +318,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                               ),
                               InputFieldPhone(
                                   decorated: false,
+                                  focusNode: phoneFocusNode,
                                   prefix: TextConstants.phone,
                                   value: widget.phone),
                               Container(
@@ -329,6 +380,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         InputFieldText(
                                           decorated: false,
                                           //label: TextConstants.addresEntrance,
+                                          focusNode: entranceFocusNode,
                                           textInputType: TextInputType.number,
                                           prefix: TextConstants.addresEntrance,
                                           value: widget.entrance,
@@ -340,6 +392,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         InputFieldText(
                                             decorated: false,
                                             //label: TextConstants.addresFloor,
+                                            focusNode: floorFocusNode,
                                             prefix: TextConstants.addresFloor,
                                             textInputType: TextInputType.number,
                                             value: widget.floor),
@@ -350,6 +403,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         InputFieldText(
                                             decorated: false,
                                             //label: TextConstants.addresFlat,
+                                            focusNode: flatFocusNode,
                                             prefix: TextConstants.addresFlat,
                                             textInputType: TextInputType.number,
                                             value: widget.flat),
@@ -380,5 +434,15 @@ class _NewOrderPageState extends State<NewOrderPage> {
                             ])))),
           )),
     );
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    entranceFocusNode.dispose();
+    flatFocusNode.dispose();
+    floorFocusNode.dispose();
+    phoneFocusNode.dispose();
+    super.dispose();
   }
 }
