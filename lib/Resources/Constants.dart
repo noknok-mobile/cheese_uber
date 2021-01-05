@@ -36,6 +36,7 @@ class TextConstants {
   static String get cartUseBonus => "Использовать бонусы";
   static String get cartDiplicateOrder => "ПОВТОРИТЬ ЗАКАЗ";
   static String get cartPlaceOrder => "ОФОРМИТЬ ЗАКАЗ";
+  static String get cartClear => "Очистить корзину";
   static String get cartAddToOrder => "В КОРЗИНУ";
   static String get detailsHeader => "Карточка товара";
   static String get units => "шт";
@@ -168,6 +169,11 @@ class IconConstants {
         Icons.menu,
         color: ColorConstants.black,
       );
+
+  static Widget get search => Icon(
+        Icons.search,
+        color: ColorConstants.black,
+      );
 }
 
 class ParametersConstants {
@@ -271,7 +277,7 @@ class AssetsConstants {
       AssetImage("lib/assets/images/animated_logo.gif");
   static AssetImage get logo => AssetImage("lib/assets/images/logo.png");
   static AssetImage get splashBackground =>
-      AssetImage("lib/assets/backgrounds/splash_screen.png");
+      AssetImage("lib/assets/backgrounds/splash_screen_new.jpg");
   static AssetImage get drawerBackground =>
       AssetImage("lib/assets/backgrounds/drawer.png");
 }

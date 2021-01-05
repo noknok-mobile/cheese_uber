@@ -157,6 +157,8 @@ class OrderController implements Routable {
                     $shipment->setFields(array(
                         'DELIVERY_ID' => $service['ID'],
                         'DELIVERY_NAME' => $service['NAME'],
+                        'PRICE_DELIVERY' => 200,
+                        'CUSTOM_PRICE_DELIVERY' => 'Y'
                     ));
 
                     $shipmentItemCollection = $shipment->getShipmentItemCollection();

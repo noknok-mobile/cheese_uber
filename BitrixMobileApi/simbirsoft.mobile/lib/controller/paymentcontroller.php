@@ -56,6 +56,7 @@ class PaymentController implements Routable {
                                         }
 
                                         $arResult["PAYMENT"] = '';
+                                        $arResult["ID"] = $paySystemService->getField('ID');
 
                                         $arPaySysAction['BUFFERED_OUTPUT'] = $initResult->getTemplate(); // получаем форму оплаты из обработчика
                                         return json_encode($arResult);

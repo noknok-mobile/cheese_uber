@@ -227,7 +227,9 @@ class Resources {
         headers: {"Token": networkToken},
         body: jsonEncode({"order": "$orderId"}));
 
-    if (data.containsKey("errors")) return data["errors"][0]["message"];
+    print(data);
+
+    // if (data.containsKey("errors")) return data["errors"][0]["message"];
     return data["href"].first;
   }
 
@@ -582,5 +584,10 @@ class Resources {
     var loadedCart = Cart.decode(json.decode(localStorage.getItem('cart')));
     cart.setCart(loadedCart.cart);
     return loadedCart;
+  }
+
+  void clearCart() async {
+    cart.setCart(Map<int, double>());
+    saveCart(cart);
   }
 }

@@ -11,7 +11,9 @@ import 'package:flutter_cheez/Widgets/Forms/PriceTextField.dart';
 import 'package:flutter_cheez/Widgets/Pages/CartPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/DetailGoods.dart';
 import 'package:flutter_cheez/Widgets/Pages/WebPage.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'InformationRow.dart';
 
@@ -217,11 +219,22 @@ class Order extends StatefulWidget implements PreferredSizeWidget {
       onClick: () async {
         String href = await Resources().getPayment(data.id);
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    WebPage(title: TextConstants.orderSberbankPay, url: href)));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) =>
+        //             WebPage(title: TextConstants.orderSberbankPay, url: href)));
+
+        // launch(href);
+        FlutterWebBrowser.openWebPage(
+          url: href,
+          customTabsOptions: CustomTabsOptions(
+            addDefaultShareMenuItem: false,
+            instantAppsEnabled: true,
+            showTitle: false,
+            urlBarHidingEnabled: false,
+          ),
+        );
       },
     );
   }

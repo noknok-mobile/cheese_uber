@@ -268,7 +268,9 @@ class _CategoryPageState extends State<CategoryPage> {
   _checkNewVersion() async {
     newVersion = NewVersion(context: context);
     VersionStatus versionStatus = await newVersion.getVersionStatus();
-    if (versionStatus != null && versionStatus.canUpdate) {
+    if (versionStatus != null &&
+        versionStatus.canUpdate &&
+        widget.parentCategoryID == 0) {
       _showUpdateDialog(versionStatus);
     }
   }

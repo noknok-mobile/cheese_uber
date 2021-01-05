@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
+import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Drawers/LeftMenu.dart';
 import 'package:flutter_cheez/Widgets/Forms/AddBonuses.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartBottomAppBar.dart';
@@ -110,6 +111,22 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
                           ),
                           index == projectSnap.data.length - 1
                               ? AddBonuses()
+                              : Container(),
+                          index == projectSnap.data.length - 1
+                              ? Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  child: CustomButton.colored(
+                                    color: ColorConstants.red,
+                                    enable: true,
+                                    width:
+                                        MediaQuery.of(context).size.width - 32,
+                                    height: 45,
+                                    child: CustomText.white12px(
+                                      TextConstants.cartClear.toUpperCase(),
+                                    ),
+                                    onClick: () => {Resources().clearCart()},
+                                  ),
+                                )
                               : Container(),
                         ],
                       );

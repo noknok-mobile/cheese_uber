@@ -40,6 +40,10 @@ class HomePageAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               ),
+              IconButton(
+                icon: IconConstants.search,
+                onPressed: () {},
+              ),
 
               /*
                 IconButton(
