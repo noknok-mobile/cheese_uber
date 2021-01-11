@@ -218,6 +218,13 @@ class CustomText extends StatelessWidget {
       this.align = TextAlign.left,
       this.maxLines = 10})
       : super(key: key);
+  const CustomText.red12px(this.content,
+      {Key key,
+      this.style = const TextStyle(
+          fontSize: 12, color: ColorConstants.red, fontWeight: FontWeight.w600),
+      this.align = TextAlign.left,
+      this.maxLines = 10})
+      : super(key: key);
   const CustomText.red14px(this.content,
       {Key key,
       this.style = const TextStyle(

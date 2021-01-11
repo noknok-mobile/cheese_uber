@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
+import 'package:flutter_cheez/Widgets/Pages/SearchPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/SelectShop.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +43,9 @@ class HomePageAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               IconButton(
                 icon: IconConstants.search,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(_createRoute());
+                },
               ),
 
               /*
@@ -80,6 +83,25 @@ class HomePageAppBar extends StatelessWidget implements PreferredSizeWidget {
                         SelectShop(selectedAddress: deliveryAddress))),
           ))
         ])));
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => SearchPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, -1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
 
   @override

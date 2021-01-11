@@ -590,4 +590,23 @@ class Resources {
     cart.setCart(Map<int, double>());
     saveCart(cart);
   }
+
+  Future<Map<String, dynamic>> search(String query, int page) async {
+    var data = await NetworkUtil()
+        .get("search?n=" + query + "&PAGEN_1=" + page.toString());
+    if (data == "503" || data == "504") return Map<String, dynamic>();
+
+    var result = Map<String, dynamic>();
+
+    var categories = List<CategoryData>.from(
+        ((data["CATEGORIES"]) as List).map((x) => CategoryData.fromJson(x)));
+
+    var products = List<GoodsData>.from(
+        ((data["PRODUCTS"]) as List).map((x) => GoodsData.fromJson(x)));
+
+    result["categories"] = categories;
+    result["products"] = products;
+
+    return result;
+  }
 }
