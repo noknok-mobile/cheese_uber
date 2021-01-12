@@ -149,11 +149,7 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
                                           builder: (context) => NewOrderPage()))
                                 }
                               else
-                                {
-                                  Navigator.pushNamedAndRemoveUntil(context,
-                                      '/login', (Route<dynamic> route) => false,
-                                      arguments: LoginPageArguments('/cart'))
-                                }
+                                {Navigator.pushNamed(context, '/login')}
                             },
                           )),
                     ),

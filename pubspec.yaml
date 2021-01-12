@@ -67,7 +67,7 @@ flutter:
     - lib/assets/backgrounds/empty_history.png
     - lib/assets/backgrounds/empty_cart.png
     - lib/assets/backgrounds/splash_screen.png
-    - lib/assets/backgrounds/splash_screen_new.jpg
+    - lib/assets/backgrounds/splash_screen_new.png
     - lib/assets/backgrounds/drawer.png
     - lib/assets/backgrounds/discount.svg
     - lib/assets/images/logo.png

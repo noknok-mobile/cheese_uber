@@ -6,8 +6,8 @@
     <item>
         <bitmap
             
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-            android:src="@drawable/splash_screen" />
+            android:src="@drawable/splash_screen_new" />
     </item> 
 </layer-list>

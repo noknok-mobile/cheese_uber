@@ -277,7 +277,7 @@ class AssetsConstants {
       AssetImage("lib/assets/images/animated_logo.gif");
   static AssetImage get logo => AssetImage("lib/assets/images/logo.png");
   static AssetImage get splashBackground =>
-      AssetImage("lib/assets/backgrounds/splash_screen_new.jpg");
+      AssetImage("lib/assets/backgrounds/splash_screen_new.png");
   static AssetImage get drawerBackground =>
       AssetImage("lib/assets/backgrounds/drawer.png");
 }
