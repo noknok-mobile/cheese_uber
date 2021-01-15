@@ -5,17 +5,21 @@ import 'package:flutter_cheez/Resources/Constants.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var query = MediaQuery.of(context);
-    // TODO: implement build
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetsConstants.splashBackground,
-          fit: BoxFit.cover,
-          // colorFilter: ColorFilter.mode(Colors.blue, BlendMode.colorBurn)
+      color: Color(0xFFFFB904),
+      child: Center(
+        child: Container(
+          width: 300,
+          height: 215,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetsConstants.splashBackground,
+              // colorFilter: ColorFilter.mode(Colors.blue, BlendMode.colorBurn)
+            ),
+          ),
+          child: Center(child: CircularProgressIndicator()),
         ),
       ),
-      child: Center(child: CircularProgressIndicator()),
     );
   }
 }

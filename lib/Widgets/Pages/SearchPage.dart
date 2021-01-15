@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
+import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Components/category_widget.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/Goods.dart';
+import 'package:flutter_cheez/Widgets/Pages/CategoryPage.dart';
+import 'package:flutter_cheez/Widgets/Pages/GoodsPage.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -50,6 +53,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.background,
+      floatingActionButton: CartButton(),
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -117,9 +121,31 @@ class _SearchPageState extends State<SearchPage> {
                       children: List.generate(
                         categories.length,
                         (index) {
-                          return CategoryWidget(
+                          return GestureDetector(
+                            onTap: () {
+                              var x = Resources()
+                                  .getCategoryWithParent(categories[index].id);
+
+                              if (x.length == 0) {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return GoodsPage(
+                                      categoryId: categories[index].id,
+                                      data: categories);
+                                }));
+                              } else {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return CategoryPage(
+                                      parentCategoryID: categories[index].id);
+                                }));
+                              }
+                            },
+                            child: CategoryWidget(
                               title: categories[index].title,
-                              image: categories[index].imageUrl);
+                              image: categories[index].imageUrl,
+                            ),
+                          );
                         },
                       ),
                     ),

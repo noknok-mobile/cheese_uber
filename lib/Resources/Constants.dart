@@ -172,7 +172,7 @@ class IconConstants {
 
   static Widget get search => Icon(
         Icons.search,
-        color: ColorConstants.black,
+        color: ColorConstants.red,
       );
 }
 
