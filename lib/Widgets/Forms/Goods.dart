@@ -1,3 +1,5 @@
+import 'package:appmetrica_sdk/appmetrica_sdk.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cheez/Events/Events.dart';
@@ -135,6 +137,20 @@ class Goods extends StatelessWidget implements PreferredSizeWidget {
                             return "${data.units == "шт" ? Resources().cart.getCount(data.id).toInt() : Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";
                           },
                           setCount: (double count) => {
+                            FirebaseAnalytics().logAddToCart(
+                                itemId: data.id.toString(),
+                                itemName: data.name,
+                                itemCategory: data.categories.toString(),
+                                quantity: count.toInt()),
+                            AppmetricaSdk().reportEvent(
+                              name: 'add_to_cart',
+                              attributes: {
+                                'itemId': data.id.toString(),
+                                'itemName': data.name,
+                                'itemCategory': data.categories.toString(),
+                                'quantity': count
+                              },
+                            ),
                             Resources().cart.setCount(data.id, count),
                           },
                           getCount: () {
@@ -222,6 +238,22 @@ class Goods extends StatelessWidget implements PreferredSizeWidget {
                                         return "${data.units == "шт" ? Resources().cart.getCount(data.id).toInt() : Resources().cart.getCount(data.id).toStringAsFixed(2)} ${data.units}";
                                       },
                                       setCount: (double count) => {
+                                        FirebaseAnalytics().logAddToCart(
+                                            itemId: data.id.toString(),
+                                            itemName: data.name,
+                                            itemCategory:
+                                                data.categories.toString(),
+                                            quantity: count.toInt()),
+                                        AppmetricaSdk().reportEvent(
+                                          name: 'add_to_cart',
+                                          attributes: {
+                                            'itemId': data.id.toString(),
+                                            'itemName': data.name,
+                                            'itemCategory':
+                                                data.categories.toString(),
+                                            'quantity': count
+                                          },
+                                        ),
                                         Resources()
                                             .cart
                                             .setCount(data.id, count)

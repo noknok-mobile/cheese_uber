@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:appmetrica_sdk/appmetrica_sdk.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
@@ -202,7 +204,10 @@ class Order extends StatefulWidget implements PreferredSizeWidget {
         child: CustomText.white12px(
             TextConstants.cartDiplicateOrder.toUpperCase()),
         onClick: () => {
-              Resources().cart.setCart(data.cart.cart),
+              Resources().saveCart(data.cart),
+              Resources()
+                  .cart
+                  .setCart2(data.cart.cart, data.cart.savedCartPrice),
               Navigator.push(
                 context,
                 CartButtonRoute(builder: (context) => CartPage()),
@@ -217,6 +222,8 @@ class Order extends StatefulWidget implements PreferredSizeWidget {
       height: 45,
       child: CustomText.white12px(TextConstants.orderMakePay.toUpperCase()),
       onClick: () async {
+        FirebaseAnalytics().logEvent(name: 'purchase');
+        AppmetricaSdk().reportEvent(name: 'purchase');
         String href = await Resources().getPayment(data.id);
 
         // Navigator.push(

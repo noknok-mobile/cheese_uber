@@ -109,7 +109,7 @@ class _CountButtonGroupState extends State<CountButtonGroup>
                       color: ColorConstants.gray,
                       onClick: () => setState(() => {
                             widget.setCount(widget.getCount() - widget.step),
-                            _updateAnimation()
+                            _updateAnimation(),
                           }),
                       child: Text("-",
                           textAlign: TextAlign.center,

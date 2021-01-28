@@ -3,16 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Utils/SharedValue.dart';
-import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
-import 'package:flutter_cheez/Widgets/Buttons/CustomCheckBox.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldCheckBox.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldEmail.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldName.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldPassword.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
-import 'package:flutter_cheez/Widgets/Forms/NewAddres.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +30,7 @@ class _UserInfoState extends State<UserInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: ColorConstants.background,
       appBar: NextPageAppBar(
         height: ParametersConstants.appBarHeight,

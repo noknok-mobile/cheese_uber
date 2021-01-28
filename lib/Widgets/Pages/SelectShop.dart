@@ -57,7 +57,7 @@ class _SelectShopState extends State<SelectShop> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         body: YandexMap(
           onMapCreated: (YandexMapController yandexMapController) async {
             controller = yandexMapController;
@@ -350,11 +350,13 @@ class _SelectShopState extends State<SelectShop> {
     savedAddresses.add(AddressDto(city: city, address: address));
     storeStringList(savedAddresses.map((e) => json.encode(e)).toList());
 
-    Resources().editAddrese(UserAddress(
-        city: Resources()
-            .getCityWithId(Resources().getShopWithId(widget.shopId).city)
-            .name,
-        addres: address));
+    if (Resources().userProfile.userAddress != null) {
+      Resources().editAddrese(UserAddress(
+          city: Resources()
+              .getCityWithId(Resources().getShopWithId(widget.shopId).city)
+              .name,
+          addres: address));
+    }
   }
 
   Future<void> cameraPositionChanged(dynamic arguments) async {
@@ -388,3 +390,5 @@ class _SelectShopState extends State<SelectShop> {
     prefs.setStringList(SAVED_ADDRESSES_LIST_KEY, list);
   }
 }
+
+// DcA802GzGNLa

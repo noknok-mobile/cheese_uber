@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_cheez/Utils/TextUtils.dart';
 import 'package:flutter_cheez/Events/CustomEvent.dart';
 import 'package:flutter_cheez/Events/Events.dart';
@@ -316,6 +317,7 @@ class Cart implements IDataJsonModel, IDataBaseModel {
   double setCount(int id, double count) {
     setBonusPoints = bonusPoints.toInt();
     cart[id] = count == null ? 0 : count;
+
     if (cart[id] <= 0) {
       removeAll(id);
     }
@@ -365,15 +367,17 @@ class Cart implements IDataJsonModel, IDataBaseModel {
     clear();
     print("newCart -- " + newCart.toString());
     newCart.forEach((key, value) async {
-      print("key --- " + key.toString());
       var price = (await Resources().getProduct(key)).getPrice().price;
       if (price != 0) {
         cart[key] = value;
         savedCartPrice[key] = price;
       }
     });
+  }
 
-    //cart = newCart;
+  void setCart2(Map<int, double> newCart, Map<int, double> newPrice) {
+    cart = newCart;
+    savedCartPrice = newPrice;
   }
 
   void setSavedCartPrice(Map<int, double> newCart) {
@@ -700,7 +704,7 @@ class UserProfile {
   String phone = "";
   int selectedShop = 0;
   CityInfo selectedCity;
-  List<UserAddress> userAddress = List<UserAddress>();
+  List<UserAddress> userAddress = [];
   bool defaultAddrese = false;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   UserProfile(

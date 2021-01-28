@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:appmetrica_sdk/appmetrica_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
@@ -8,11 +8,17 @@ import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
 import 'package:flutter_cheez/Widgets/Pages/OrdersPage.dart';
 import 'Events/Events.dart';
 import 'Resources/Constants.dart';
-import 'Widgets/Drawers/MySnackBar.dart';
 import 'Widgets/Pages/HomePage.dart';
 import 'Widgets/Pages/SplashScreen.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await AppmetricaSdk()
+      .activate(apiKey: '02e66a2a-b34b-435f-aeed-398887cb15c4');
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   static final GlobalKey<ScaffoldState> scaffoldKey =

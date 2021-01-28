@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:appmetrica_sdk/appmetrica_sdk.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -257,6 +259,10 @@ class Resources {
         headers: {"Token": networkToken}, body: jsonEncode(cartJson));
 
     if (data.containsKey("errors")) return data["errors"][0]["message"];
+
+    FirebaseAnalytics().logAddPaymentInfo();
+    AppmetricaSdk().reportEvent(name: 'add_payment_info');
+
     return "OK";
   }
 

@@ -90,7 +90,7 @@ class Geolocation {
       print("Error occured: $e");
       showDialog(
         context: context,
-        child: CupertinoAlertDialog(
+        builder: (_) => CupertinoAlertDialog(
           title: Text('Ошибка'),
           content: Text("Адресс не найден"),
           actions: [

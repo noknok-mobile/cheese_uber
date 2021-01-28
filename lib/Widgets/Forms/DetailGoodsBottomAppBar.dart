@@ -1,3 +1,5 @@
+import 'package:appmetrica_sdk/appmetrica_sdk.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
@@ -66,6 +68,21 @@ class _DetailGoodsBottomAppBarBottomAppBar
                         return "${widget.goodItem.units == "шт" ? Resources().cart.getCount(widget.goodItem.id).toInt() : Resources().cart.getCount(widget.goodItem.id).toStringAsFixed(2)} ${widget.goodItem.units}";
                       },
                       setCount: (double count) => {
+                        FirebaseAnalytics().logAddToCart(
+                            itemId: widget.goodItem.id.toString(),
+                            itemName: widget.goodItem.name,
+                            itemCategory: widget.goodItem.categories.toString(),
+                            quantity: count.toInt()),
+                        AppmetricaSdk().reportEvent(
+                          name: 'add_to_cart',
+                          attributes: {
+                            'itemId': widget.goodItem.id.toString(),
+                            'itemName': widget.goodItem.name,
+                            'itemCategory':
+                                widget.goodItem.categories.toString(),
+                            'quantity': count
+                          },
+                        ),
                         Resources().cart.setCount(widget.goodItem.id, count)
                       },
                       getCount: () {
