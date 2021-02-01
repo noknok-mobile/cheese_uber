@@ -106,7 +106,7 @@ class TextConstants {
             "https://xn--90aij3acc4e.xn--p1ai/include/licenses_detail.php"),
         // Tuple2<String,String>("Правила обмена и возврата товара","https://xn--90aij3acc4e.xn--p1ai/help/warranty/"),
         Tuple2<String, String>(
-            "Контакты", "https://xn--90aij3acc4e.xn--p1ai/contacts/stores/"),
+            "Контакты", "https://xn--90aij3acc4e.xn--p1ai/contacts/"),
       ];
 }
 

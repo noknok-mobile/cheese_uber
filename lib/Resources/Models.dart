@@ -440,6 +440,7 @@ class OrderData {
   final DeliveryType deliveryType;
   final double deliveryPrice;
   final double price;
+  final double sumPaid;
   final UserAddress userAddress;
 
   OrderData({
@@ -453,6 +454,7 @@ class OrderData {
     this.deliveryType,
     this.deliveryPrice,
     this.price,
+    this.sumPaid,
   });
 
   factory OrderData.fromJson(Map<String, dynamic> newJson) {
@@ -466,7 +468,9 @@ class OrderData {
             : DeliveryType.courier,
         status: newJson["STATUS_ID"],
         deliveryPrice: double.parse(newJson["PRICE_DELIVERY"]),
-        price: double.parse(newJson["PRICE"]),
+        price:
+            double.parse(newJson["PRICE"]) - double.parse(newJson["SUM_PAID"]),
+        sumPaid: double.parse(newJson["SUM_PAID"]),
         userAddress: UserAddress.fromJson(newJson["profile"]),
         cart: Cart.fromJson(newJson));
   }
