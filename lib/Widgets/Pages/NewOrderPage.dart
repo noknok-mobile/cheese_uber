@@ -140,7 +140,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                           widget.deliveryMethod.value,
                           12,
                           Resources().cart.bonusPoints.toInt());
-                      Resources().cart.clear();
+                      Resources().clearCart();
                       Resources().editAddrese(widget.userAddress);
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/orders', (Route<dynamic> route) => false);

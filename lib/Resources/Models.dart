@@ -468,8 +468,7 @@ class OrderData {
             : DeliveryType.courier,
         status: newJson["STATUS_ID"],
         deliveryPrice: double.parse(newJson["PRICE_DELIVERY"]),
-        price:
-            double.parse(newJson["PRICE"]) - double.parse(newJson["SUM_PAID"]),
+        price: double.parse(newJson["PRICE"]),
         sumPaid: double.parse(newJson["SUM_PAID"]),
         userAddress: UserAddress.fromJson(newJson["profile"]),
         cart: Cart.fromJson(newJson));
