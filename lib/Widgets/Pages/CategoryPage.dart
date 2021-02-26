@@ -112,11 +112,7 @@ class _CategoryPageState extends State<CategoryPage> {
     // getCart();
 
     Future<List<CategoryData>> loadData() {
-      if (Resources().categories.length == 0) {
-        return Resources().loadCategories();
-      }
-
-      return Resources().getCategory();
+      return Resources().loadCategories();
     }
 
     return Scaffold(

@@ -133,6 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                         Resources()
                             .loginWithData(email.value, pass.value)
                             .then((value) async {
+                          print('VALUE --- ' + value);
                           final SharedPreferences prefs = await _prefs;
                           prefs.setString("email", email.value);
                           prefs.setString("pass", pass.value);

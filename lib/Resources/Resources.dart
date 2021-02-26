@@ -82,7 +82,7 @@ class Resources {
 
   List<GoodsData> allGoods = List<GoodsData>();
   List<OrderData> orders = List<OrderData>();
-  final List<CategoryData> categories = List<CategoryData>();
+  List<CategoryData> categories = List<CategoryData>();
   List<Discount> discounts = List<Discount>();
   final List<ShopInfo> _allShops = List<ShopInfo>();
 
@@ -173,18 +173,21 @@ class Resources {
 
   Future<List<CategoryData>> loadCategories() async {
     await Future.delayed(const Duration(milliseconds: 1), () {});
+    categories = <CategoryData>[];
     categories.addAll(await getCategoryData());
     return categories;
   }
 
   Future<List<GoodsData>> loadProducts() async {
     await Future.delayed(const Duration(milliseconds: 1), () {});
+    // allGoods = List<GoodsData>();
     allGoods.addAll(await getProductData());
     return allGoods;
   }
 
   Future<List<GoodsData>> loadProductsByCategory(int categoryId) async {
     await Future.delayed(const Duration(milliseconds: 1), () {});
+    // allGoods = List<GoodsData>();
     allGoods.addAll(await getProductDataByCategory(categoryId));
     return getGoodsInCategory(categoryId);
   }
@@ -278,7 +281,11 @@ class Resources {
   }
 
   Future<List<CategoryData>> getCategoryData() async {
-    var data = await NetworkUtil().post("category");
+    var data = await NetworkUtil().post("category",
+        body: jsonEncode({
+          "location_id": getShopWithId(userProfile.selectedShop).locationId
+        }));
+
     if (data == "503" || data == "504") return List<CategoryData>();
 
     return List<CategoryData>.from(
@@ -286,20 +293,32 @@ class Resources {
   }
 
   Future<List<GoodsData>> getProductData() async {
-    return List<GoodsData>.from(((await NetworkUtil().post("product")) as List)
+    return List<GoodsData>.from(((await NetworkUtil().post("product",
+            body: jsonEncode({
+              "shop_id": userProfile.selectedShop,
+              "location_id": getShopWithId(userProfile.selectedShop).locationId
+            }))) as List)
         .map((x) => GoodsData.fromJson(x)));
   }
 
   Future<List<GoodsData>> getProductDataByCategory(int categoryId) async {
-    return List<GoodsData>.from(((await NetworkUtil().post("product",
-            body: jsonEncode({"section_id": categoryId}))) as List)
-        .map((x) => GoodsData.fromJson(x)));
+    var data = await NetworkUtil().post("product",
+        body: jsonEncode({
+          "shop_id": userProfile.selectedShop,
+          "section_id": categoryId,
+          "location_id": getShopWithId(userProfile.selectedShop).locationId
+        }));
+    var lisst =
+        List<GoodsData>.from((data as List).map((x) => GoodsData.fromJson(x)));
+
+    return lisst;
   }
 
   Future<GoodsData> getProduct(int id) async {
-    return List<GoodsData>.from(
-        ((await NetworkUtil().get("product?id=" + id.toString())) as List)
-            .map((e) => GoodsData.fromJson(e))).first;
+    return List<GoodsData>.from(((await NetworkUtil().get(
+            "product?shop_id${userProfile.selectedShop}&id=" +
+                id.toString())) as List)
+        .map((e) => GoodsData.fromJson(e))).first;
   }
 
   // List<GoodsData> getProductsInCart(Cart cart) {
@@ -356,8 +375,10 @@ class Resources {
     print('getProfile');
     var data =
         await NetworkUtil().post("profile", headers: {"Token": token}) as Map;
-
+    print('TOKEN --- ${token}');
     _userProfile = UserProfile.fromJson(data);
+    print('TOKEN --- ${data}');
+    print('TOKEN --- ${_userProfile}');
 
     final SharedPreferences prefs = await _prefs;
 
@@ -371,7 +392,6 @@ class Resources {
     }
     discounts = await getActiveDiscount(token);
 
-    print(data.toString());
     if (data.containsKey("errors")) return data["errors"][0]["message"];
     print("OK");
     return "OK";

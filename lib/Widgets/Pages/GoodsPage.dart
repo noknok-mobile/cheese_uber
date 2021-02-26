@@ -22,10 +22,8 @@ class GoodsPage extends StatelessWidget {
     if (data.first.parentId != 0) {
       Resources().allGoods.clear();
     }
-    if (Resources().allGoods.length == 0)
-      return Resources().loadProductsByCategory(id);
 
-    return Resources().getGoodsInCategory(id);
+    return Resources().loadProductsByCategory(id);
   }
 
   @override

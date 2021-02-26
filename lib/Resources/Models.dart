@@ -66,6 +66,7 @@ class GoodsData implements IDataBaseModel, IDataJsonModel {
   int categories = 0;
   List<PriceData> price;
   String units = "шт";
+  double storeAmount = 0.0;
 
   PriceData getPrice() {
     // cart.forEach((k,v) =>print(Resources().getGodById(k)));
@@ -90,6 +91,7 @@ class GoodsData implements IDataBaseModel, IDataJsonModel {
       this.name,
       this.previewText,
       this.detailText,
+      this.storeAmount,
       this.units,
       this.categories,
       this.price,
@@ -115,6 +117,8 @@ class GoodsData implements IDataBaseModel, IDataJsonModel {
       price: price,
       units: mesure != null ? mesure : 'шт',
       categories: int.parse(json["IBLOCK_SECTION_ID"]),
+      storeAmount: double.parse(
+          json['STORE_AMOUNT'] != null ? json['STORE_AMOUNT'] : "0.0"),
     );
   }
   @override
@@ -316,6 +320,12 @@ class Cart implements IDataJsonModel, IDataBaseModel {
 
   double setCount(int id, double count) {
     setBonusPoints = bonusPoints.toInt();
+
+    var product = Resources().allGoods.where((e) => e.id == id).first;
+    if (count >= product.storeAmount) {
+      count = product.storeAmount;
+    }
+
     cart[id] = count == null ? 0 : count;
 
     if (cart[id] <= 0) {
