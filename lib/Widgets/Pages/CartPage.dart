@@ -25,6 +25,8 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
   bool showGoodsInCart = false;
   StreamSubscription subsctiprion;
+  int _deliveryType = 1;
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +38,12 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
       if (data.cart.getUniqueGoodsInCart() == 0) {
         setState(() => {showGoodsInCart = false});
       }
+    });
+
+    Resources().getSavedDeliveryType().then((value) {
+      setState(() {
+        _deliveryType = value;
+      });
     });
   }
 
@@ -139,6 +147,7 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
                           shape: const CircularNotchedRectangle(),
                           child: CartBottomAppBar(
                             height: widget.bottomMenuHeight,
+                            deliveryType: _deliveryType,
                             onBottomButtonClick: () => {
                               if (Resources().userProfile.id != null)
                                 {

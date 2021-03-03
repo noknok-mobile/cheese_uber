@@ -283,6 +283,7 @@ class Resources {
   Future<List<CategoryData>> getCategoryData() async {
     var data = await NetworkUtil().post("category",
         body: jsonEncode({
+          "shop_id": userProfile.selectedShop,
           "location_id": getShopWithId(userProfile.selectedShop).locationId
         }));
 
@@ -595,6 +596,16 @@ class Resources {
   Future<UserAddress> getDeliveryParams(String address) async {
     await localStorage.ready;
     return localStorage.getItem(address);
+  }
+
+  void saveDeliveryType(int type) async {
+    await localStorage.ready;
+    localStorage.setItem('delivery_type', type);
+  }
+
+  Future<int> getSavedDeliveryType() async {
+    await localStorage.ready;
+    return localStorage.getItem('delivery_type');
   }
 
   Future<bool> getLocalStorageReady() async {

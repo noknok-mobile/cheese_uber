@@ -21,7 +21,8 @@ class NewOrderPage extends StatefulWidget {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final double bottomMenuHeight = 190;
   bool enabled = true;
-  SharedValue<int> deliveryMethod = SharedValue<int>(value: 1);
+  SharedValue<int> deliveryMethod;
+
   SharedValue<String> phone =
       SharedValue<String>(value: Resources().userProfile?.phone);
 
@@ -73,6 +74,18 @@ class _NewOrderPageState extends State<NewOrderPage> {
           removeOverlay();
         }
       });
+
+      Resources().getSavedDeliveryType().then((value) {
+        if (value != null)
+          setState(() {
+            widget.deliveryMethod = SharedValue<int>(value: value);
+          });
+        else {
+          setState(() {
+            widget.deliveryMethod = SharedValue<int>(value: 1);
+          });
+        }
+      });
     });
 
     KeyboardVisibilityNotification().addNewListener(
@@ -113,7 +126,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
               child: CartBottomAppBar(
                   isEnable: widget.enabled,
                   height: widget.bottomMenuHeight + 2,
-                  deliveryType: widget.deliveryMethod.value,
+                  deliveryType: widget.deliveryMethod != null
+                      ? widget.deliveryMethod.value
+                      : 1,
                   onBottomButtonClick: () async {
                     if (widget.formKey.currentState.validate()) {
                       widget.formKey.currentState.save();
@@ -254,10 +269,13 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                                   .orderDeliveryCurier),
                                         )),
                                   )),
-                                  value: widget.deliveryMethod.value == 1,
+                                  value: widget.deliveryMethod != null &&
+                                      widget.deliveryMethod.value == 1,
                                   onChanged: (x) => {
-                                    setState(
-                                        () => widget.deliveryMethod.value = 1)
+                                    setState(() {
+                                      Resources().saveDeliveryType(1);
+                                      widget.deliveryMethod.value = 1;
+                                    })
                                   },
                                 ),
                               ),
@@ -297,10 +315,13 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         )),
                                   )),
                                   onChanged: (x) => {
-                                    setState(
-                                        () => widget.deliveryMethod.value = 2)
+                                    setState(() {
+                                      widget.deliveryMethod.value = 2;
+                                      Resources().saveDeliveryType(2);
+                                    })
                                   },
-                                  value: widget.deliveryMethod.value == 2,
+                                  value: widget.deliveryMethod != null &&
+                                      widget.deliveryMethod.value == 2,
                                 ),
                               ),
                               Container(
@@ -313,8 +334,10 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   prefix: TextConstants.phone,
                                   value: widget.phone),
                               Container(
-                                height:
-                                    widget.deliveryMethod.value == 2 ? 0 : null,
+                                height: widget.deliveryMethod != null &&
+                                        widget.deliveryMethod.value == 2
+                                    ? 0
+                                    : null,
                                 child: FutureBuilder(
                                   future: Resources().getLocalStorageReady(),
                                   builder: (context, snapshot) {

@@ -734,6 +734,10 @@ class UserProfile {
       print(addressList);
       if (shop != null) {
         selectedShop = shop;
+        userAddress.add(UserAddress(
+            city: Resources()
+                .getCityWithId(Resources().getShopWithId(shop).city)
+                .name));
         // if (addressList != null)
         //   addressList.forEach((element) {
         //     userAddress.add(UserAddress(

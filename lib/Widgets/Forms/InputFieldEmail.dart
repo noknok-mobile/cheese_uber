@@ -46,8 +46,6 @@ class InputFieldEmailState extends State<InputFieldEmail> {
 
   @override
   Widget build(BuildContext context) {
-    print("build " + widget.value.value);
-    // TODO: implement build
     return Container(
       height: widget.height,
       child: TextFormField(
