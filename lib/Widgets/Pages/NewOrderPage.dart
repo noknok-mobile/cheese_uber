@@ -14,10 +14,12 @@ import 'package:flutter_cheez/Widgets/Forms/InputFieldPhone.dart';
 import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewOrderPage extends StatefulWidget {
   final formKey = GlobalKey<FormState>();
-  final double bottomMenuHeight = 160;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final double bottomMenuHeight = 190;
   bool enabled = true;
   SharedValue<int> deliveryMethod = SharedValue<int>(value: 1);
   SharedValue<String> phone =
@@ -37,7 +39,11 @@ class NewOrderPage extends StatefulWidget {
   SharedValue<String> flat;
   SharedValue<String> comment;
   NewOrderPage() {
-    addres = SharedValue<String>(value: userAddress.addres);
+    _prefs.then((prefs) {
+      addres = SharedValue<String>(value: prefs.getString("currentAddress"));
+    });
+
+    // addres = SharedValue<String>(value: userAddress.addres);
     contactName = SharedValue<String>(value: userAddress.username);
     entrance = SharedValue<String>(value: userAddress.entrance);
     floor = SharedValue<String>(value: userAddress.floor);
@@ -55,13 +61,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
   FocusNode flatFocusNode = new FocusNode();
   FocusNode floorFocusNode = new FocusNode();
   FocusNode phoneFocusNode = new FocusNode();
-
-  void getUserAddress() async {
-    print("deliveryParams ----- ");
-    UserAddress deliveryParams =
-        await Resources().getDeliveryParams("Краснодар,улица Игнатова, 61");
-    print(deliveryParams.addres);
-  }
 
   @override
   void initState() {
@@ -107,9 +106,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    getUserAddress();
-
-    // TODO: implement build
     return Center(
       child: Scaffold(
           bottomNavigationBar: BottomAppBar(
@@ -117,6 +113,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
               child: CartBottomAppBar(
                   isEnable: widget.enabled,
                   height: widget.bottomMenuHeight + 2,
+                  deliveryType: widget.deliveryMethod.value,
                   onBottomButtonClick: () async {
                     if (widget.formKey.currentState.validate()) {
                       widget.formKey.currentState.save();

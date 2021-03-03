@@ -749,7 +749,7 @@ class UserProfile {
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         id: int.parse(json["id"]),
         bonusPoints: double.parse(json["bonuse"]),
-        username: json["name"] + json["lastName"],
+        username: json["name"] + ' ' + json["lastName"],
         email: json["email"],
         phone: json["phone"],
         userAddress: json["userProps"] != null

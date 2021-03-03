@@ -48,8 +48,9 @@ class DiscountPreview extends StatelessWidget implements PreferredSizeWidget {
                       )
                     : Container(),
                 Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
-                    child: CustomText.white14px(data.name))
+                  padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
+                  // child: CustomText.white14px(data.name),
+                )
               ],
             ),
           ),

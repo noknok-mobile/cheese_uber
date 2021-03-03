@@ -607,7 +607,12 @@ class Resources {
   }
 
   Future<Cart> readCart() async {
-    var loadedCart = Cart.decode(json.decode(localStorage.getItem('cart')));
+    Cart loadedCart;
+    if (localStorage.getItem('cart') != null) {
+      loadedCart = Cart.decode(json.decode(localStorage.getItem('cart')));
+    } else {
+      loadedCart = Cart();
+    }
     cart.setCart(loadedCart.cart);
     return loadedCart;
   }

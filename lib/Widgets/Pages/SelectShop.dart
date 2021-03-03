@@ -105,7 +105,7 @@ class _SelectShopState extends State<SelectShop> {
                 selectedLocation =
                     Point(longitude: currentLong, latitude: currentLat);
               } else {
-                selectedLocation = shops.first.mapPoint;
+                if (shops.length != 0) selectedLocation = shops.first.mapPoint;
               }
             }
             await controller.enableCameraTracking(
@@ -364,7 +364,7 @@ class _SelectShopState extends State<SelectShop> {
     selectedLocation = Point(
         latitude: arguments['latitude'], longitude: arguments['longitude']);
 
-    if (bFinal) {
+    if (bFinal && selectedLocation != null) {
       Address address = await getAddressFromCoordinates(selectedLocation);
 
       if (Platform.isAndroid) {

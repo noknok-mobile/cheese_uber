@@ -275,8 +275,6 @@ class _CategoryPageState extends State<CategoryPage> {
     const title = Text('Доступна новая версия');
     final content = Text(
         'Вы можете обновить приложение до версии ${versionStatus.storeVersion}');
-    const dismissText = Text('Позже');
-    final dismissAction = () => Navigator.pop(context);
     const updateText = Text('Обновить');
     final updateAction = () {
       _launchAppStore(versionStatus.appStoreLink);
@@ -285,16 +283,13 @@ class _CategoryPageState extends State<CategoryPage> {
     final platform = Theme.of(context).platform;
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return platform == TargetPlatform.android
             ? AlertDialog(
                 title: title,
                 content: content,
                 actions: <Widget>[
-                  FlatButton(
-                    child: dismissText,
-                    onPressed: dismissAction,
-                  ),
                   FlatButton(
                     child: updateText,
                     onPressed: updateAction,
@@ -305,10 +300,6 @@ class _CategoryPageState extends State<CategoryPage> {
                 title: title,
                 content: content,
                 actions: <Widget>[
-                  CupertinoDialogAction(
-                    child: dismissText,
-                    onPressed: dismissAction,
-                  ),
                   CupertinoDialogAction(
                     child: updateText,
                     onPressed: updateAction,

@@ -2,31 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cheez/Events/Events.dart';
 import 'package:flutter_cheez/Resources/Constants.dart';
-import 'package:flutter_cheez/Resources/Models.dart';
 import 'package:flutter_cheez/Resources/Resources.dart';
 import 'package:flutter_cheez/Utils/SharedValue.dart';
 import 'package:flutter_cheez/Widgets/Buttons/Buttons.dart';
 import 'package:flutter_cheez/Widgets/Forms/AutoUpdatingWidget.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
-import 'package:flutter_cheez/Widgets/Forms/InputFieldText.dart';
 
 import 'CheckPromocode.dart';
 
 class CartBottomAppBar extends StatefulWidget implements PreferredSizeWidget {
   double height;
   bool isEnable = true;
+  int deliveryType = 1;
 
   final Function onBottomButtonClick;
   SharedValue<String> promocode = SharedValue<String>();
-  CartBottomAppBar(
-      {@required this.height, this.onBottomButtonClick, this.isEnable = true})
-      : super();
+  CartBottomAppBar({
+    @required this.height,
+    this.onBottomButtonClick,
+    this.isEnable = true,
+    this.deliveryType,
+  }) : super();
 
   @override
   State<StatefulWidget> createState() => _CartBottomAppBar();
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(height);
 }
 
@@ -72,6 +73,17 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                             "${Resources().cart.bonusPoints.toStringAsFixed(0)} ${TextConstants.pricePostfix}")),
                   ],
                 ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Row(
+                children: [
+                  CustomText.black14px('Доставка'),
+                  Expanded(child: Container()),
+                  CustomText.black14px(
+                      widget.deliveryType == 1 ? '200 р.' : '0 р.'),
+                ],
               ),
             ),
             Row(
@@ -136,8 +148,11 @@ class _CartBottomAppBar extends State<CartBottomAppBar> {
                         CustomText.black14px(
                             "${TextConstants.cartResultPrice}"),
                         AutoUpdatingWidget<CartUpdated>(
-                            child: (context, e) => CustomText.red24px(
-                                "${Resources().cart.resultPrice.toStringAsFixed(0)} ${TextConstants.pricePostfix}")),
+                            child: (context, e) => CustomText.red24px(widget
+                                        .deliveryType ==
+                                    1
+                                ? "${(Resources().cart.resultPrice + 200.0).toStringAsFixed(0)} ${TextConstants.pricePostfix}"
+                                : "${(Resources().cart.resultPrice).toStringAsFixed(0)} ${TextConstants.pricePostfix}")),
                       ],
                     ),
                     Expanded(

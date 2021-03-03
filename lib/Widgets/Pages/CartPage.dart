@@ -10,7 +10,6 @@ import 'package:flutter_cheez/Widgets/Forms/CartBottomAppBar.dart';
 import 'package:flutter_cheez/Widgets/Forms/CartGoods.dart';
 import 'package:flutter_cheez/Widgets/Forms/Forms.dart';
 import 'package:flutter_cheez/Widgets/Forms/NextPageAppBar.dart';
-import 'package:flutter_cheez/Widgets/Pages/LoginPage.dart';
 
 import 'NewOrderPage.dart';
 
@@ -18,7 +17,7 @@ class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
 
   final String title = TextConstants.cartHeader;
-  final double bottomMenuHeight = 196;
+  final double bottomMenuHeight = 223;
   @override
   _CartPageState createState() => _CartPageState();
 }

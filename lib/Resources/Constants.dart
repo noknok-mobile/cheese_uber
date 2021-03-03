@@ -90,7 +90,7 @@ class TextConstants {
   static String get textCopy => "Текст скопирован";
   static String get usePromocode => "Применить промокод";
 
-  static String get forgotPass => "Забыли пороль";
+  static String get forgotPass => "Забыли пароль";
 
   static String get politicsHeader => "Соглашение";
   static String get politics =>
