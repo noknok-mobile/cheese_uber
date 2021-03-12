@@ -41,9 +41,12 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
     });
 
     Resources().getSavedDeliveryType().then((value) {
-      setState(() {
-        _deliveryType = value;
-      });
+      if (value != null) {
+        setState(() {
+          _deliveryType = value;
+        });
+      } else
+        _deliveryType = 1;
     });
   }
 

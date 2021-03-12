@@ -629,7 +629,9 @@ class DiscountInfo {
         name: json["name"],
         status: json["status"],
         discountType: json["discountType"],
-        discountValue: json["discountValue"].toDouble(),
+        discountValue: json["discountValue"] != null
+            ? json["discountValue"].toDouble()
+            : 0.0,
         resultDiscount: json["resultDiscount"].toDouble(),
         price: json["price"].toDouble(),
         basePrice: json["basePrice"].toDouble(),
